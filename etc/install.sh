@@ -611,7 +611,7 @@ else
         else
             e_newline
             e_arrow "Restarting your shell..."
-            exec fish -l
+            exec "${SHELL:-/bin/zsh}" -l
         fi
     fi
 fi
