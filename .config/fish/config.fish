@@ -18,6 +18,7 @@ source ~/.config/fish/aliases.fish
 source ~/.config/fish/Keybinds.fish
 source ~/.config/fish/functions.fish
 source ~/.config/fish/completions/*
+source (conda info --root)/etc/fish/conf.d/conda.fish
 
 
 # >>> conda initialize >>>
