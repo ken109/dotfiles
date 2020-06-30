@@ -6,7 +6,8 @@ anyenv install pyenv
 anyenv install rbenv
 anyenv install goenv
 
-exec $SHELL -l
+export PATH="$HOME/.anyenv/bin:$PATH"
+eval "$(anyenv init -)"
 
 anaconda=$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')
 pyenv install $anaconda
