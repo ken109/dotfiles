@@ -547,8 +547,7 @@ dotfiles_initialize() {
             #DOTPATH="$(dotpath)"
             #export DOTPATH
             #bash "$DOTPATH"/etc/init/init.sh
-            source ./etc/init/*.sh
-            fish ./etc/init/*.fish
+            make init
         else
             log_fail "Makefile: not found"
             exit 1
