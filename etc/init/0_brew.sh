@@ -8,4 +8,10 @@ brew install \
     anyenv \
     git \
     git-flow \
-    fzf
+    fzf \
+    exa \
+    bat \
+    fd
+
+brew cask install \
+    google-cloud-sdk
