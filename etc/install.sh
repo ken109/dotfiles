@@ -457,7 +457,7 @@ if [ -z "${DOTPATH:-}" ]; then
     DOTPATH=~/.dotfiles; export DOTPATH
 fi
 
-DOTFILES_GITHUB="https://github.com/b4b4r07/dotfiles.git"; export DOTFILES_GITHUB
+DOTFILES_GITHUB="https://github.com/ken109/dotfiles.git"; export DOTFILES_GITHUB
 
 # shellcheck disable=SC1078,SC1079,SC2016
 dotfiles_logo='
@@ -467,13 +467,11 @@ dotfiles_logo='
   | (_| | (_) | |_| | | | |  __/\__ \
    \__,_|\___/ \__|_| |_|_|\___||___/
   *** WHAT IS INSIDE? ***
-  1. Download https://github.com/b4b4r07/dotfiles.git
+  1. Download https://github.com/ken109/dotfiles.git
   2. Symlinking dot files to your home directory
   3. Execute all sh files within `etc/init/` (optional)
   See the README for documentation.
-  https://github.com/b4b4r07/dotfiles
-  Copyright (c) 2014 "BABAROT" aka @b4b4r07
-  Licensed under the MIT license.
+  https://github.com/ken109/dotfiles
 '
 
 dotfiles_download() {
