@@ -533,7 +533,7 @@ dotfiles_deploy() {
         make deploy
     fi &&
 
-        e_newline && e_done "Deploy"
+    e_newline && e_done "Deploy"
 }
 
 dotfiles_initialize() {
@@ -547,15 +547,15 @@ dotfiles_initialize() {
             #DOTPATH="$(dotpath)"
             #export DOTPATH
             #bash "$DOTPATH"/etc/init/init.sh
-            source ./init/*.sh
-            fish /init/*.fish
+            source ./etc/init/*.sh
+            fish ./etc/init/*.fish
         else
             log_fail "Makefile: not found"
             exit 1
         fi
     fi &&
 
-        e_newline && e_done "Initialize"
+    e_newline && e_done "Initialize"
 }
 
 # A script for the file named "install"
