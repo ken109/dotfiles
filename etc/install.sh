@@ -537,27 +537,25 @@ dotfiles_deploy() {
 }
 
 dotfiles_initialize() {
-    if [ "$1" = "init" ]; then
-        e_newline
-        e_header "Initializing dotfiles..."
+    e_newline
+    e_header "Initializing dotfiles..."
 
-        if is_debug; then
-            :
+    if is_debug; then
+        :
+    else
+        if [ -f Makefile ]; then
+            #DOTPATH="$(dotpath)"
+            #export DOTPATH
+            #bash "$DOTPATH"/etc/init/init.sh
+            source ./init/*.sh
+            fish /init/*.fish
         else
-            if [ -f Makefile ]; then
-                #DOTPATH="$(dotpath)"
-                #export DOTPATH
-                #bash "$DOTPATH"/etc/init/init.sh
-                source ./init/*.sh
-                fish /init/*.fish
-            else
-                log_fail "Makefile: not found"
-                exit 1
-            fi
-        fi &&
+            log_fail "Makefile: not found"
+            exit 1
+        fi
+    fi &&
 
-            e_newline && e_done "Initialize"
-    fi
+        e_newline && e_done "Initialize"
 }
 
 # A script for the file named "install"
@@ -574,7 +572,7 @@ dotfiles_install() {
 
     # 3. Execute all sh files within etc/init/
     # ==> initializing
-    dotfiles_initialize "$@"
+    dotfiles_initialize
 }
 
 if echo "$-" | grep -q "i"; then
@@ -604,7 +602,7 @@ else
 
         trap "e_error 'terminated'; exit 1" INT ERR
         echo "$dotfiles_logo"
-        dotfiles_install "$@"
+        dotfiles_install
 
         # Restart shell if specified "bash -c $(curl -L {URL})"
         # not restart:
