@@ -13,4 +13,4 @@ mkdir -p ~/.config/fish/completions/
 cp $gcloud_completion/functions/* ~/.config/fish/functions/
 cp $gcloud_completion/completions/* ~/.config/fish/completions/
 
-fish (conda info --root)/etc/fish/conf.d/conda.fish
+fish $(conda info --root)/etc/fish/conf.d/conda.fish
