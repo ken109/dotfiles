@@ -537,24 +537,27 @@ dotfiles_deploy() {
 }
 
 dotfiles_initialize() {
-    e_newline
-    e_header "Initializing dotfiles..."
+    read -p "Initialize[y,n]:" initialize
+    if [ "$initialize" = "y" ]; then
+        e_newline
+        e_header "Initializing dotfiles..."
 
-    if is_debug; then
-        :
-    else
-        if [ -f Makefile ]; then
-            #DOTPATH="$(dotpath)"
-            #export DOTPATH
-            #bash "$DOTPATH"/etc/init/init.sh
-            make init
+        if is_debug; then
+            :
         else
-            log_fail "Makefile: not found"
-            exit 1
-        fi
-    fi &&
+            if [ -f Makefile ]; then
+                #DOTPATH="$(dotpath)"
+                #export DOTPATH
+                #bash "$DOTPATH"/etc/init/init.sh
+                make init
+            else
+                log_fail "Makefile: not found"
+                exit 1
+            fi
+        fi &&
 
-    e_newline && e_done "Initialize"
+        e_newline && e_done "Initialize"
+    fi
 }
 
 # A script for the file named "install"
