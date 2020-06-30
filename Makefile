@@ -13,7 +13,7 @@ list: ## Show dot files in this repo
 deploy: ## Create symlink to home directory
 	@echo '==> Start to deploy dotfiles to home directory.'
 	@echo ''
-	@rm -rf ~/.config
+	@mv -f ~/.config ~/.config.bk
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 
 init: ## Create symlink to home directory
