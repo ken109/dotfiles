@@ -18,3 +18,6 @@ brew cask install \
     google-cloud-sdk
 
 git config --global ghq.root ~/.ghq
+
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
