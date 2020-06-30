@@ -16,3 +16,5 @@ brew install \
 
 brew cask install \
     google-cloud-sdk
+
+git config --global ghq.root ~/.ghq

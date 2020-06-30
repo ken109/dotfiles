@@ -6,9 +6,11 @@ anyenv install pyenv
 anyenv install rbenv
 anyenv install goenv
 
+exec $SHELL -l
+
 anaconda=$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')
 pyenv install $anaconda
 pyenv global $anaconda
 
-coda_path="$(pyenv root)/versions/$anaconda/bin/conda"
-sed -i -e "/# >>> conda/,/# <<< conda/ s/eval.*/1 $conda_path "shell.fish" "hook" \$argv | source/g" ~/.config/fish/config.fish
+conda_path="$(pyenv root)/versions/$anaconda/bin/conda"
+sed -i -e "/# >>> conda/,/# <<< conda/ s/eval.*/$conda_path "shell.fish" "hook" \$argv | source/g" ~/.config/fish/config.fish
