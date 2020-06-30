@@ -14,4 +14,4 @@ pyenv install $anaconda
 pyenv global $anaconda
 
 conda_path="$(pyenv root)/versions/$anaconda/bin/conda"
-sed -i -e "/# >>> conda/,/# <<< conda/ s/eval.*/$conda_path "shell.fish" "hook" \$argv | source/g" ~/.config/fish/config.fish
+sed -i -e "/# >>> conda/,/# <<< conda/ s:eval.*:$conda_path "shell.fish" "hook" \$argv | source:g" ~/.config/fish/config.fish

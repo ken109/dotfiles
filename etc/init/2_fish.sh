@@ -9,5 +9,5 @@ curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fi
 
 ghq get lgathy/google-cloud-sdk-fish-completion
 gcloud_completion="$(ghq root)/github.com/lgathy/google-cloud-sdk-fish-completion/"
-cp -r $gcloud_completion/functions/* ~/.config/fish/functions/
-cp -r $gcloud_completion/completions/* ~/.config/fish/completions/
+cp $gcloud_completion/functions/* ~/.config/fish/functions/
+cp $gcloud_completion/completions/* ~/.config/fish/completions/
