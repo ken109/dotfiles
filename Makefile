@@ -17,7 +17,6 @@ deploy: ## Create symlink to home directory
 
 init: ## Create symlink to home directory
 	@$(foreach val, $(wildcard ./etc/init/*.sh), bash $(val);)
-	@$(foreach val, $(wildcard ./etc/init/*.fish), fish $(val);)
 
 clean: ## Remove the dot files and this repo
 	@echo 'Remove dot files in your home directory...'

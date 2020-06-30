@@ -11,7 +11,8 @@ brew install \
     fzf \
     exa \
     bat \
-    fd
+    fd \
+    ghq
 
 brew cask install \
     google-cloud-sdk
