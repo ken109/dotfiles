@@ -5,6 +5,8 @@ echo y | anyenv install --init
 anyenv install pyenv
 anyenv install rbenv
 anyenv install goenv
+anyenv install nodenv
+anyenv install phpenv
 
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
