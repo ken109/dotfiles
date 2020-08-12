@@ -19,10 +19,14 @@ brew install \
     libedit \
     libxml2 \
     bzip2 \
-    libiconv
+    libiconv \
+    ken109/tap/lcl
 
 brew cask install \
-    google-cloud-sdk
+    google-cloud-sdk \
+    docker \
+    docker-toolbox \
+    iterm2
 
 git config --global ghq.root ~/.ghq
 
