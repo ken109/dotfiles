@@ -30,8 +30,8 @@ set tabstop=4
 set shiftwidth=4
 set autoindent
 set expandtab
-set whichwrap=b,s,h,l,<,>,[,]
 set backspace=indent,eol,start
+set clipboard=unnamed
 
 let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -57,3 +57,4 @@ let g:lightline.active = {
   \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
   \   ]
   \ }
+
