@@ -14,12 +14,12 @@ brew install \
     fzf \
     exa \
     bat \
-    ghq \
     trash \
     fd
 
 if [ "$(uname)" = "Darwin" ]; then
     brew install \
+        ghq \
         git-flow \
         anyenv \
         krb5 \
