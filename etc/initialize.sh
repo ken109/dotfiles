@@ -64,7 +64,7 @@ fi
 brew install fish
 
 sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
-sudo chsh -s /usr/local/bin/fish
+sudo chsh -s "$(brew --prefix)/bin/fish"
 
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 
