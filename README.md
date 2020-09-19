@@ -1,9 +1,25 @@
+# 事前に
+
+Ubuntuの場合
+```
+sudo apt install make git
+```
+
 # インストール
+
 ```
 bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/etc/install.sh)"
+```
 
-# ここからfish
+# インストール後
+## 共通
+```
+exec fish -l
+
 fisher
+```
 
+## Mac
+```
 source (conda info --root)/etc/fish/conf.d/conda.fish
 ```
