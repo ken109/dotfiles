@@ -14,11 +14,11 @@ brew install \
     fzf \
     exa \
     bat \
-    trash \
     fd
 
 if [ "$(uname)" = "Darwin" ]; then
     brew install \
+        trash \
         ghq \
         git-flow \
         anyenv \

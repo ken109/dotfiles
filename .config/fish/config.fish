@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 if [ (uname) = "Linux" ]
-    eval "(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
     if [ (echo "$TMUX") = "" ]
         if test (tmux list-sessions | wc -l) -eq 0
