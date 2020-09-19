@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo su
+sudo su - <<EOF
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -72,3 +72,5 @@ if [ "$(uname)" = "Darwin" ]; then
     cp "$gcloud_completion/functions/*" "$HOME/.config/fish/functions/"
     cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
 fi
+
+EOF
