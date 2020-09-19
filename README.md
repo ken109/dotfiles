@@ -14,8 +14,6 @@ bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/etc/
 # インストール後
 ## 共通
 ```
-exec fish -l
-
 fisher
 ```
 
