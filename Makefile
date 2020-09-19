@@ -5,8 +5,6 @@ DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
 .DEFAULT_GOAL := help
 
-all:
-
 list: ## Show dot files in this repo
 	@$(foreach val, $(DOTFILES), /bin/ls -dF $(val);)
 
@@ -17,7 +15,7 @@ deploy: ## Create symlink to home directory
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 
 init: ## Create symlink to home directory
-	@$(foreach val, $(wildcard ./etc/init/*.sh), bash $(val);)
+	@bash './etc/initialize.sh'
 
 clean: ## Remove the dot files and this repo
 	@echo 'Remove dot files in your home directory...'
