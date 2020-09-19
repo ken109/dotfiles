@@ -63,7 +63,7 @@ fi
 # fish
 brew install fish
 
-sudo bash -c "echo '/usr/local/bin/fish' >> /etc/shells"
+sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
 sudo chsh -s /usr/local/bin/fish
 
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
