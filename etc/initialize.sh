@@ -57,14 +57,14 @@ if [ "$(uname)" = "Darwin" ]; then
     pyenv global "$anaconda"
 
     conda_path="$(pyenv root)/versions/$anaconda/bin/conda"
-    sed -i -e "/# >>> conda/,/# <<< conda/ s:eval.*:$conda_path shell.fish hook \$argv | source:g" ~/.config/fish/config.fish
+    sed -i -e "/# >>> conda/,/# <<< conda/ s:eval.*:$conda_path \"shell.fish\" \"hook\" \$argv | source:g" ~/.config/fish/config.fish
 fi
 
 # fish
 brew install fish
 
 sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
-sudo chsh -s "$(brew --prefix)/bin/fish"
+sudo chsh -s "$(brew --prefix)/bin/fish" "$USER"
 
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 
