@@ -21,4 +21,7 @@ set -gx PATH $HOME/.cargo/bin $PATH
 
 # google cloud sdk
 set -gx CLOUDSDK_PYTHON python
-source (brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc
+
+if [ (uname) = "Darwin" ]
+    source (brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc
+end
