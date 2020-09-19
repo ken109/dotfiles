@@ -219,14 +219,13 @@ dotfiles_deploy() {
         :
     else
         if [ -d "$HOME/.config" ]; then
-            mv -f ~/.config ~/.config.tmp
+            mv -f ~/.config ~/.config.backup
         fi
 
         make deploy
 
-        if [ -d "$HOME/.config.tmp" ]; then
-            mv ~/.config.tmp/* ~/.config/
-            rm -rf ~/.config.tmp
+        if [ -d "$HOME/.config.backup" ]; then
+            mv ~/.config.backup/* ~/.config/
         fi
     fi &&
         e_newline && e_done "Deploy"
