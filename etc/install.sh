@@ -54,14 +54,12 @@ is_at_least() {
     version="$(echo ${BASH_VERSION:-0.0.0} | sed -e 's/^\([0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/' | sed -e 's/\.//g')"
 
     # zero padding
-    while [ ${#atleast} -ne 6 ]
-    do
+    while [ ${#atleast} -ne 6 ]; do
         atleast="${atleast}0"
     done
 
     # zero padding
-    while [ ${#version} -ne 6 ]
-    do
+    while [ ${#version} -ne 6 ]; do
         version="${version}0"
     done
 
@@ -84,10 +82,10 @@ ostype() {
 os_detect() {
     export PLATFORM
     case "$(ostype)" in
-        *'linux'*)  PLATFORM='linux'   ;;
-        *'darwin'*) PLATFORM='osx'     ;;
-        *'bsd'*)    PLATFORM='bsd'     ;;
-        *)          PLATFORM='unknown' ;;
+    *'linux'*) PLATFORM='linux' ;;
+    *'darwin'*) PLATFORM='osx' ;;
+    *'bsd'*) PLATFORM='bsd' ;;
+    *) PLATFORM='unknown' ;;
     esac
 }
 
@@ -157,7 +155,7 @@ e_arrow() {
 }
 
 e_indent() {
-    for ((i=0; i<${1:-4}; i++)); do
+    for ((i = 0; i < ${1:-4}; i++)); do
         echon " "
     done
     if [ -n "$2" ]; then
@@ -201,7 +199,7 @@ ink() {
     if [ "$#" -eq 2 ]; then
         text="$2"
         case "$1" in
-            black | red | green | yellow | blue | purple | cyan | gray | white)
+        black | red | green | yellow | blue | purple | cyan | gray | white)
             eval color="\$$1"
             ;;
         esac
@@ -222,20 +220,21 @@ logging() {
     local text="$2"
 
     case "$1" in
-        TITLE)
-            color=yellow
-            ;;
-        ERROR | WARN)
-            color=red
-            ;;
-        INFO)
-            color=blue
-            ;;
-        SUCCESS)
-            color=green
-            ;;
-        *)
-            text="$1"
+    TITLE)
+        color=yellow
+        ;;
+    ERROR | WARN)
+        color=red
+        ;;
+    INFO)
+        color=blue
+        ;;
+    SUCCESS)
+        color=green
+        ;;
+    *)
+        text="$1"
+        ;;
     esac
 
     timestamp() {
@@ -244,7 +243,9 @@ logging() {
         ink gray "] "
     }
 
-    timestamp; ink "$color" "$text"; echo
+    timestamp
+    ink "$color" "$text"
+    echo
 }
 
 log_pass() {
@@ -400,9 +401,9 @@ contains() {
     string="$1"
     substring="$2"
     if [ "${string#*$substring}" != "$string" ]; then
-        return 0    # $substring is in $string
+        return 0 # $substring is in $string
     else
-        return 1    # $substring is not in $string
+        return 1 # $substring is not in $string
     fi
 }
 
@@ -439,8 +440,7 @@ path_remove() {
 
     path=":$PATH:"
 
-    for arg in "$@"
-    do
+    for arg in "$@"; do
         path="${path//:$arg:/:}"
     done
 
@@ -454,10 +454,12 @@ path_remove() {
 
 # Set DOTPATH as default variable
 if [ -z "${DOTPATH:-}" ]; then
-    DOTPATH=~/.dotfiles; export DOTPATH
+    DOTPATH=~/.dotfiles
+    export DOTPATH
 fi
 
-DOTFILES_GITHUB="https://github.com/ken109/dotfiles.git"; export DOTFILES_GITHUB
+DOTFILES_GITHUB="https://github.com/ken109/dotfiles.git"
+export DOTFILES_GITHUB
 
 # shellcheck disable=SC1078,SC1079,SC2016
 dotfiles_logo='
@@ -530,10 +532,12 @@ dotfiles_deploy() {
     if is_debug; then
         :
     else
+        if [ -d "$HOME/.config" ]; then
+            mv -f ~/.config ~/.config.bk
+        fi
         make deploy
     fi &&
-
-    e_newline && e_done "Deploy"
+        e_newline && e_done "Deploy"
 }
 
 dotfiles_initialize() {
@@ -555,8 +559,7 @@ dotfiles_initialize() {
                 exit 1
             fi
         fi &&
-
-        e_newline && e_done "Initialize"
+            e_newline && e_done "Initialize"
     fi
 }
 
@@ -568,13 +571,13 @@ dotfiles_install() {
     # Priority: git > curl > wget
     dotfiles_download &&
 
-    # 2. Deploy dotfiles to your home directory
-    # ==> deploying
-    dotfiles_deploy &&
+        # 2. Deploy dotfiles to your home directory
+        # ==> deploying
+        dotfiles_deploy &&
 
-    # 3. Execute all sh files within etc/init/
-    # ==> initializing
-    dotfiles_initialize
+        # 3. Execute all sh files within etc/init/
+        # ==> initializing
+        dotfiles_initialize
 }
 
 if echo "$-" | grep -q "i"; then
