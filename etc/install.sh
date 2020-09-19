@@ -219,6 +219,9 @@ dotfiles_deploy() {
         :
     else
         if [ -d "$HOME/.config" ]; then
+            if [ -d "$HOME/.config.backup" ]; then
+                rm -rf ~/.config.backup
+            fi
             mv -f ~/.config ~/.config.backup
         fi
 
