@@ -22,7 +22,7 @@ function cd
     ls
     if [ (uname) = "Darwin" ]
         set_pyenv
-    fi
+    end
 end
 
 function youtube-movie

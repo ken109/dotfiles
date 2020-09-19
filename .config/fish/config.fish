@@ -15,9 +15,9 @@ if [ (uname) = "Linux" ]
             end
         end
     end
+else if [ (uname) = "Darwin" ]
+    eval (anyenv init - | source)
 end
-
-eval (anyenv init - | source)
 
 source ~/.config/fish/env.fish
 source ~/.config/fish/aliases.fish
