@@ -58,7 +58,7 @@ if [ "$(uname)" = "Darwin" ]; then
     pyenv global "$anaconda"
 
     conda_path="$(pyenv root)/versions/$anaconda/bin/conda"
-    sed -i -e "/# >>> conda/,/# <<< conda/ s:eval.*:$conda_path \"shell.fish\" \"hook\" \$argv | source:g" ~/.config/fish/config.fish
+    echo "$conda_path \"shell.fish\" \"hook\" \$argv | source" >"$HOME/.config/fish/config.fish"
 fi
 
 # fish

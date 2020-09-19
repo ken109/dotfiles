@@ -24,10 +24,3 @@ source ~/.config/fish/aliases.fish
 source ~/.config/fish/Keybinds.fish
 source ~/.config/fish/functions.fish
 source ~/.config/fish/completions/*
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-eval /Users/kensuke/.anyenv/envs/pyenv/versions/anaconda3-2020.02/bin/conda "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
-
