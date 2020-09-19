@@ -5,30 +5,31 @@
 brew install \
     tmux \
     neovim \
-    anyenv \
     git \
-    git-flow \
     fzf \
     exa \
     bat \
-    fd \
-    ghq \
-    krb5 \
-    openssl@1.1 \
-    icu4c \
-    libedit \
-    libxml2 \
-    bzip2 \
-    libiconv \
-    ken109/tap/lcl
+    fd
 
-brew cask install \
-    google-cloud-sdk \
-    docker \
-    docker-toolbox \
-    iterm2
+if [ "$(uname)" = "Darwin" ]; then
+    brew install \
+        git-flow \
+        anyenv \
+        ghq \
+        krb5 \
+        openssl@1.1 \
+        icu4c \
+        libedit \
+        libxml2 \
+        bzip2 \
+        libiconv \
+        ken109/tap/lcl
 
-git config --global ghq.root ~/.ghq
+    brew cask install \
+        docker
+
+    git config --global ghq.root ~/.ghq
+fi
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

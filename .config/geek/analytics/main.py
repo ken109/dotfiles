@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) + '/'
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
-KEY_FILE_LOCATION = ROOT_DIR + 'ken109-private-188f6bd6599e.json'
+KEY_FILE_LOCATION = ROOT_DIR + 'credentials.json'
 VIEW_ID = '219289165'
 DATE_RANGE = 10
 

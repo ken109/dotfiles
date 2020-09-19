@@ -2,11 +2,12 @@ set number
 set termguicolors
 
 call plug#begin('~/.vim/plugged')
+Plug 'preservim/nerdcommenter'
 Plug 'sickill/vim-monokai'
 Plug 'itchyny/lightline.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'dir': '~/.config/nvim/fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 Plug 'dense-analysis/ale'
@@ -30,8 +31,6 @@ set tabstop=4
 set shiftwidth=4
 set autoindent
 set expandtab
-set backspace=indent,eol,start
-set clipboard=unnamed
 
 let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -57,4 +56,3 @@ let g:lightline.active = {
   \     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
   \   ]
   \ }
-
