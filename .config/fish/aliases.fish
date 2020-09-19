@@ -8,8 +8,8 @@ alias vim 'nvim'
 
 alias fco 'git checkout (git branch -a | tr -d " " |fzf --reverse --height 100% --prompt "CHECKOUT BRANCH>" --preview "git glog --color=always {}" | head -n 1 | sed -e "s/^\*\s*//g" | perl -pe "s/remotes\/origin\///g")'
 
-if [ (uname) = "Darwin" ]; then
+if [ (uname) = "Darwin" ]
     alias rdns 'sudo killall -HUP mDNSResponder'
     alias rm 'trash'
     alias cdg 'cd (ghq root)/(ghq list | fzf)'
-fi
+end
