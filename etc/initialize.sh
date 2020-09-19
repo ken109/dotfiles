@@ -2,6 +2,11 @@
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
+if [ "$(uname)" = "Linux" ]; then
+    echo "eval \$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" >>/home/kensuke/.profile
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 brew install \
     tmux \
     neovim \
