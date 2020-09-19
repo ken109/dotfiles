@@ -219,16 +219,16 @@ dotfiles_deploy() {
         :
     else
         if [ -d "$HOME/.config" ]; then
-            if [ -d "$HOME/.config.backup" ]; then
-                rm -rf ~/.config.backup
+            if [ -d "$HOME/.config.$(date '+%y%-m%-d')" ]; then
+                rm -rf "$HOME/.config.$(date '+%y%-m%-d')"
             fi
-            mv -f ~/.config ~/.config.backup
+            mv -f ~/.config "$HOME/.config.$(date '+%y%-m%-d')"
         fi
 
         make deploy
 
-        if [ -d "$HOME/.config.backup" ]; then
-            mv -n ~/.config.backup/* ~/.config/
+        if [ -d "$HOME/.config.$(date '+%y%-m%-d')" ]; then
+            mv -n "$HOME/.config.$(date '+%y%-m%-d')/*" ~/.config/
         fi
     fi &&
         e_newline && e_done "Deploy"
