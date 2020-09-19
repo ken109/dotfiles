@@ -1,6 +1,8 @@
-#!/usr/local/bin/fish
+#!/usr/bin/env fish
 
 if [ (uname) = "Linux" ]
+    eval "(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
     if [ (echo "$TMUX") = "" ]
         if test (tmux list-sessions | wc -l) -eq 0
             tmux new-session \; source-file ~/.config/tmux/window.conf
@@ -14,6 +16,8 @@ if [ (uname) = "Linux" ]
         end
     end
 end
+
+eval (anyenv init - | source)
 
 source ~/.config/fish/env.fish
 source ~/.config/fish/aliases.fish

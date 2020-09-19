@@ -1,4 +1,4 @@
-#!/usr/local/bin/fish
+#!/usr/bin/env fish
 
 alias ls 'exa'
 alias la 'exa -a'

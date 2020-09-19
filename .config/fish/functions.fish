@@ -1,4 +1,4 @@
-#!/usr/local/bin/fish
+#!/usr/bin/env fish
 
 function set_pyenv
     set search ""
@@ -20,7 +20,9 @@ end
 function cd
     builtin cd $argv
     ls
-    set_pyenv
+    if [ (uname) = "Darwin" ]
+        set_pyenv
+    fi
 end
 
 function youtube-movie
