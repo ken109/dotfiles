@@ -52,7 +52,7 @@ def main():
     colors = service.colors().get().execute()['calendar']
     events = []
     for calendar in get_calendars(service):
-        if calendar['selected']:
+        if 'selected' in calendar.keys() and calendar['selected']:
             for event in get_events(service, calendar['id']):
                 start = datetime.fromisoformat(event['start'].get('dateTime', event['start'].get('date')))
                 end = datetime.fromisoformat(event['end'].get('dateTime', event['end'].get('date')))
