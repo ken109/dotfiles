@@ -20,4 +20,5 @@ export PHP_BUILD_CONFIGURE_OPT --with-bz2="$(brew --prefix)/opt/bzip2" --with-ic
 export BAT_THEME=ansi-dark
 export CLOUDSDK_PYTHON=python
 
+# shellcheck source=/dev/null
 [ -f ~/.zshrc ] && source ~/.zshrc

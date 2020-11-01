@@ -104,5 +104,12 @@ if [ "$shell" = "fish" ]; then
         cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
     fi
 else
-    sudo chsh -s "$(command -v zsh)" "$USER"
+    brew install \
+        zsh \
+        zsh-completions \
+        zsh-autosuggestions \
+        zsh-syntax-highlighting
+
+    sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
+    sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 fi
