@@ -3,7 +3,7 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 if [ "$(uname)" = "Linux" ]; then
-    echo "eval \$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" >>/home/kensuke/.profile
+    echo "eval \"\$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"" >>"/home/$USER/.profile"
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
@@ -37,8 +37,7 @@ if [ "$(uname)" = "Darwin" ]; then
     git config --global ghq.root ~/.ghq
 fi
 
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # anyenv
 if [ "$(uname)" = "Darwin" ]; then
@@ -49,30 +48,61 @@ if [ "$(uname)" = "Darwin" ]; then
     anyenv install goenv
     anyenv install nodenv
     anyenv install phpenv
+    anyenv install plenv
 
     export PATH="$HOME/.anyenv/bin:$PATH"
     eval "$(anyenv init -)"
 
-    anaconda=$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')
-    pyenv install "$anaconda"
-    pyenv global "$anaconda"
+    # pyenv
+    anaconda_v="$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')"
+    pyenv install "$anaconda_v"
+    pyenv global "$anaconda_v"
 
-    conda_path="$(pyenv root)/versions/$anaconda/bin/conda"
-    echo "$conda_path \"shell.fish\" \"hook\" \$argv | source" >"$HOME/.config/fish/config.fish"
+    # rbenv
+    ruby_v="$(rbenv install --list-all | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
+    rbenv install "$ruby_v"
+    rbenv global "$ruby_v"
+
+    # goenv
+    go_v="$(goenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
+    goenv install "$go_v"
+    goenv global "$go_v"
+
+    # nodenv
+    node_v="$(nodenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
+    nodenv install "$node_v"
+    nodenv global "$node_v"
+
+    # phpenv
+    php_v="$(phpenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
+    phpenv install "$php_v"
+    phpenv global "$php_v"
+
+    # plenv
+    perl_v="5.32.0"
+    plenv install "$perl_v"
+    plenv global "$perl_v"
 fi
 
+# shell
+read -r -p "select shell[zsh(default), fish]?" shell
+
 # fish
-brew install fish
+if [ "$shell" = "fish" ]; then
+    brew install fish
 
-sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
-sudo chsh -s "$(brew --prefix)/bin/fish" "$USER"
+    sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
+    sudo chsh -s "$(brew --prefix)/bin/fish" "$USER"
 
-curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
 
-if [ "$(uname)" = "Darwin" ]; then
-    ghq get lgathy/google-cloud-sdk-fish-completion
-    gcloud_completion="$(ghq root)/github.com/lgathy/google-cloud-sdk-fish-completion/"
-    mkdir -p ~/.config/fish/completions/
-    cp "$gcloud_completion/functions/*" "$HOME/.config/fish/functions/"
-    cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
+    if [ "$(uname)" = "Darwin" ]; then
+        ghq get lgathy/google-cloud-sdk-fish-completion
+        gcloud_completion="$(ghq root)/github.com/lgathy/google-cloud-sdk-fish-completion/"
+        mkdir -p ~/.config/fish/completions/
+        cp "$gcloud_completion/functions/*" "$HOME/.config/fish/functions/"
+        cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
+    fi
+else
+    sudo chsh -s "$(command -v zsh)" "$USER"
 fi

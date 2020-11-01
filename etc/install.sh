@@ -213,7 +213,7 @@ dotfiles_deploy() {
         exit 1
     fi
 
-    cd "$DOTPATH"
+    cd "$DOTPATH" || return
 
     if is_debug; then
         :
