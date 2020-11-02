@@ -52,7 +52,7 @@ fi
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # shell
-read -r -p "select shell [zsh(default), fish] ? " shell
+read -r -p "Select shell [zsh(default), fish] ? " shell
 
 if [ "$shell" = "fish" ]; then
     # fish
@@ -80,6 +80,8 @@ else
 
     sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
     sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
+
+    "$(brew --prefix)/opt/fzf/install"
 fi
 
 # shellcheck source=/dev/null

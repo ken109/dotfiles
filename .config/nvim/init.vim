@@ -15,7 +15,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
     Plug 'ryanoasis/vim-devicons'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-rooter'
     Plug 'dense-analysis/ale'
