@@ -14,8 +14,19 @@ bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/etc/
 # インストール後
 ## 共通
 ```
+exec [選択したshell] -l
+
+# zshの場合のみ
+# 以下で表示されるディレクトリのパーミッションを全て755に変更する
+compaudit
+
 # fishの場合のみ
 fisher
+```
+### NeoVim
+初めてvimを開いた時
+```
+:PlugInstall
 ```
 
 ## Mac
