@@ -25,8 +25,6 @@ nmap <silent> <C-e> :NERDTreeToggle<CR>
 nmap <C-z> :UndotreeShow<CR>:UndotreeFocus<CR>
 nmap s <Plug>(easymotion-overwin-f2)
 
-colorscheme monokai
-
 set tabstop=4
 set shiftwidth=4
 set autoindent
