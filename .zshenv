@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
-brew_prefix="$(brew --prefix)"
+
+if [ "$(uname)" = "Linux" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    brew_prefix="$(brew --prefix)"
+elif [ "$(uname)" = "Darwin" ]; then
+    brew_prefix="/usr/local"
+fi
 
 export PATH="$brew_prefix/bin:$PATH"
 export PATH="$HOME/.anyenv/bin:$PATH"
