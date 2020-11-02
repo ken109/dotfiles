@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -22,14 +22,23 @@ if [ "$(uname)" = "Darwin" ]; then
         ghq \
         git-flow \
         anyenv \
+        ken109/tap/lcl
+
+    # php build
+    brew install \
+        pkg-config \
         krb5 \
         openssl@1.1 \
         icu4c \
+        bzip2 \
+        oniguruma \
+        tidy-html5 \
+        libzip \
         libedit \
         libxml2 \
-        bzip2 \
         libiconv \
-        ken109/tap/lcl
+        libpng \
+        libjpeg
 
     brew cask install \
         docker
@@ -38,6 +47,38 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# shell
+read -r -p "select shell[zsh(default), fish]?" shell
+
+# fish
+if [ "$shell" = "fish" ]; then
+    brew install fish
+
+    sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
+    sudo chsh -s "$(brew --prefix)/bin/fish" "$USER"
+
+    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
+
+    if [ "$(uname)" = "Darwin" ]; then
+        ghq get lgathy/google-cloud-sdk-fish-completion
+        gcloud_completion="$(ghq root)/github.com/lgathy/google-cloud-sdk-fish-completion/"
+        mkdir -p ~/.config/fish/completions/
+        cp "$gcloud_completion/functions/*" "$HOME/.config/fish/functions/"
+        cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
+    fi
+else
+    brew install \
+        zsh \
+        zsh-completions \
+        zsh-autosuggestions \
+        zsh-syntax-highlighting
+
+    sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
+    sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
+fi
+
+source ~/.zprofile
 
 # anyenv
 if [ "$(uname)" = "Darwin" ]; then
@@ -82,34 +123,4 @@ if [ "$(uname)" = "Darwin" ]; then
     perl_v="5.32.0"
     plenv install "$perl_v"
     plenv global "$perl_v"
-fi
-
-# shell
-read -r -p "select shell[zsh(default), fish]?" shell
-
-# fish
-if [ "$shell" = "fish" ]; then
-    brew install fish
-
-    sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
-    sudo chsh -s "$(brew --prefix)/bin/fish" "$USER"
-
-    curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-
-    if [ "$(uname)" = "Darwin" ]; then
-        ghq get lgathy/google-cloud-sdk-fish-completion
-        gcloud_completion="$(ghq root)/github.com/lgathy/google-cloud-sdk-fish-completion/"
-        mkdir -p ~/.config/fish/completions/
-        cp "$gcloud_completion/functions/*" "$HOME/.config/fish/functions/"
-        cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
-    fi
-else
-    brew install \
-        zsh \
-        zsh-completions \
-        zsh-autosuggestions \
-        zsh-syntax-highlighting
-
-    sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
-    sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 fi

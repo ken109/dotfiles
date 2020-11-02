@@ -1,20 +1,18 @@
 #!/usr/bin/env zsh
-export PATH="/usr/local/bin:$PATH"
+brew_prefix="$(brew --prefix)"
+
+export PATH="$brew_prefix/bin:$PATH"
 export PATH="$HOME/.anyenv/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
 
 # goenv
-LIBRARY_PATH="$(brew --prefix)/opt/openssl/lib/:$LIBRARY_PATH"
-export LIBRARY_PATH
+export LIBRARY_PATH="$brew_prefix/opt/openssl/lib/:$LIBRARY_PATH"
 export GOENV_GOPATH_PREFIX="$HOME/.go"
 
 # phpenv
-PKG_CONFIG_PATH="$(brew --prefix)/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
-PKG_CONFIG_PATH="$(brew --prefix)/opt/krb5/lib/pkgconfig:$PKG_CONFIG_PATH"
-PKG_CONFIG_PATH="$(brew --prefix)/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PKG_CONFIG_PATH
-export PHP_BUILD_CONFIGURE_OPT --with-bz2="$(brew --prefix)/opt/bzip2" --with-iconv="$(brew --prefix)/opt/libiconv"
+export PKG_CONFIG_PATH="$brew_prefix/opt/krb5/lib/pkgconfig:$brew_prefix/opt/icu4c/lib/pkgconfig:$brew_prefix/opt/libedit/lib/pkgconfig:$brew_prefix/opt/libjpeg/lib/pkgconfig:$brew_prefix/opt/libpng/lib/pkgconfig:$brew_prefix/opt/libxml2/lib/pkgconfig:$brew_prefix/opt/libzip/lib/pkgconfig:$brew_prefix/opt/oniguruma/lib/pkgconfig:$brew_prefix/opt/openssl@1.1/lib/pkgconfig:$brew_prefix/opt/tidy-html5/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PHP_BUILD_CONFIGURE_OPTS="--with-bz2=$brew_prefix/opt/bzip2 --with-iconv=$brew_prefix/opt/libiconv"
 
 # shell
 export BAT_THEME=ansi-dark
