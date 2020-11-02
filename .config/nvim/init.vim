@@ -1,4 +1,12 @@
 set number
+set tabstop=4
+set shiftwidth=4
+set autoindent
+set expandtab
+
+let mapleader = "\<Space>"
+
+nmap <C-z> :UndotreeShow<CR>:UndotreeFocus<CR>
 
 call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
@@ -22,20 +30,20 @@ call plug#end()
 
 colorscheme monokai_pro
 
+" nerdtree
 nmap <silent> <C-e> :NERDTreeToggle<CR>
-nmap <C-z> :UndotreeShow<CR>:UndotreeFocus<CR>
+
+" easy motion
+map s <Plug>(easymotion-bd-f2)
 nmap s <Plug>(easymotion-overwin-f2)
 
-set tabstop=4
-set shiftwidth=4
-set autoindent
-set expandtab
-
+" ale
 let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
 let g:ale_fix_on_save = 1
 
+" lightline
 let g:lightline = {'colorscheme': 'monokai_pro'}
 let g:lightline.component_expand = {
   \   'linter_checking': 'lightline#ale#checking',
