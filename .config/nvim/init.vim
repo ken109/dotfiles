@@ -1,23 +1,23 @@
 set number
 
 call plug#begin('~/.vim/plugged')
-Plug 'preservim/nerdcommenter'
-Plug 'phanviet/vim-monokai-pro'
-Plug 'itchyny/lightline.vim'
-Plug 'Yggdroot/indentLine'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'junegunn/fzf', { 'dir': '~/.config/nvim/fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
-Plug 'dense-analysis/ale'
-Plug 'xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-commentary'
-Plug 'mbbill/undotree'
-Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
-Plug 'maximbaz/lightline-ale'
+    Plug 'preservim/nerdcommenter'
+    Plug 'phanviet/vim-monokai-pro'
+    Plug 'itchyny/lightline.vim'
+    Plug 'Yggdroot/indentLine'
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'junegunn/fzf', { 'dir': '~/.config/nvim/fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'airblade/vim-rooter'
+    Plug 'dense-analysis/ale'
+    Plug 'xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+    Plug 'sheerun/vim-polyglot'
+    Plug 'tpope/vim-commentary'
+    Plug 'mbbill/undotree'
+    Plug 'easymotion/vim-easymotion'
+    Plug 'tpope/vim-surround'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'maximbaz/lightline-ale'
 call plug#end()
 
 colorscheme monokai_pro
@@ -35,6 +35,7 @@ let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
 let g:ale_fix_on_save = 1
+
 let g:lightline = {'colorscheme': 'monokai_pro'}
 let g:lightline.component_expand = {
   \   'linter_checking': 'lightline#ale#checking',
