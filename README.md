@@ -14,6 +14,9 @@ bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/etc/
 # インストール後
 ## 共通
 ```
+# 以下で表示されるディレクトリのパーミッションを全て755に変更する
+compaudit
+
 # fishの場合のみ
 fisher
 ```
