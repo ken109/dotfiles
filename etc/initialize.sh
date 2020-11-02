@@ -68,6 +68,7 @@ if [ "$shell" = "fish" ]; then
         cp "$gcloud_completion/completions/*" "$HOME/.config/fish/completions/"
     fi
 else
+    shell="zsh"
     brew install \
         zsh \
         zsh-completions \
@@ -78,7 +79,7 @@ else
     sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 fi
 
-source ~/.zprofile
+source ~/.zshenv
 
 # anyenv
 if [ "$(uname)" = "Darwin" ]; then
@@ -98,6 +99,7 @@ if [ "$(uname)" = "Darwin" ]; then
     anaconda_v="$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')"
     pyenv install "$anaconda_v"
     pyenv global "$anaconda_v"
+    conda init "$shell"
 
     # rbenv
     ruby_v="$(rbenv install --list-all | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
