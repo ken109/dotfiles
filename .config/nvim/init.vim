@@ -1,9 +1,8 @@
 set number
-set termguicolors
 
 call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdcommenter'
-Plug 'sickill/vim-monokai'
+Plug 'phanviet/vim-monokai-pro'
 Plug 'itchyny/lightline.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -21,6 +20,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'maximbaz/lightline-ale'
 call plug#end()
 
+colorscheme monokai_pro
+
 nmap <silent> <C-e> :NERDTreeToggle<CR>
 nmap <C-z> :UndotreeShow<CR>:UndotreeFocus<CR>
 nmap s <Plug>(easymotion-overwin-f2)
@@ -34,7 +35,7 @@ let g:ale_fixers = {
   \   '*': ['remove_trailing_lines', 'trim_whitespace'],
   \ }
 let g:ale_fix_on_save = 1
-let g:lightline = {'colorscheme': 'molokai'}
+let g:lightline = {'colorscheme': 'monokai_pro'}
 let g:lightline.component_expand = {
   \   'linter_checking': 'lightline#ale#checking',
   \   'linter_warnings': 'lightline#ale#warnings',
