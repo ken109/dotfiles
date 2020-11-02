@@ -28,6 +28,8 @@ if [ "$(uname)" = "Darwin" ]; then
     brew install \
         pkg-config \
         krb5 \
+        autoconf \
+        mcrypt \
         openssl@1.1 \
         icu4c \
         bzip2 \
