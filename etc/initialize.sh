@@ -14,6 +14,7 @@ brew install \
     fzf \
     exa \
     bat \
+    ripgrep \
     fd
 
 if [ "$(uname)" = "Darwin" ]; then
@@ -53,8 +54,8 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 # shell
 read -r -p "select shell [zsh(default), fish] ? " shell
 
-# fish
 if [ "$shell" = "fish" ]; then
+    # fish
     brew install fish
 
     sudo bash -c "echo '$(brew --prefix)/bin/fish' >> /etc/shells"
@@ -81,7 +82,8 @@ else
     sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 fi
 
-source ~/.zshenv
+# shellcheck source=/dev/null
+[ -f ~/.zshenv ] && source ~/.zshenv
 
 # anyenv
 if [ "$(uname)" = "Darwin" ]; then

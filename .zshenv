@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# written by kensuke kubo
 
 if [ "$(uname)" = "Linux" ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

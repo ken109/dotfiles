@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# written by kensuke kubo
 
 # zsh
 setopt hist_ignore_dups
@@ -49,7 +50,7 @@ alias vim='nvim'
 if [ "$(uname)" = "Darwin" ]; then
     alias rdns='sudo killall -HUP mDNSResponder'
     alias rm='trash'
-    alias cdg='cd (ghq root)/(ghq list | fzf)'
+    alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 fi
 
 # functions
