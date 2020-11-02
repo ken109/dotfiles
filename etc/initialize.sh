@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -49,7 +49,7 @@ fi
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # shell
-read -r -p "select shell[zsh(default), fish]?" shell
+read -r -p "select shell [zsh(default), fish] ? " shell
 
 # fish
 if [ "$shell" = "fish" ]; then

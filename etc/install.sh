@@ -1,13 +1,4 @@
-#!/bin/bash
-#
-#         _ _        _       _
-#        (_) |      | |     | |
-#  __   ___| |_ __ _| |  ___| |__
-#  \ \ / / | __/ _` | | / __| '_ \
-#   \ V /| | || (_| | |_\__ \ | | |
-#    \_/ |_|\__\__,_|_(_)___/_| |_|
-#
-#
+#!/usr/bin/env bash
 
 # PLATFORM is the environment variable that
 # retrieves the name of the running platform
