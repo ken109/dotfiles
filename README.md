@@ -23,6 +23,11 @@ compaudit
 # fishの場合のみ
 fisher
 ```
+### NeoVim
+初めてvimを開いた時
+```
+:PlugInstall
+```
 
 ## Mac
 ```
