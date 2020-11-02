@@ -14,6 +14,9 @@ bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/etc/
 # インストール後
 ## 共通
 ```
+exec [選択したshell] -l
+
+# zshの場合　
 # 以下で表示されるディレクトリのパーミッションを全て755に変更する
 compaudit
 
