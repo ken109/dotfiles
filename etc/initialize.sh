@@ -43,8 +43,11 @@ if [ "$(uname)" = "Darwin" ]; then
         libpng \
         libjpeg
 
+    brew tap homebrew/cask-fonts
+
     brew cask install \
-        docker
+        docker \
+        font-hack-nerd-font
 
     git config --global ghq.root ~/.ghq
 fi
