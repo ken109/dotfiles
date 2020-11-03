@@ -2,13 +2,20 @@
 # written by kensuke kubo
 
 # zsh
+FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+autoload -Uz compinit
+compinit
+
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt share_history
 
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-autoload -Uz compinit
-compinit
+setopt auto_cd
+
+setopt auto_pushd
+setopt pushd_ignore_dups
+
+zstyle ':completion:*:default' menu select=1
 
 # shellcheck source=/dev/null
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -41,6 +48,9 @@ RPROMPT='${vcs_info_msg_0_}'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # aliases
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
 alias ls='exa'
 alias la='exa -a'
 alias ll='exa -hlg --git --time-style long-iso'
