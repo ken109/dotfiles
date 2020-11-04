@@ -17,10 +17,6 @@ brew install \
     ripgrep \
     fd
 
-brew tap homebrew/cask-fonts
-
-brew cask install font-hack-nerd-font
-
 if [ "$(uname)" = "Darwin" ]; then
     brew install \
         trash \
@@ -47,7 +43,11 @@ if [ "$(uname)" = "Darwin" ]; then
         libpng \
         libjpeg
 
-    brew cask install docker
+    brew tap homebrew/cask-fonts
+
+    brew cask install \
+        docker \
+        font-hack-nerd-font
 
     git config --global ghq.root ~/.ghq
 fi
