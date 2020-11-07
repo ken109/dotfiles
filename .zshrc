@@ -22,12 +22,6 @@ source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 # shellcheck source=/dev/null
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-if [ "$(uname)" = "Linux" ]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-elif [ "$(uname)" = "Darwin" ]; then
-    eval "$(anyenv init -)"
-fi
-
 if [ $UID -eq 0 ]; then
     PROMPT="%F{red}%n@%m: %~%F{cyan}%c %F{reset_color}%% "
 else

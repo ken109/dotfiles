@@ -9,6 +9,8 @@ elif [ "$(uname)" = "Darwin" ]; then
     export PATH="$brew_prefix/bin:$PATH"
 fi
 
+eval "$(anyenv init -)"
+
 export PATH="$HOME/.anyenv/bin:$PATH"
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
