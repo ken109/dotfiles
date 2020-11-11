@@ -223,7 +223,7 @@ dotfiles_deploy() {
         make deploy
 
         if [ -d "$HOME/.config.$(date '+%y%-m%-d')" ]; then
-            mv -n "$HOME/.config.$(date '+%y%-m%-d')"/* ~/.config/
+            mv -n "$HOME"/.config."$(date '+%y%-m%-d')"/* ~/.config/
         fi
     fi &&
         e_newline && e_done "Deploy"
