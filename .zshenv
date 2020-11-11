@@ -11,10 +11,6 @@ fi
 
 eval "$(anyenv init -)"
 
-export PATH="$HOME/.anyenv/bin:$PATH"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
-
 # goenv
 export LIBRARY_PATH="$brew_prefix/opt/openssl/lib/:$LIBRARY_PATH"
 export GOENV_GOPATH_PREFIX="$HOME/.go"
@@ -27,3 +23,7 @@ export PHP_BUILD_CONFIGURE_OPTS="--with-bz2=$brew_prefix/opt/bzip2 --with-iconv=
 export BAT_THEME=ansi-dark
 export CLOUDSDK_PYTHON=python
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="$brew_prefix/share/zsh-syntax-highlighting/highlighters"
+
+export PATH="$HOME/.anyenv/bin:$PATH"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
