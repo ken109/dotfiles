@@ -25,5 +25,8 @@ export CLOUDSDK_PYTHON=python
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="$brew_prefix/share/zsh-syntax-highlighting/highlighters"
 
 export PATH="$HOME/.anyenv/bin:$PATH"
+
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
+
+export PATH="$HOME/.composer/vendor/bin:$PATH"
