@@ -20,6 +20,7 @@ export PKG_CONFIG_PATH="$brew_prefix/opt/krb5/lib/pkgconfig:$brew_prefix/opt/icu
 export PHP_BUILD_CONFIGURE_OPTS="--with-bz2=$brew_prefix/opt/bzip2 --with-iconv=$brew_prefix/opt/libiconv --with-pear"
 
 # shell
+export GREP_OPTIONS="--color=auto"
 export BAT_THEME=ansi-dark
 export CLOUDSDK_PYTHON=python
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="$brew_prefix/share/zsh-syntax-highlighting/highlighters"
