@@ -29,5 +29,3 @@ export PATH="$HOME/.anyenv/bin:$PATH"
 
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
-
-export PATH="$HOME/.composer/vendor/bin:$PATH"
