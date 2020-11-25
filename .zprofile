@@ -9,8 +9,6 @@ elif [ "$(uname)" = "Darwin" ]; then
     export PATH="$brew_prefix/bin:$PATH"
 fi
 
-eval "$(anyenv init -)"
-
 # goenv
 export LIBRARY_PATH="$brew_prefix/opt/openssl/lib/:$LIBRARY_PATH"
 export GOENV_GOPATH_PREFIX="$HOME/.go"
