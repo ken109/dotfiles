@@ -26,6 +26,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-gitgutter'
     Plug 'jiangmiao/auto-pairs'
+    Plug 'editorconfig/editorconfig-vim'
 call plug#end()
 
 colorscheme monokai_pro
