@@ -90,8 +90,8 @@ fi
 # shellcheck source=/dev/null
 [ -f ~/.zshenv ] && source ~/.zshenv
 
-# anyenv
 if [ "$(uname)" = "Darwin" ]; then
+    # anyenv
     echo y | anyenv install --init
 
     anyenv install pyenv
@@ -134,4 +134,7 @@ if [ "$(uname)" = "Darwin" ]; then
     perl_v="5.32.0"
     plenv install "$perl_v"
     plenv global "$perl_v"
+
+    # flutter
+    ghq get flutter/flutter
 fi

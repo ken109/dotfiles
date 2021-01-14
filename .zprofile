@@ -27,3 +27,8 @@ export PATH="$HOME/.anyenv/bin:$PATH"
 
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
+
+GHQ_ROOT="$(ghq root)"
+export PATH="$GHQ_ROOT/github.com/flutter/flutter/bin/:$PATH"
+
+eval "$(anyenv init -)"

@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 # written by kensuke kubo
 
-eval "$(anyenv init -)"
-
 # zsh
 FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 autoload -Uz compinit
