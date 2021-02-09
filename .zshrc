@@ -16,9 +16,7 @@ setopt pushd_ignore_dups
 
 zstyle ':completion:*:default' menu select=1
 
-# shellcheck source=/dev/null
 source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-# shellcheck source=/dev/null
 source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 if [ $UID -eq 0 ]; then
@@ -55,8 +53,9 @@ show_command_begin_time() {
 }
 zle -N accept-line show_command_begin_time
 
-# shellcheck source=/dev/null
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
+
+eval "$(flutter bash-completion)"
 
 # aliases
 alias ...='cd ../..'
