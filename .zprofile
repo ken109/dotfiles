@@ -11,7 +11,9 @@ fi
 
 # goenv
 export LIBRARY_PATH="$brew_prefix/opt/openssl/lib/:$LIBRARY_PATH"
-export GOENV_GOPATH_PREFIX="$HOME/.go"
+export GOENV_DISABLE_GOPATH=1
+export GOPATH="$HOME/.go"
+export GO111MODULE=on
 
 # phpenv
 export PKG_CONFIG_PATH="$brew_prefix/opt/krb5/lib/pkgconfig:$brew_prefix/opt/icu4c/lib/pkgconfig:$brew_prefix/opt/libedit/lib/pkgconfig:$brew_prefix/opt/libjpeg/lib/pkgconfig:$brew_prefix/opt/libpng/lib/pkgconfig:$brew_prefix/opt/libxml2/lib/pkgconfig:$brew_prefix/opt/libzip/lib/pkgconfig:$brew_prefix/opt/oniguruma/lib/pkgconfig:$brew_prefix/opt/openssl@1.1/lib/pkgconfig:$brew_prefix/opt/tidy-html5/lib/pkgconfig:$PKG_CONFIG_PATH"
@@ -24,7 +26,6 @@ export PHP_BUILD_CONFIGURE_OPTS="\
  --with-zlib-dir=/usr/local/opt/zlib"
 
 # shell
-export GREP_OPTIONS="--color=auto"
 export BAT_THEME=ansi-dark
 export CLOUDSDK_PYTHON=python
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="$brew_prefix/share/zsh-syntax-highlighting/highlighters"
