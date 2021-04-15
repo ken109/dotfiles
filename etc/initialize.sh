@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# shell
+read -r -p "Select shell [ zsh(default), fish ] ? " shell
+
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 if [ "$(uname)" = "Linux" ]; then
@@ -15,12 +18,14 @@ brew install \
     exa \
     bat \
     ripgrep \
+    ghq \
     fd
+
+git config --global ghq.root ~/.ghq
 
 if [ "$(uname)" = "Darwin" ]; then
     brew install \
         trash \
-        ghq \
         git-flow \
         anyenv \
         ken109/tap/lcl
@@ -48,14 +53,9 @@ if [ "$(uname)" = "Darwin" ]; then
     brew cask install \
         docker \
         font-hack-nerd-font
-
-    git config --global ghq.root ~/.ghq
 fi
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# shell
-read -r -p "Select shell [zsh(default), fish] ? " shell
 
 if [ "$shell" = "fish" ]; then
     # fish
@@ -85,10 +85,10 @@ else
     sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 
     "$(brew --prefix)/opt/fzf/install"
-fi
 
-# shellcheck source=/dev/null
-[ -f ~/.zshenv ] && source ~/.zshenv
+    # shellcheck source=/dev/null
+    [ -f ~/.zshenv ] && source ~/.zshenv
+fi
 
 if [ "$(uname)" = "Darwin" ]; then
     # anyenv

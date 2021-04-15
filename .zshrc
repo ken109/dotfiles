@@ -55,8 +55,8 @@ zle -N accept-line show_command_begin_time
 
 [ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
 
-if [ "$(uname)" = "Darwin" ]; then
-    eval "$(flutter bash-completion)"
+if type flutter >/dev/null 2>&1; then
+    eval "$(flutter zsh-completion)"
 fi
 
 # aliases
@@ -69,11 +69,11 @@ alias ll='exa -hlg --git --time-style long-iso'
 alias lla='ls -hlga --git --time-style long-iso'
 alias vim='nvim'
 alias grep='grep --color=auto'
+alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 
 if [ "$(uname)" = "Darwin" ]; then
     alias rdns='sudo killall -HUP mDNSResponder'
     alias rm='trash'
-    alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 fi
 
 # functions
@@ -100,15 +100,17 @@ precmd() {
     vcs_info
 }
 
-pdf-min() {
-    local cnt=0
-    for i in "$@"; do
-        gs -sDEVICE=pdfwrite \
-            -dCompatibilityLevel=1.4 \
-            -dPDFSETTINGS=/default \
-            -dNOPAUSE -dQUIET -dBATCH \
-            -sOutputFile="${i%%.*}.min.pdf" "${i}" &
-        (((cnt += 1) % 4 == 0)) && wait
-    done
-    wait && return 0
-}
+if type gs >/dev/null 2>&1; then
+    pdf-min() {
+        local cnt=0
+        for i in "$@"; do
+            gs -sDEVICE=pdfwrite \
+                -dCompatibilityLevel=1.4 \
+                -dPDFSETTINGS=/default \
+                -dNOPAUSE -dQUIET -dBATCH \
+                -sOutputFile="${i%%.*}.min.pdf" "${i}" &
+            (((cnt += 1) % 4 == 0)) && wait
+        done
+        wait && return 0
+    }
+fi
