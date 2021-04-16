@@ -95,25 +95,18 @@ if [ "$(uname)" = "Darwin" ]; then
     echo y | anyenv install --init
 
     anyenv install pyenv
-    anyenv install rbenv
     anyenv install goenv
     anyenv install nodenv
     anyenv install phpenv
-    anyenv install plenv
 
     export PATH="$HOME/.anyenv/bin:$PATH"
     eval "$(anyenv init -)"
 
     # pyenv
-    anaconda_v="$(pyenv install -l | grep anaconda3 | tail -n 1 | sed 's/ //g')"
+    anaconda_v="$(pyenv install -l | grep miniconda3 | tail -n 1 | sed 's/ //g')"
     pyenv install "$anaconda_v"
     pyenv global "$anaconda_v"
     conda init "$shell"
-
-    # rbenv
-    ruby_v="$(rbenv install --list-all | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
-    rbenv install "$ruby_v"
-    rbenv global "$ruby_v"
 
     # goenv
     go_v="$(goenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
@@ -129,11 +122,6 @@ if [ "$(uname)" = "Darwin" ]; then
     php_v="$(phpenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
     phpenv install "$php_v"
     phpenv global "$php_v"
-
-    # plenv
-    perl_v="5.32.0"
-    plenv install "$perl_v"
-    plenv global "$perl_v"
 
     # flutter
     ghq get flutter/flutter

@@ -71,27 +71,32 @@ alias vim='nvim'
 alias grep='grep --color=auto'
 alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 
-if [ "$(uname)" = "Darwin" ]; then
-    alias rdns='sudo killall -HUP mDNSResponder'
+if type trash >/dev/null 2>&1; then
     alias rm='trash'
 fi
 
+if [ "$(uname)" = "Darwin" ]; then
+    alias rdns='sudo killall -HUP mDNSResponder'
+fi
+
 # functions
-set_pyenv() {
-    search=""
-    pyenv_name="base"
-    for now in $(pwd | tr '/' '\n'); do
-        search="$search/$now"
-        if [ -f "$search/.python-version" ]; then
-            pyenv_name="$(sed -e 's:.*/::g' <"$search/.python-version")"
-        fi
-    done
-    conda activate "$pyenv_name"
-}
+if type pyenv >/dev/null 2>&1; then
+    set_pyenv() {
+        search=""
+        pyenv_name="base"
+        for now in $(pwd | tr '/' '\n'); do
+            search="$search/$now"
+            if [ -f "$search/.python-version" ]; then
+                pyenv_name="$(sed -e 's:.*/::g' <"$search/.python-version")"
+            fi
+        done
+        conda activate "$pyenv_name"
+    }
+fi
 
 chpwd() {
     ls
-    if [ "$(uname)" = "Darwin" ]; then
+    if type pyenv >/dev/null 2>&1; then
         set_pyenv
     fi
 }
