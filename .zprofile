@@ -2,7 +2,8 @@
 # written by kensuke kubo
 
 if [ "$(uname)" = "Linux" ]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     brew_prefix="$(brew --prefix)"
 elif [ "$(uname)" = "Darwin" ]; then
     brew_prefix="/usr/local"
