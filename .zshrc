@@ -63,11 +63,21 @@ fi
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-alias ls='exa'
-alias la='exa -a'
-alias ll='exa -hlg --git --time-style long-iso'
-alias lla='ls -hlga --git --time-style long-iso'
-alias vim='nvim'
+if type exa >/dev/null 2>&1; then
+    alias ls='exa'
+    alias la='exa -a'
+    alias ll='exa -hlg --git --time-style long-iso'
+    alias lla='exa -hlga --git --time-style long-iso'
+else
+    alias la='ls -a'
+    alias ll='ls -l'
+    alias lla='ls -la'
+fi
+
+if type nvim >/dev/null 2>&1; then
+    alias vim='nvim'
+fi
+
 alias grep='grep --color=auto'
 alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 
@@ -104,18 +114,3 @@ chpwd() {
 precmd() {
     vcs_info
 }
-
-if type gs >/dev/null 2>&1; then
-    pdf-min() {
-        local cnt=0
-        for i in "$@"; do
-            gs -sDEVICE=pdfwrite \
-                -dCompatibilityLevel=1.4 \
-                -dPDFSETTINGS=/default \
-                -dNOPAUSE -dQUIET -dBATCH \
-                -sOutputFile="${i%%.*}.min.pdf" "${i}" &
-            (((cnt += 1) % 4 == 0)) && wait
-        done
-        wait && return 0
-    }
-fi
