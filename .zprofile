@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-# written by kensuke kubo
 
 if [ "$(uname)" = "Linux" ]; then
     test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
@@ -20,7 +19,13 @@ fi
 export BAT_THEME=ansi-dark
 export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="$brew_prefix/share/zsh-syntax-highlighting/highlighters"
 
-GHQ_ROOT="$(ghq root)"
+if type ghq >/dev/null 2>&1; then
+    GHQ_ROOT="$(ghq root)"
+
+    if [ "$(uname)" = "Darwin" ]; then
+        export PATH="$GHQ_ROOT/github.com/flutter/flutter/bin/:$PATH"
+    fi
+fi
 
 # goenv
 if type goenv >/dev/null 2>&1; then
@@ -46,7 +51,5 @@ if type phpenv >/dev/null 2>&1; then
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
-    export PATH="$GHQ_ROOT/github.com/flutter/flutter/bin/:$PATH"
-
     export CLOUDSDK_PYTHON=python
 fi

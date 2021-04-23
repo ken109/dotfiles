@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-# written by kensuke kubo
 
 # zsh
 FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
@@ -38,7 +37,7 @@ zstyle ':vcs_info:*' actionformats '[%b|%a]'
 export PREV_COMMAND_END_TIME
 export NEXT_COMMAND_BGN_TIME
 
-function show_command_end_time() {
+show_command_end_time() {
     PREV_COMMAND_END_TIME=$(date "+%H:%M:%S")
     RPROMPT="${vcs_info_msg_0_} [${PREV_COMMAND_END_TIME} -         ]"
 }
