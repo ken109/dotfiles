@@ -1,10 +1,6 @@
 #!/usr/bin/env zsh
 
 # zsh
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-autoload -Uz compinit
-compinit
-
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 
@@ -51,6 +47,12 @@ show_command_begin_time() {
     zle .reset-prompt
 }
 zle -N accept-line show_command_begin_time
+
+# complettion
+FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+autoload -Uz compinit
+compinit
 
 [ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
 
