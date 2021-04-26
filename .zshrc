@@ -11,9 +11,6 @@ setopt pushd_ignore_dups
 
 zstyle ':completion:*:default' menu select=1
 
-source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
 if [ $UID -eq 0 ]; then
     PROMPT="%F{red}%n@%m: %~%F{cyan}%c %F{reset_color}%% "
 else
@@ -49,12 +46,22 @@ show_command_begin_time() {
 zle -N accept-line show_command_begin_time
 
 # complettion
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+if type brew >/dev/null 2>&1; then
+    if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+        source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    fi
+
+    if [ -f "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+        source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    fi
+
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+    FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
 autoload -Uz compinit
 compinit
 
-[ -f ~/.fzf.zsh ] && source "$HOME/.fzf.zsh"
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 if type flutter >/dev/null 2>&1; then
     eval "$(flutter zsh-completion)"
