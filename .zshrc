@@ -12,7 +12,7 @@ setopt pushd_ignore_dups
 zstyle ':completion:*:default' menu select=1
 
 if [ $UID -eq 0 ]; then
-    PROMPT="%F{red}%n@%m: %~%F{cyan}%c %F{reset_color}%% "
+    PROMPT="%F{red}%n@%m: %F{cyan}%c %F{reset_color}%% "
 else
     PROMPT="%F{green}%n@%m: %F{cyan}%c %F{reset_color}%% "
 fi
