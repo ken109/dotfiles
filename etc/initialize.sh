@@ -21,32 +21,34 @@ brew install \
     ghq \
     fd
 
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+
 git config --global ghq.root ~/.ghq
 
 if [ "$(uname)" = "Darwin" ]; then
     brew install \
         trash \
         git-flow \
-        anyenv \
         ken109/tap/lcl
 
     # php build
     brew install \
-        pkg-config \
-        krb5 \
         autoconf \
-        mcrypt \
-        openssl@1.1 \
+        automake \
+        bison \
+        freetype \
+        gettext \
         icu4c \
-        bzip2 \
-        oniguruma \
-        tidy-html5 \
-        libzip \
+        krb5 \
         libedit \
-        libxml2 \
         libiconv \
+        libjpeg \
         libpng \
-        libjpeg
+        libxml2 \
+        libzip \
+        pkg-config \
+        re2c \
+        zlib
 
     brew tap homebrew/cask-fonts
 
@@ -91,37 +93,12 @@ else
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
-    # anyenv
-    echo y | anyenv install --init
+    source "$HOME/.asdf/asdf.sh"
 
-    anyenv install pyenv
-    anyenv install goenv
-    anyenv install nodenv
-    anyenv install phpenv
-
-    export PATH="$HOME/.anyenv/bin:$PATH"
-    eval "$(anyenv init -)"
-
-    # pyenv
-    anaconda_v="$(pyenv install -l | grep miniconda3 | tail -n 1 | sed 's/ //g')"
-    pyenv install "$anaconda_v"
-    pyenv global "$anaconda_v"
-    conda init "$shell"
-
-    # goenv
-    go_v="$(goenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
-    goenv install "$go_v"
-    goenv global "$go_v"
-
-    # nodenv
-    node_v="$(nodenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
-    nodenv install "$node_v"
-    nodenv global "$node_v"
-
-    # phpenv
-    php_v="$(phpenv install -l | sed -n '/^[^a-z]*$/p' | tail -n 1 | sed -e 's/ //g')"
-    phpenv install "$php_v"
-    phpenv global "$php_v"
+    asdf plugin add golang
+    asdf plugin add python
+    asdf plugin add nodejs
+    asdf plugin add php
 
     # flutter
     ghq get flutter/flutter

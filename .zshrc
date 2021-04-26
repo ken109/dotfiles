@@ -45,6 +45,10 @@ show_command_begin_time() {
 }
 zle -N accept-line show_command_begin_time
 
+# command init
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+[ -f "$HOME/.asdf/asdf.sh" ] && source "$HOME/.asdf/asdf.sh"
+
 # complettion
 if type brew >/dev/null 2>&1; then
     if [ -f "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
@@ -58,10 +62,11 @@ if type brew >/dev/null 2>&1; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
     FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
+if type asdf >/dev/null 2>&1; then
+    FPATH=${ASDF_DIR}/completions:$FPATH
+fi
 autoload -Uz compinit
 compinit
-
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 if type flutter >/dev/null 2>&1; then
     eval "$(flutter zsh-completion)"
@@ -98,25 +103,8 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 # functions
-if type pyenv >/dev/null 2>&1; then
-    set_pyenv() {
-        search=""
-        pyenv_name="base"
-        for now in $(pwd | tr '/' '\n'); do
-            search="$search/$now"
-            if [ -f "$search/.python-version" ]; then
-                pyenv_name="$(sed -e 's:.*/::g' <"$search/.python-version")"
-            fi
-        done
-        conda activate "$pyenv_name"
-    }
-fi
-
 chpwd() {
     ls
-    if type pyenv >/dev/null 2>&1; then
-        set_pyenv
-    fi
 }
 
 precmd() {
