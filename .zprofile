@@ -27,6 +27,7 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 # rust env
+export RUST_BACKTRACE=1
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # go env
