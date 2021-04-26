@@ -2,6 +2,7 @@
 
 # shell
 read -r -p "Select shell [ zsh(default), fish ] ? " shell
+read -r -p "Install languages [ y, n] ? " install_lang
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -20,8 +21,6 @@ brew install \
     ripgrep \
     ghq \
     fd
-
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
 
 git config --global ghq.root ~/.ghq
 
@@ -92,8 +91,14 @@ else
     [ -f ~/.zshenv ] && source ~/.zshenv
 fi
 
-if [ "$(uname)" = "Darwin" ]; then
+if [ "$install_lang" = "y" ]; then
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.0
+
     source "$HOME/.asdf/asdf.sh"
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+        env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo \
+            sh -s -- --default-toolchain stable --profile default --no-modify-path -y
 
     asdf plugin add golang
     asdf plugin add python

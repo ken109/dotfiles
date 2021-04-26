@@ -26,6 +26,10 @@ if [ "$(uname)" = "Darwin" ]; then
     export CLOUDSDK_PYTHON=python
 fi
 
+# rust env
+export RUSTUP_HOME="/opt/rust/rustup"
+export PATH="/opt/rust/cargo/bin:$PATH"
+
 # go env
 export GOPATH="$HOME/.go"
 export GO111MODULE=on
