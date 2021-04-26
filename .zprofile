@@ -27,8 +27,7 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 # rust env
-export RUSTUP_HOME="/opt/rust/rustup"
-export PATH="/opt/rust/cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # go env
 export GOPATH="$HOME/.go"

@@ -96,9 +96,7 @@ if [ "$install_lang" = "y" ]; then
 
     source "$HOME/.asdf/asdf.sh"
 
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
-        env RUSTUP_HOME=/opt/rust/rustup CARGO_HOME=/opt/rust/cargo \
-            sh -s -- --default-toolchain stable --profile default --no-modify-path -y
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
     asdf plugin add golang
     asdf plugin add python
