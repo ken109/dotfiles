@@ -1,7 +1,11 @@
 #!/usr/bin/env zsh
 
 if [ "$(uname)" = "Linux" ]; then
-    [ -d /home/linuxbrew/.linuxbrew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    if [ -d /home/linuxbrew/.linuxbrew ]; then
+        if [ $(ls -la /home/linuxbrew/ | grep .linuxbrew | awk '{print $3}') = "$USER" ]; then
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        fi
+    fi
     [ -d ~/.linuxbrew ] && eval "$(~/.linuxbrew/bin/brew shellenv)"
 elif [ "$(uname)" = "Darwin" ]; then
     export PATH="/usr/local/bin:$PATH"
