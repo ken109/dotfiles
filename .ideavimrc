@@ -1,6 +1,8 @@
 set visualbell
 set noerrorbells
 
+set easymotion
+
 set surround
 set multiple-cursors
 set commentary
