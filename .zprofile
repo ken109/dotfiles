@@ -2,13 +2,13 @@
 
 if [ "$(uname)" = "Linux" ]; then
     if [ -d /home/linuxbrew/.linuxbrew ]; then
-        if [ $(ls -la /home/linuxbrew/ | grep .linuxbrew | awk '{print $3}') = "$USER" ]; then
+        if [ "$(ls -la /home/linuxbrew/ | grep .linuxbrew | awk '{print $3}')" = "$USER" ]; then
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         fi
     fi
     [ -d ~/.linuxbrew ] && eval "$(~/.linuxbrew/bin/brew shellenv)"
 elif [ "$(uname)" = "Darwin" ]; then
-    export PATH="$brew_prefix/bin:$PATH"
+    export PATH="/usr/local/bin:$PATH"
 fi
 
 # shell
