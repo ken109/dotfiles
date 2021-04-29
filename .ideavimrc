@@ -1,0 +1,6 @@
+set visualbell
+set noerrorbells
+
+set surround
+set multiple-cursors
+set commentary
