@@ -4,5 +4,8 @@ set noerrorbells
 set easymotion
 
 set surround
+
 set multiple-cursors
+map <C-k> <A-n>
+
 set commentary
