@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # shell
-read -r -p "Select shell [ zsh(default), fish ] ? " shell
-read -r -p "Install languages [ y, n(default) ] ? " install_lang
+read -r -p "Select shell? ( [zsh], fish ) " shell
+read -r -p "Install languages? ( y, [n] ) " install_lang
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
