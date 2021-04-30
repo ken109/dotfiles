@@ -103,6 +103,8 @@ if [ "$install_lang" = "y" ]; then
     asdf plugin add nodejs
     asdf plugin add php
 
-    # flutter
-    ghq get flutter/flutter
+    if [ "$(uname)" = "Darwin" ]; then
+        # flutter
+        ghq get flutter/flutter
+    fi
 fi
