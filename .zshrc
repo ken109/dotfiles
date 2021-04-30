@@ -50,6 +50,10 @@ zle -N accept-line show_command_begin_time
 [ -f "$HOME/.asdf/asdf.sh" ] && source "$HOME/.asdf/asdf.sh"
 
 # asdf
+if type asdf >/dev/null 2>&1; then
+    [ -f "$ASDF_DIR/plugins/java/set-java-home.zsh" ] && source "$ASDF_DIR/plugins/java/set-java-home.zsh"
+fi
+
 if type npm >/dev/null 2>&1; then
     export PATH="$(npm config get prefix)/bin:$PATH"
 fi

@@ -2,6 +2,7 @@ set visualbell
 set noerrorbells
 
 set easymotion
+nmap s <Plug>(easymotion-s2)
 
 set surround
 
