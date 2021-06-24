@@ -11,8 +11,4 @@ map <C-k> <A-n>
 
 set commentary
 
-nnoremap d "_d
-xnoremap d "_d
-xnoremap p "_dP
-
 nnoremap gr :tabprevious<CR>
