@@ -7,8 +7,8 @@ read -r -p "Install languages? ( y, [n] ) " install_lang
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
 if [ "$(uname)" = "Linux" ]; then
-    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 fi
 
 brew install \
@@ -31,29 +31,15 @@ if [ "$(uname)" = "Darwin" ]; then
         ken109/tap/lcl
 
     # php build
-    brew install \
-        autoconf \
-        automake \
-        bison \
-        freetype \
-        gettext \
-        icu4c \
-        krb5 \
-        libedit \
-        libiconv \
-        libjpeg \
-        libpng \
-        libxml2 \
-        libzip \
-        pkg-config \
-        re2c \
-        zlib
+    brew install autoconf automake bison freetype gd gettext icu4c krb5 libedit libiconv libjpeg libpng libxml2 libzip pkg-config re2c zlib
 
     brew tap homebrew/cask-fonts
 
     brew cask install \
         docker \
         font-hack-nerd-font
+elif [ "$(uname)" = "Linux" ]; then
+    sudo apt update && sudo apt install -y autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev
 fi
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
