@@ -54,6 +54,10 @@ fi
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=1000000
+
 setopt auto_cd
 
 setopt auto_pushd
@@ -169,3 +173,5 @@ chpwd() {
 precmd() {
     vcs_info
 }
+
+[ -f "$HOME/.zlocal" ] && source "$HOME/.zlocal"
