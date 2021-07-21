@@ -79,25 +79,7 @@ zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
 zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
-
-# cmd time
-export PREV_COMMAND_END_TIME
-export NEXT_COMMAND_BGN_TIME
-
-show_command_end_time() {
-    PREV_COMMAND_END_TIME=$(date "+%H:%M:%S")
-    RPROMPT="${vcs_info_msg_0_} [${PREV_COMMAND_END_TIME} -         ]"
-}
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd show_command_end_time
-
-show_command_begin_time() {
-    NEXT_COMMAND_BGN_TIME=$(date "+%H:%M:%S")
-    RPROMPT="${vcs_info_msg_0_} [${PREV_COMMAND_END_TIME} - ${NEXT_COMMAND_BGN_TIME}]"
-    zle .accept-line
-    zle .reset-prompt
-}
-zle -N accept-line show_command_begin_time
+RPROMPT="${vcs_info_msg_0_}"
 
 # command init
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
