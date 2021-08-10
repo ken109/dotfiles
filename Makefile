@@ -15,7 +15,7 @@ deploy: ## Create symlink to home directory
 	@$(foreach val, $(DOTFILES), cp -r $(abspath $(val)) $(HOME)/$(val);)
 
 init: ## Create symlink to home directory
-	@bash './etc/initialize.sh'
+	@bash './bin/initialize.sh'
 
 clean: ## Remove the dot files and this repo
 	@echo 'Remove dot files in your home directory...'

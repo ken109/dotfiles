@@ -305,8 +305,7 @@ else
             e_warning "Now continue with Rebooting your shell"
         else
             e_newline
-            e_arrow "Restarting your shell..."
-            exec "${SHELL:-/bin/zsh}" -l
+            e_arrow "Done."
         fi
     fi
 fi
