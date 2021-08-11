@@ -117,10 +117,13 @@ ZSH_THEME=""
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    asdf
     zsh-completions
     zsh-autosuggestions
     zsh-syntax-highlighting
+    asdf
+    fzf
+    fd
+    ripgrep
 )
 
 autoload -U compinit && compinit
