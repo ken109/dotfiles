@@ -10,13 +10,8 @@ fi
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.8.1
 source "$HOME/.asdf/asdf.sh"
 
-asdf plugin add golang
-asdf plugin add python
-asdf plugin add nodejs
-asdf plugin add php
-
 if [ "$(uname)" = "Darwin" ]; then
-  brew install tmux neovim git fzf exa bat ripgrep ghq fd
+  brew install zsh tmux neovim git fzf exa bat ripgrep ghq fd
 
   brew install trash git-flow ken109/tap/lcl gpg gawk
 
@@ -27,20 +22,18 @@ if [ "$(uname)" = "Darwin" ]; then
 
   brew install --cask font-hack-nerd-font
 
-  brew install zsh zsh-completions zsh-autosuggestions zsh-syntax-highlighting
-
   sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
   sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 
   "$(brew --prefix)/opt/fzf/install"
-
 elif [ "$(uname)" = "Linux" ]; then
+  asdf plugin add golang
   asdf install golang 1.16.7
   go get github.com/x-motemen/ghq
 
   sudo apt update
 
-  sudo apt install -y tmux neovim git fzf exa bat ripgrep fd-find
+  sudo apt install -y zsh tmux neovim git fzf exa bat ripgrep fd-find
 
   # nodejs
   sudo apt install -y dirmngr gpg curl gawk
@@ -51,9 +44,21 @@ elif [ "$(uname)" = "Linux" ]; then
   sudo chsh -s "/usr/bin/zsh" "$USER"
 fi
 
+# ghq
 git config --global ghq.root ~/.ghq
 
+# nvim plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# oh my zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+mkdir -p "$HOME/.zsh"
+git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+
+git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 if [ "$install_rust" = "y" ]; then
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
