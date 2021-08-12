@@ -211,7 +211,7 @@ chpwd() {
     ls
 }
 
-.pull() {
+dotfiles-update() {
     autoload -Uz catch
     autoload -Uz throw
 
