@@ -222,4 +222,20 @@ chpwd() {
     ls
 }
 
+.pull() {
+    autoload -Uz catch
+    autoload -Uz throw
+
+    trap "cd $(pwd)" SIGINT SIGTERM
+
+    cd $HOME/.dotfiles && {
+        git pull || throw 'PullError'
+        make all || throw 'MakeError'
+    } always {
+        if ! catch '*'; then
+            exec zsh -l
+        fi
+    }
+}
+
 [ -f "$HOME/.zlocal" ] && source "$HOME/.zlocal"
