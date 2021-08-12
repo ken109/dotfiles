@@ -28,17 +28,6 @@ export GO111MODULE=on
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
 
-# brew
-if type brew >/dev/null 2>&1; then
-    brew_prefix="$(brew --prefix)"
-
-    export LIBRARY_PATH="$brew_prefix/opt/openssl/lib/:$LIBRARY_PATH"
-
-    # php build
-    export PATH="$brew_prefix/opt/bison/bin:$PATH"
-    export PKG_CONFIG_PATH="$brew_prefix/opt/icu4c/lib/pkgconfig:$brew_prefix/opt/krb5/lib/pkgconfig:$brew_prefix/opt/libedit/lib/pkgconfig:$brew_prefix/opt/libxml2/lib/pkgconfig:$brew_prefix/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
-fi
-
 ########################################################################################################################
 
 ### oh my zsh

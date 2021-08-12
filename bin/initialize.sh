@@ -28,7 +28,10 @@ if [ "$(uname)" = "Darwin" ]; then
   "$(brew --prefix)/opt/fzf/install"
 elif [ "$(uname)" = "Linux" ]; then
   asdf plugin add golang
-  asdf install golang 1.16.7
+  go_version=$(asdf list all golang | rg '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -1)
+  asdf install golang "$go_version"
+  asdf global golang "$go_version"
+
   go get github.com/x-motemen/ghq
 
   sudo apt update
