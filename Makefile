@@ -11,7 +11,7 @@ list: ## Show dot files in this repo
 all: init deploy
 
 init: ## Create symlink to home directory
-	@bash './bin/initialize.sh'
+	@bash './script/setup'
 
 define copy
 	mkdir -p $(shell dirname $(HOME)/$(1));

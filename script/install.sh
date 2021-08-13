@@ -151,8 +151,7 @@ dotfiles_logo='
    \__,_|\___/ \__|_| |_|_|\___||___/
   *** WHAT IS INSIDE? ***
   1. Download https://github.com/ken109/dotfiles.git
-  2. Copying dot files to your home directory
-  3. Execute sh files within `bin/initialize.sh` (optional)
+  2. Execute sh files within `script/setup`
   See the README for documentation.
   https://github.com/ken109/dotfiles
 '
@@ -199,25 +198,6 @@ dotfiles_download() {
   e_newline && e_done "Download"
 }
 
-dotfiles_deploy() {
-  e_newline
-  e_header "Deploying dotfiles..."
-
-  if [ ! -d $DOTPATH ]; then
-    log_fail "$DOTPATH: not found"
-    exit 1
-  fi
-
-  cd "$DOTPATH" || return
-
-  if is_debug; then
-    :
-  else
-    make deploy
-  fi &&
-    e_newline && e_done "Deploy"
-}
-
 dotfiles_initialize() {
   e_newline
   e_header "Initializing dotfiles..."
@@ -228,7 +208,7 @@ dotfiles_initialize() {
     if [ -f Makefile ]; then
       #DOTPATH="$(dotpath)"
       #export DOTPATH
-      #bash "$DOTPATH"/bin/initialize.sh
+      #bash "$DOTPATH"/script/setup
       make init
     else
       log_fail "Makefile: not found"
@@ -246,13 +226,9 @@ dotfiles_install() {
   # Priority: git > curl > wget
   dotfiles_download &&
 
-    # 2. Execute sh files within bin/initialize.sh
+    # 2. Execute sh files within script/setup
     # ==> initializing
-    dotfiles_initialize &&
-
-    # 3. Deploy dotfiles to your home directory
-    # ==> deploying
-    dotfiles_deploy
+    dotfiles_initialize
 }
 
 if echo "$-" | grep -q "i"; then
