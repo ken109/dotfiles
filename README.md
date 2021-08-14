@@ -9,7 +9,7 @@ sudo apt install make git
 # インストール
 
 ```
-bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/bin/install.sh)"
+bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/script/install.sh)"
 ```
 
 # インストール後
