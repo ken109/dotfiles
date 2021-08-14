@@ -202,6 +202,9 @@ dotfiles_initialize() {
   e_newline
   e_header "Initializing dotfiles..."
 
+  cd "$DOTPATH" || exit 1
+  trap "cd $(pwd)" SIGINT SIGTERM
+
   if is_debug; then
     :
   else
