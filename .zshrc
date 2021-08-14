@@ -3,7 +3,7 @@
 # shell
 fpath+=$HOME/.zsh/pure
 
-export BAT_THEME=ansi-dark
+export BAT_THEME=ansi
 
 if type ghq >/dev/null 2>&1; then
     GHQ_ROOT="$(ghq root)"
