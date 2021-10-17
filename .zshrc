@@ -158,6 +158,7 @@ prompt pure
 # zsh
 setopt hist_ignore_dups
 setopt hist_ignore_all_dups
+setopt no_share_history
 
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
