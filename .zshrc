@@ -186,10 +186,10 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 if type exa >/dev/null 2>&1; then
-    alias ls='exa'
-    alias la='exa -a'
-    alias ll='exa -hlg --git --time-style long-iso'
-    alias lla='exa -hlga --git --time-style long-iso'
+    alias ls='exa --icons'
+    alias la='exa -a --icons'
+    alias ll='exa -hlg --git --time-style long-iso --icons'
+    alias lla='exa -hlga --git --time-style long-iso --icons'
 else
     alias la='ls -a'
     alias ll='ls -l'
