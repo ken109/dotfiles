@@ -14,6 +14,8 @@ if type ghq >/dev/null 2>&1; then
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
+    test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
+    
     export CLOUDSDK_PYTHON=python
 fi
 
