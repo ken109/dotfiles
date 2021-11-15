@@ -7,15 +7,11 @@ export BAT_THEME=ansi
 
 if type ghq >/dev/null 2>&1; then
     GHQ_ROOT="$(ghq root)"
-
-    if [ -d "$GHQ_ROOT/github.com/flutter/flutter" ]; then
-        export PATH="$GHQ_ROOT/github.com/flutter/flutter/bin/:$PATH"
-    fi
 fi
 
 if [ "$(uname)" = "Darwin" ]; then
     test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
-    
+
     export CLOUDSDK_PYTHON=python
 fi
 
@@ -190,8 +186,8 @@ alias ....='cd ../../..'
 if type exa >/dev/null 2>&1; then
     alias ls='exa --icons'
     alias la='exa -a --icons'
-    alias ll='exa -hlg --git --time-style long-iso --icons'
-    alias lla='exa -hlga --git --time-style long-iso --icons'
+    alias ll='exa -hlg --time-style long-iso --icons'
+    alias lla='exa -hlga --time-style long-iso --icons'
 else
     alias la='ls -a'
     alias ll='ls -l'
