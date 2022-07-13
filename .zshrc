@@ -196,6 +196,7 @@ fi
 
 if type nvim >/dev/null 2>&1; then
     alias vim='nvim'
+    export EDITOR="$(which nvim)"
 fi
 
 alias grep='grep --color=auto'
