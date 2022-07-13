@@ -19,7 +19,7 @@ if [ "$(uname)" = "Darwin" ]; then
   brew tap homebrew/cask-fonts
   brew install --cask font-hack-nerd-font
 
-  brew install trash git-flow
+  brew install trash git-flow-avh
   brew install zsh tmux neovim git fzf bat ripgrep ghq fd
 
   sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
