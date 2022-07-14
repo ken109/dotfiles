@@ -8,12 +8,12 @@ let mapleader = "\<Space>"
 
 call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdcommenter'
+    Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
     Plug 'phanviet/vim-monokai-pro'
     Plug 'itchyny/lightline.vim'
     Plug 'maximbaz/lightline-ale'
     Plug 'Yggdroot/indentLine'
-    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-    Plug 'xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
     Plug 'ryanoasis/vim-devicons'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
@@ -33,14 +33,12 @@ call plug#end()
 
 colorscheme monokai_pro
 
-" nnoremap d "_d
-" xnoremap d "_d
-" xnoremap p "_dP
-
 " undotree
 nmap <C-z> :UndotreeShow<CR>:UndotreeFocus<CR>
 
 " nerdtree
+autocmd vimenter * NERDTree
+
 let NERDTreeShowHidden=1
 nmap <silent> <C-e> :NERDTreeToggle<CR>
 
