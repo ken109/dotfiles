@@ -28,6 +28,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'jiangmiao/auto-pairs'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'rust-lang/rust.vim'
+    Plug 'github/copilot.vim'
 call plug#end()
 
 colorscheme monokai_pro
