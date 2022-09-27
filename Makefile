@@ -1,5 +1,5 @@
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
-CANDIDATES := $(shell find .config -type file) $(wildcard .??*)
+CANDIDATES := $(shell find .config -type f) $(wildcard .??*)
 EXCLUSIONS := .config .DS_Store .git .gitignore .idea
 DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
