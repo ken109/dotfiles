@@ -219,7 +219,7 @@ dotfiles-update() {
 
     cd $HOME/.dotfiles && {
         git pull || throw 'PullError'
-        make all || throw 'MakeError'
+        make deploy || throw 'MakeError'
     } always {
         if ! catch '*'; then
             exec zsh -l
