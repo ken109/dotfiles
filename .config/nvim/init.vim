@@ -25,7 +25,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-gitgutter'
-    Plug 'jiangmiao/auto-pairs'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'rust-lang/rust.vim'
     Plug 'github/copilot.vim'
