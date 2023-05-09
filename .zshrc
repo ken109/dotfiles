@@ -148,6 +148,9 @@ source $ZSH/oh-my-zsh.sh
 
 ### other settings
 
+# gpg
+export GPG_TTY=$(tty)
+
 # pure
 autoload -U promptinit; promptinit
 
