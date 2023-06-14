@@ -27,7 +27,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'editorconfig/editorconfig-vim'
     Plug 'rust-lang/rust.vim'
-    Plug 'github/copilot.vim'
 call plug#end()
 
 colorscheme monokai_pro
