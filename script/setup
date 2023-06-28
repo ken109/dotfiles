@@ -42,7 +42,7 @@ elif [ "$(uname)" = "Linux" ]; then
   asdf install golang "$go_version"
   asdf global golang "$go_version"
 
-  go get github.com/x-motemen/ghq
+  go install github.com/x-motemen/ghq@latest
 
   sudo chsh -s "/usr/bin/zsh" "$USER"
 fi
