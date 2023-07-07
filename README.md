@@ -2,23 +2,23 @@
 
 Ubuntuの場合
 
-```
-sudo apt install make git
+```shell
+$ sudo apt install make git
 ```
 
 # インストール
 
-```
-bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/script/install.sh)"
+```shell
+$ bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/master/script/install.sh)"
 ```
 
 # インストール後
 
 ## Mac、 Ubuntu共通
 
-```
+```shell
 # 以下で表示されるディレクトリのパーミッションを全て755に変更する
-compaudit
+$ compaudit
 ```
 
 ### NeoVim
@@ -27,4 +27,16 @@ compaudit
 
 ```
 :PlugInstall
+```
+
+# アップデート
+
+```shell
+$ dotfiles-update
+```
+
+# ユーティリティ
+```shell
+# ghqでインストールしたレポジトリのパスに移動する
+$ cdg
 ```
