@@ -209,6 +209,11 @@ if type trash >/dev/null 2>&1; then
     alias rm='trash'
 fi
 
+if type trans >/dev/null 2>&1; then
+    alias ja-en='trans {ja=en}'
+    alias en-ja='trans {en=ja}'
+fi
+
 # functions
 chpwd() {
     ls

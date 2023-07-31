@@ -21,7 +21,7 @@ if [ "$(uname)" = "Darwin" ]; then
   brew install --cask font-cica
 
   brew install trash git-flow-avh
-  brew install zsh tmux neovim git fzf bat ripgrep ghq fd
+  brew install zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell
 
   sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
   sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
