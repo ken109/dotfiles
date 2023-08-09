@@ -214,6 +214,10 @@ if type trans >/dev/null 2>&1; then
     alias en-ja='trans {en=ja}'
 fi
 
+if type kubectl >/dev/null 2>&1; then
+    alias k='kubectl'
+fi
+
 # functions
 chpwd() {
     ls
