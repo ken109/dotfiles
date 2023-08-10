@@ -162,8 +162,7 @@ dotfiles_download() {
     exit 1
   fi
 
-  e_newline
-  e_header "Downloading dotfiles..."
+  e_newline && e_header "Downloading dotfiles..."
 
   if is_debug; then
     :
@@ -202,23 +201,20 @@ dotfiles_initialize() {
   e_newline
   e_header "Initializing dotfiles..."
 
-  cd "$DOTPATH" || exit 1
-  trap "cd $(pwd)" SIGINT SIGTERM
+  (
+    cd "$DOTPATH" || exit 1
 
-  if is_debug; then
-    :
-  else
-    if [ -f Makefile ]; then
-      #DOTPATH="$(dotpath)"
-      #export DOTPATH
-      #bash "$DOTPATH"/script/setup
-      make init
+    if is_debug; then
+      :
     else
-      log_fail "Makefile: not found"
-      exit 1
-    fi
-  fi &&
-    e_newline && e_done "Initialize"
+      if [ -f Makefile ]; then
+        source "$DOTPATH"/script/setup
+      else
+        exit 1
+      fi
+    fi &&
+      e_newline && e_done "Initialize"
+  )
 }
 
 # A script for the file named "install"

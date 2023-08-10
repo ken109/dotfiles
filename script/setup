@@ -1,72 +1,122 @@
 #!/usr/bin/env bash
 
+set -eu
+
 if [ "$(uname)" = "Darwin" ]; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  e_newline && e_header "Homebrew installing..."
+  {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  } 1> /dev/null
+  e_newline && e_done "Homebrew install"
 
   test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
-source "$HOME/.asdf/asdf.sh"
+e_newline && e_header "asdf installing..."
+{
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
+  source "$HOME/.asdf/asdf.sh"
+} 1> /dev/null
+e_newline && e_done "asdf install"
+
+git config --global ghq.root ~/.ghq
 
 if [ "$(uname)" = "Darwin" ]; then
   # nodejs
   brew install gpg gawk
 
-  # php build
-  brew install autoconf automake bison freetype gd gettext icu4c krb5 libedit libiconv libjpeg libpng libxml2 libzip pkg-config re2c zlib libsodium imagemagick gmp
-
   brew tap homebrew/cask-fonts
-  brew install --cask font-hack-nerd-font
-  brew install --cask font-cica
+  brew install --cask font-hack-nerd-font font-cica
 
-  brew install trash git-flow-avh
-  brew install zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell
+  # tools
+  brew install trash git-flow-avh zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell
 
   sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
   sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
 
   "$(brew --prefix)/opt/fzf/install"
 elif [ "$(uname)" = "Linux" ]; then
-  sudo apt update
+  export DEBIAN_FRONTEND=noninteractive
 
-  # nodejs
-  sudo apt install -y dirmngr gpg curl gawk
+  # apt
+  e_newline && e_header "Apt package installing..."
+  {
+    sudo -E apt-get update
 
-  # php build
-  sudo apt install -y autoconf bison build-essential curl gettext git libgd-dev libcurl4-openssl-dev libedit-dev libicu-dev libjpeg-dev libmysqlclient-dev libonig-dev libpng-dev libpq-dev libreadline-dev libsqlite3-dev libssl-dev libxml2-dev libzip-dev openssl pkg-config re2c zlib1g-dev
+    # nodejs
+    sudo -E apt-get install -y dirmngr gpg curl gawk
 
-  sudo apt install -y zsh tmux neovim git fzf bat ripgrep fd-find
+    # libs
+    sudo -E apt-get install -y gettext
 
-  asdf plugin add golang
-  go_version=$(asdf list all golang | rg '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -1)
-  asdf install golang "$go_version"
-  asdf global golang "$go_version"
+    # tools
+    sudo -E apt-get install -y zsh tmux git fzf bat ripgrep fd-find unzip
+  } 1> /dev/null
+  e_newline && e_done "Apt package install"
 
-  go install github.com/x-motemen/ghq@latest
+  # golang
+  e_newline && e_header "Golang installing..."
+  {
+    export GOPATH="$HOME/.go"
+    export PATH="$GOPATH/bin:$PATH"
+
+    asdf plugin add golang
+    go_version=$(asdf list all golang | rg '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -1)
+    asdf install golang "$go_version"
+    asdf global golang "$go_version"
+  } 1> /dev/null
+  e_newline && e_done "Golang install"
+
+  # ghq
+  e_newline && e_header "ghq installing..."
+  {
+    go install github.com/x-motemen/ghq@latest
+  } 1> /dev/null
+  e_newline && e_done "ghq install"
+
+  # neovim
+  e_newline && e_header "neovim installing..."
+  {
+    ghq get -b stable https://github.com/neovim/neovim.git
+    (
+      cd ~/.ghq/github.com/neovim/neovim || exit
+      make CMAKE_BUILD_TYPE=RelWithDebInfo 1>/dev/null
+      sudo make install 1>/dev/null
+    )
+  } 1> /dev/null
+  e_newline && e_done "neovim install"
 
   sudo chsh -s "/usr/bin/zsh" "$USER"
 fi
 
-# ghq
-git config --global ghq.root ~/.ghq
-
-# nvim plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# astro neovim
+e_newline && e_header "astro neovim installing..."
+{
+  git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+} 1> /dev/null
+e_newline && e_done "astro neovim install"
 
 # oh my zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
+e_newline && e_header "oh-my-zsh installing..."
+{
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
 
-mkdir -p "$HOME/.zsh"
-git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+  mkdir -p "$HOME/.zsh"
+  git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
 
-git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+} 1> /dev/null
+e_newline && e_done "oh-my-zsh install"
 
 # rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source "$HOME/.cargo/env"
-cargo install exa
+e_newline && e_header "Rust installing..."
+{
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  source "$HOME/.cargo/env"
+  cargo install exa
+} 1> /dev/null
+e_newline && e_done "Rust install"
 
 make deploy

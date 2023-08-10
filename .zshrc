@@ -1,31 +1,5 @@
 #!/usr/bin/env zsh
 
-# shell
-fpath+=$HOME/.zsh/pure
-
-export BAT_THEME=ansi
-
-if type ghq >/dev/null 2>&1; then
-    GHQ_ROOT="$(ghq root)"
-fi
-
-if [ "$(uname)" = "Darwin" ]; then
-    test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
-
-    export CLOUDSDK_PYTHON=python
-fi
-
-# rust env
-export RUST_BACKTRACE=1
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# go env
-export GOPATH="$HOME/.go"
-export GO111MODULE=on
-
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
-
 ########################################################################################################################
 
 ### oh my zsh
@@ -146,7 +120,33 @@ source $ZSH/oh-my-zsh.sh
 
 ########################################################################################################################
 
-### other settings
+# shell
+fpath+=$HOME/.zsh/pure
+
+export BAT_THEME=ansi
+
+if type ghq >/dev/null 2>&1; then
+    GHQ_ROOT="$(ghq root)"
+fi
+
+if [ "$(uname)" = "Darwin" ]; then
+    test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    export CLOUDSDK_PYTHON=python
+fi
+
+# rust env
+export RUST_BACKTRACE=1
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# go env
+export GOPATH="$HOME/.go"
+export GO111MODULE=on
+
+if [ -v GOROOT ]; then
+    export PATH="$GOROOT/bin:$PATH"
+fi
+export PATH="$GOPATH/bin:$PATH"
 
 # gpg
 export GPG_TTY=$(tty)
@@ -203,7 +203,11 @@ if type nvim >/dev/null 2>&1; then
 fi
 
 alias grep='grep --color=auto'
-alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
+
+if type ghq >/dev/null 2>&1; then
+    GHQ_ROOT="$(ghq root)"
+    alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
+fi
 
 if type trash >/dev/null 2>&1; then
     alias rm='trash'
@@ -227,16 +231,14 @@ dotfiles-update() {
     autoload -Uz catch
     autoload -Uz throw
 
-    trap "cd $(pwd)" SIGINT SIGTERM
+    (
+        cd $HOME/.dotfiles && {
+            git pull || throw 'PullError'
+            make deploy || throw 'MakeError'
+        }
+    )
 
-    cd $HOME/.dotfiles && {
-        git pull || throw 'PullError'
-        make deploy || throw 'MakeError'
-    } always {
-        if ! catch '*'; then
-            exec zsh -l
-        fi
-    }
+    exec zsh -l
 }
 
 [ -f "$HOME/.zlocal" ] && source "$HOME/.zlocal"
