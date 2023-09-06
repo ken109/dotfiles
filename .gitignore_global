@@ -10,6 +10,4 @@
 
 # act command
 .act/
-.env
-.secrets
 
