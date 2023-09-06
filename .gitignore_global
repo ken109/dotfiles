@@ -5,4 +5,10 @@
 .tool-versions
 ~*
 
+# ide
 .idea
+
+# act command
+.env
+.secrets
+
