@@ -186,6 +186,10 @@ fi
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+if type git >/dev/null 2>&1; then
+  alias git-branch-prune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | cut -d" " -f1 | xargs -I1 git branch -d 1'
+fi
+
 if type exa >/dev/null 2>&1; then
     alias ls='exa --icons'
     alias la='exa -a --icons'
