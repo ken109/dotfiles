@@ -83,8 +83,6 @@ plugins=(
     zsh-syntax-highlighting
     asdf
     fzf
-    fd
-    ripgrep
 )
 
 autoload -U compinit && compinit
