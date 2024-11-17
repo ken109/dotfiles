@@ -92,8 +92,7 @@ fi
 # astro neovim
 e_newline && e_header "astro neovim installing..."
 {
-  git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-  git clone --depth 1 https://github.com/ken109/astro-nvim-config.git ~/.config/nvim/lua/user
+  git clone --depth 1 https://github.com/ken109/astro-nvim-config.git ~/.config/nvim
 } 1> /dev/null
 e_newline && e_done "astro neovim install"
 
