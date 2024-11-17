@@ -163,6 +163,8 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=1000000
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # command init
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
