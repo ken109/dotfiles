@@ -248,7 +248,7 @@ dotfiles-update() {
 [ -f "$HOME/.zlocal" ] && source "$HOME/.zlocal"
 
 # run tmux
-if [[ ! -n $TMUX && $- == *l* && -n $SSH_CONNECTION ]]; then
+if [[ false && ! -n $TMUX && $- == *l* && -n $SSH_CONNECTION ]]; then
   # get the IDs
   ID="`tmux list-sessions`"
   if [[ -z "$ID" ]]; then
