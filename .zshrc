@@ -190,11 +190,11 @@ if type git >/dev/null 2>&1; then
   alias git-branch-prune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | cut -d" " -f1 | xargs -I1 git branch -d 1'
 fi
 
-if type exa >/dev/null 2>&1; then
-    alias ls='exa --icons'
-    alias la='exa -a --icons'
-    alias ll='exa -hlg --time-style long-iso --icons'
-    alias lla='exa -hlga --time-style long-iso --icons'
+if type eza >/dev/null 2>&1; then
+    alias ls='eza --icons'
+    alias la='eza -a --icons'
+    alias ll='eza -hlg --time-style long-iso --icons'
+    alias lla='eza -hlga --time-style long-iso --icons'
 else
     alias la='ls -a'
     alias ll='ls -l'
