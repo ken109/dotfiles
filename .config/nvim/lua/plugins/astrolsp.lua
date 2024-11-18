@@ -74,33 +74,33 @@ return {
           },
         }
       end,
-      jsonls = function(_, _)
-        require("lspconfig").jsonls.setup {
-          settings = {
-            json = {
-              schemas = require("schemastore").json.schemas(),
-              validate = { enable = true },
-            },
-          },
-        }
-      end,
-      yamlls = function(_, _)
-        require("lspconfig").yamlls.setup {
-          capabilities = capabilities,
-          settings = {
-            yaml = {
-              schemaStore = {
-                -- You must disable built-in schemaStore support if you want to use
-                -- this plugin and its advanced options like `ignore`.
-                enable = false,
-                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-                url = "",
-              },
-              schemas = require("schemastore").yaml.schemas(),
-            },
-          },
-        }
-      end,
+      -- jsonls = function(_, _)
+      --   require("lspconfig").jsonls.setup {
+      --     settings = {
+      --       json = {
+      --         schemas = require("schemastore").json.schemas(),
+      --         validate = { enable = true },
+      --       },
+      --     },
+      --   }
+      -- end,
+      -- yamlls = function(_, _)
+      --   require("lspconfig").yamlls.setup {
+      --     capabilities = capabilities,
+      --     settings = {
+      --       yaml = {
+      --         schemaStore = {
+      --           -- You must disable built-in schemaStore support if you want to use
+      --           -- this plugin and its advanced options like `ignore`.
+      --           enable = false,
+      --           -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+      --           url = "",
+      --         },
+      --         schemas = require("schemastore").yaml.schemas(),
+      --       },
+      --     },
+      --   }
+      -- end,
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {

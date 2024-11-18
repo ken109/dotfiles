@@ -85,7 +85,6 @@ return {
     event = "VeryLazy",
     opts = {},
   },
-  "b0o/schemastore.nvim",
   {
     "nvim-flutter/flutter-tools.nvim",
     lazy = false,
