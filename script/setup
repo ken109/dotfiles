@@ -78,7 +78,7 @@ elif [ "$(uname)" = "Linux" ]; then
   # neovim
   e_newline && e_header "neovim installing..."
   {
-    ghq get -b stable --depth=1 https://github.com/neovim/neovim.git
+    ghq get -b stable --shallow https://github.com/neovim/neovim.git
     (
       cd ~/.ghq/github.com/neovim/neovim || exit
       make CMAKE_BUILD_TYPE=RelWithDebInfo 1>/dev/null
