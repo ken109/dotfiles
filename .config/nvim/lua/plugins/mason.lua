@@ -20,9 +20,6 @@ return {
 
         -- install any other package
         "tree-sitter-cli",
-
-        "gopls",
-        "dockerfile-language-server",
       },
     },
   },
