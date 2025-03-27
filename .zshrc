@@ -127,10 +127,18 @@ if type ghq >/dev/null 2>&1; then
     GHQ_ROOT="$(ghq root)"
 fi
 
+# homebrew
 if [ "$(uname)" = "Darwin" ]; then
     test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
 
     export CLOUDSDK_PYTHON=python
+fi
+
+# asdf
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+if type npm >/dev/null 2>&1; then
+    export PATH="$(npm config get prefix)/bin:$PATH"
 fi
 
 # rust env
@@ -167,15 +175,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # command init
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
-
-# asdf
-if type asdf >/dev/null 2>&1; then
-    [ -f "$ASDF_DIR/plugins/java/set-java-home.zsh" ] && source "$ASDF_DIR/plugins/java/set-java-home.zsh"
-fi
-
-if type npm >/dev/null 2>&1; then
-    export PATH="$(npm config get prefix)/bin:$PATH"
-fi
 
 # completion
 if type flutter >/dev/null 2>&1; then
@@ -265,3 +264,7 @@ dotfiles-update() {
 #    :  # Start terminal normally
 #  fi
 #fi
+
+# bun completions
+[ -s "/Users/ken109/.bun/_bun" ] && source "/Users/ken109/.bun/_bun"
+

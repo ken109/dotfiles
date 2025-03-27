@@ -29,7 +29,7 @@ if [ "$(uname)" = "Darwin" ]; then
   brew install --cask font-hack-nerd-font font-cica
 
   # tools
-  brew install trash git-flow-avh zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell lazygit
+  brew install trash git-flow-avh zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell lazygit gdu
 
   sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
   sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
