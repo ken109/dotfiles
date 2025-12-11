@@ -11,3 +11,5 @@
 # act command
 .act/
 
+
+**/.claude/settings.local.json

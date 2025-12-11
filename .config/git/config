@@ -1,7 +1,7 @@
 [user]
 	name = Kensuke Kubo
 	email = kensukekubo19@gmail.com
-	signingkey = 8CBEE4EC1EE28340
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDT6AKy1TmqwrrUlR8NU+X2MqYnrJEOPvGSn8WfyE6GN
 
 [pull]
 	ff = only
@@ -15,6 +15,7 @@
 
 [gpg]
 	program = gpg
+	format = ssh
 
 [commit]
 	gpgsign = true
@@ -39,3 +40,5 @@
 [merge]
   conflictstyle = zdiff3
 
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
