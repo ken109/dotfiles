@@ -5,67 +5,56 @@
 # =======================================================
 
 export XDG_CONFIG_HOME="$HOME/.config"
-
 export PATH="$HOME/.local/bin:$PATH"
 
-#homebrew
+# homebrew
 if [[ "$(uname)" = "Darwin" && -d /opt/homebrew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    export HOMEBREW_PREFIX="/opt/homebrew"
+    export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+    export HOMEBREW_REPOSITORY="/opt/homebrew"
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+    export MANPATH="/opt/homebrew/share/man:${MANPATH:-}"
+    export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 fi
 
 # ghq
-if type ghq >/dev/null 2>&1; then
+if (( ${+commands[ghq]} )); then
     GHQ_ROOT="$(ghq root)"
 fi
 
 # asdf
-if type asdf >/dev/null 2>&1; then
+if (( ${+commands[asdf]} )); then
     export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 fi
 
 # rust env
-if [[ -d $HOME/.cargo/bin ]] then
+if [[ -d "$HOME/.cargo/bin" ]]; then
     export RUST_BACKTRACE=1
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
 # go env
-if type go >/dev/null 2>&1; then
+if (( ${+commands[go]} )); then
     export GOPATH="$HOME/.go"
     export GO111MODULE=on
 
-    if [ -v GOROOT ]; then
+    if [[ -v GOROOT ]]; then
         export PATH="$GOROOT/bin:$PATH"
     fi
     export PATH="$GOPATH/bin:$PATH"
 fi
 
 # =======================================================
-# launch tmux
+# completion
 # =======================================================
 
-# if [[ ! -n $TMUX && -z $SSH_CONNECTION ]]; then
-#     if type fzf >/dev/null 2>&1; then
-#         ID="$(tmux list-sessions 2 >/dev/null)"
-#         if [[ -z "$ID" ]]; then
-#             exec tmux new-session
-#         fi
-#
-#         create_new_session="Create New Session"
-#         ID="$ID\n${create_new_session}:"
-#         ID="$(echo -e "$ID" | fzf --reverse | cut -d: -f1)"
-#
-#         if [[ "$ID" = "${create_new_session}" ]]; then
-#             exec tmux new-session
-#         elif [[ -n "$ID" ]]; then
-#             exec tmux attach-session -t "$ID"
-#         else
-#             :
-#         fi
-#     else
-#         exec tmux -u new-session -A -s main
-#     fi
-# fi
+autoload -Uz compinit
+# Skip check for speed
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit -C
+else
+  compinit
+fi
 
 # =======================================================
 # shell
@@ -73,7 +62,19 @@ fi
 
 eval "$(starship init zsh)"
 
-eval "$(sheldon source)"
+# sheldon
+SHELDON_CONFIG_FILE="$HOME/.config/sheldon/plugins.toml"
+SHELDON_INIT_FILE="$HOME/.config/sheldon/init.zsh"
+
+if [[ ! -f "$SHELDON_INIT_FILE" || "$SHELDON_CONFIG_FILE" -nt "$SHELDON_INIT_FILE" ]]; then
+    if (( ${+commands[sheldon]} )); then
+        sheldon source > "$SHELDON_INIT_FILE"
+    fi
+fi
+
+if [[ -f "$SHELDON_INIT_FILE" ]]; then
+    source "$SHELDON_INIT_FILE"
+fi
 
 # zsh
 setopt hist_ignore_dups
@@ -96,11 +97,11 @@ export BAT_THEME=ansi
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-if type git >/dev/null 2>&1; then
+if (( ${+commands[git]} )); then
     alias git-branch-prune='git branch --format "%(refname:short) %(upstream:track)" | grep "\[gone\]" | cut -d" " -f1 | xargs -I1 git branch -d 1'
 fi
 
-if type eza >/dev/null 2>&1; then
+if (( ${+commands[eza]} )); then
     alias ls='eza --icons'
     alias la='eza -a --icons'
     alias ll='eza -hlg --time-style long-iso --icons'
@@ -111,28 +112,28 @@ else
     alias lla='ls -la'
 fi
 
-if type nvim >/dev/null 2>&1; then
+if (( ${+commands[nvim]} )); then
     alias vim='nvim'
     export EDITOR="$(which nvim)"
 fi
 
 alias grep='grep --color=auto'
 
-if type ghq >/dev/null 2>&1; then
-    GHQ_ROOT="$(ghq root)"
+if (( ${+commands[ghq]} )); then
+    # GHQ_ROOT is already set above
     alias cdg='cd $(ghq root)/$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")'
 fi
 
-if type trash >/dev/null 2>&1; then
+if (( ${+commands[trash]} )); then
     alias rm='trash'
 fi
 
-if type trans >/dev/null 2>&1; then
+if (( ${+commands[trans]} )); then
     alias ja-en='trans {ja=en}'
     alias en-ja='trans {en=ja}'
 fi
 
-if type kubectl >/dev/null 2>&1; then
+if (( ${+commands[kubectl]} )); then
     alias k='kubectl'
 fi
 
