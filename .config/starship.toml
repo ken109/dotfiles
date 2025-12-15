@@ -1,0 +1,67 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[┌$time─────────────────────────────────────────────────](bold white)
+[│](bold white) $directory$all
+[│](bold white)
+[└](bold white)$character"""
+
+[character]
+success_symbol = '[>](green)'
+error_symbol = '[>](red)'
+
+[directory]
+truncation_length = 0
+
+[git_branch]
+always_show_remote = false
+format = 'on [$symbol($remote_name/$remote_branch:)$branch]($style) '
+symbol = ""
+
+[git_commit]
+commit_hash_length = 7
+format = '[\(($tag [|](white) )$hash\)]($style) '
+tag_disabled = false
+tag_symbol = ''
+
+[git_metrics]
+disabled = false
+
+[git_status]
+conflicted = '[=${count}](red)'
+ahead = '[⇡${count}](green)'
+behind = '[⇣${count}](green)'
+diverged = '[⇕⇡${ahead_count}⇣${behind_count}](green)'
+up_to_date = ''
+untracked = '[?\($count\)](red)'
+stashed = '[\$\($count\)](yellow)'
+modified = '[!\($count\)](red)'
+staged = '[+\($count\)](green)'
+renamed = '[»\($count\)](yellow)'
+deleted = '[✘\($count\)](red)'
+style = 'bold white'
+
+[golang]
+format = 'go:[$version]($style) '
+symbol = ''
+
+[gcloud]
+disabled = true
+
+[nodejs]
+format = 'node:[$version]($style) '
+symbol = ''
+
+[line_break]
+disabled = true
+
+[rust]
+format = 'rust:[$version]($style) '
+symbol = ''
+
+[time]
+disabled = false
+format = '[┤ $time ├]($style)'
+time_format = '%T'
+utc_time_offset = '+9'
+style = 'bold white'

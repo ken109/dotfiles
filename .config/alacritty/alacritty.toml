@@ -1,0 +1,31 @@
+[window]
+padding = { x = 10, y = 10 }
+decorations = "None"
+opacity = 0.75
+blur = true
+startup_mode = "Maximized"
+level = "AlwaysOnTop"
+
+[font]
+size = 12
+normal = { family = "Hack Nerd Font Mono" }
+
+[terminal]
+shell = { program = "/opt/homebrew/bin/tmux", args = ["new-session", "-A", "-s", "main"] }
+
+[keyboard]
+bindings = [
+    # Cmd + T で新しいウィンドウ (Ctrl+b -> c)
+    { key = "T", mods = "Command", chars = "\u0002c" },
+    # Cmd + D で左右に分割 (Ctrl+b -> %)
+    # ※ tmuxでは -h が左右分割を意味します
+    { key = "D", mods = "Command", chars = "\u0002%" },
+    # Cmd + Shift + D で上下に分割 (Ctrl+b -> ")
+    { key = "D", mods = "Command|Shift", chars = "\u0002\"" },
+    # Cmd + Shift + Left で前のウィンドウ (Ctrl+b -> p)
+    { key = "Left", mods = "Command|Shift", chars = "\u0002p" },
+    # Cmd + Shift + Right で次のウィンドウ (Ctrl+b -> n)
+    { key = "Right", mods = "Command|Shift", chars = "\u0002n" },
+    # Shift + Enter で改行
+    { key = "Return", mods = "Shift", chars = "\u001b\r" }
+]
