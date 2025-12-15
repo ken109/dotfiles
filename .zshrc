@@ -56,6 +56,10 @@ else
   compinit
 fi
 
+if [[ ${ZDOTDIR:-$HOME}/.zcompdump -nt ${ZDOTDIR:-$HOME}/.zcompdump.zwc || ! -f ${ZDOTDIR:-$HOME}/.zcompdump.zwc ]]; then
+  zcompile ${ZDOTDIR:-$HOME}/.zcompdump
+fi
+
 # =======================================================
 # shell
 # =======================================================
