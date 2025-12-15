@@ -88,6 +88,8 @@ install_packages() {
     lazygit
     neovim
     ripgrep
+    sheldon
+    starship
     tmux
     wget
     zsh
@@ -179,6 +181,16 @@ configure_ghq() {
   e_done "ghq configured"
 }
 
+configure_tpm() {
+  e_header "Configuring tpm..."
+  if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    e_done "tpm installed"
+  else
+    e_header "tpm already installed"
+  fi
+}
+
 # --------------------------------------------------------------------------------------------------
 #  Main Logic
 # --------------------------------------------------------------------------------------------------
@@ -197,13 +209,13 @@ main() {
   configure_shell
   configure_asdf
   configure_ghq
+  configure_tpm
   
-  # Run make deploy if Makefile exists
-  if [ -f "Makefile" ]; then
-    e_section "Deployment"
-    e_header "Running make deploy..."
-    make deploy
-    e_done "Deploy complete"
+  # Deploy dotfiles
+  if [ -f "$SCRIPT_DIR/deploy" ]; then
+    "$SCRIPT_DIR/deploy"
+  else
+    e_error "Deploy script not found!"
   fi
 
   e_section "Complete"

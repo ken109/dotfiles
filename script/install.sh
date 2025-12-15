@@ -4,13 +4,14 @@ set -u
 
 # Constants
 DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
-DOTFILES_GITHUB="https://github.com/ken109/dotfiles.git"
-TARBALL_URL="https://github.com/ken109/dotfiles/archive/master.tar.gz"
+DOTFILES_GITHUB="${DOTFILES_GITHUB:-https://github.com/ken109/dotfiles.git}"
+TARBALL_URL="https://github.com/ken109/dotfiles/archive/main.tar.gz"
 
 # Helpers
 e_header() { printf " \033[37;1m%s\033[m\n" "$*"; }
 e_error() { printf " \033[31m%s\033[m\n" "✖ $*" 1>&2; }
 e_done() { printf " \033[37;1m%s\033[m...\033[32mOK\033[m\n" "✔ $*"; }
+e_newline() { printf "\n"; }
 
 is_exists() {
   which "$1" >/dev/null 2>&1
@@ -54,28 +55,38 @@ dotfiles_initialize() {
   e_done "Initialize"
 }
 
-# shellcheck disable=SC2016
-dotfiles_logo='
-      | |     | |  / _(_) |
-    __| | ___ | |_| |_ _| | ___  ___
-   / _` |/ _ \| __|  _| | |/ _ \/ __|
-  | (_| | (_) | |_| | | | |  __/\__ \
-   \__,_|\___/ \__|_| |_|_|\___||___/
-  *** WHAT IS INSIDE? ***
-  1. Download https://github.com/ken109/dotfiles.git
-  2. Execute sh files within `script/setup`
-  See the README for documentation.
-  https://github.com/ken109/dotfiles
-'
+dotfiles_logo=$(
+  cat <<'EOF'
+
+
+           88                          ad88  88  88
+           88                ,d       d8"    ""  88
+           88                88       88         88
+   ,adPPYb,88   ,adPPYba,  MM88MMM  MM88MMM  88  88   ,adPPYba,  ,adPPYba,
+  a8"    `Y88  a8"     "8a   88       88     88  88  a8P_____88  I8[    ""
+  8b       88  8b       d8   88       88     88  88  8PP"""""""   `"Y8ba,
+  "8a,   ,d88  "8a,   ,a8"   88,      88     88  88  "8b,   ,aa  aa    ]8I
+   `"8bbdP"Y8   `"YbbdP"'    "Y888    88     88  88   `"Ybbd8"'  `"YbbdP"'
+
+   
+EOF
+)
 
 dotfiles_install() {
   if [ -d "$DOTPATH" ]; then
-      e_header "Dotfiles already downloaded at $DOTPATH"
-      dotfiles_initialize
-      exit 0
+    e_header "Dotfiles already downloaded at $DOTPATH"
+    dotfiles_initialize
+    exit 0
   fi
-  
-  e_header "$dotfiles_logo" # Display the logo here
+
+  echo "$dotfiles_logo" # Display the logo here
+  e_header "  *** WHAT IS INSIDE? ***"
+  e_header "  1. Download $DOTFILES_GITHUB"
+  e_header "  2. Execute sh files within \`script/setup\`"
+  e_header "  See the README for documentation."
+  e_header "  https://github.com/ken109/dotfiles"
+  e_newline
+
   dotfiles_download
   dotfiles_initialize
 }

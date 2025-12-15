@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Load utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
+
+DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
+
+deploy() {
+  e_section "Deploying Dotfiles"
+  
+  e_header "Linking files to $HOME..."
+  
+  local dotfiles
+  dotfiles=$(get_dotfiles)
+  
+  for file in $dotfiles; do
+    # Link logic
+    local src="$DOTPATH/$file"
+    local dest="$HOME/$file"
+    
+    # Ensure parent dir exists
+    mkdir -p "$(dirname "$dest")"
+    
+    # Remove existing file/link if it exists
+    rm -rf "$dest"
+    
+    # Create symlink
+    ln -sfnv "$src" "$dest"
+  done
+  
+  e_done "Dotfiles deployed"
+}
+
+deploy

@@ -5,17 +5,24 @@
 # =======================================================
 
 export XDG_CONFIG_HOME="$HOME/.config"
-export PATH="$HOME/.local/bin:$PATH"
 
-# homebrew
-if [[ "$(uname)" = "Darwin" && -d /opt/homebrew ]]; then
-    export HOMEBREW_PREFIX="/opt/homebrew"
-    export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
-    export HOMEBREW_REPOSITORY="/opt/homebrew"
-    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-    export MANPATH="/opt/homebrew/share/man:${MANPATH:-}"
-    export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+# Homebrew PATH initialization (must be early)
+if [[ "$(uname)" = "Darwin" ]]; then
+    if [[ -d /opt/homebrew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -d /usr/local/homebrew ]]; then # For older installations
+        eval "$(/usr/local/homebrew/bin/brew shellenv)"
+    fi
+elif [[ "$(uname)" = "Linux" ]]; then
+    if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [[ -d $HOME/.linuxbrew ]]; then
+        eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+    fi
 fi
+
+# Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
+export PATH="$HOME/.local/bin:$PATH"
 
 # ghq
 if (( ${+commands[ghq]} )); then
@@ -149,18 +156,30 @@ chpwd() {
     ls
 }
 
-dotfiles-update() {
-    autoload -Uz catch
-    autoload -Uz throw
+dotfiles() {
+    local cmd="$1"
+    local dotpath="$HOME/.dotfiles"
+    
+    case "$cmd" in
+        list)
+            "$dotpath/script/list"
+            ;;
+        update)
+            autoload -Uz catch
+            autoload -Uz throw
 
-    (
-        cd $HOME/.dotfiles && {
-            git pull || throw 'PullError'
-            make deploy || throw 'MakeError'
-        }
-    )
-
-    exec zsh -l
+            (
+                cd "$dotpath" && {
+                    git pull || throw 'PullError'
+                    "$dotpath/script/deploy" || throw 'DeployError'
+                }
+            )
+            exec zsh -l
+            ;;
+        *)
+            echo "Usage: dotfiles {list|update}"
+            ;;
+    esac
 }
 
 # =======================================================
