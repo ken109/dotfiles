@@ -1,6 +1,6 @@
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 CANDIDATES := $(shell find .config -mindepth 1 -maxdepth 1) $(wildcard .??*)
-EXCLUSIONS := .config .DS_Store .git .gitignore .idea
+EXCLUSIONS := .config .DS_Store .git .gitignore .idea .gemini
 DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
 .DEFAULT_GOAL := help

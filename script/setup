@@ -2,115 +2,212 @@
 
 set -eu
 
-if [ "$(uname)" = "Darwin" ]; then
-  e_newline && e_header "Homebrew installing..."
-  {
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  } 1> /dev/null
-  e_newline && e_done "Homebrew install"
+USER="${USER:-$(whoami)}"
 
-  test -e /opt/homebrew/bin/brew && eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
+# Load utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/utils.sh"
 
-e_newline && e_header "asdf installing..."
-{
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.2
-  source "$HOME/.asdf/asdf.sh"
-} 1> /dev/null
-e_newline && e_done "asdf install"
+OS="$(uname -s)"
 
-git config --global ghq.root ~/.ghq
+# --------------------------------------------------------------------------------------------------
+#  Helper Functions
+# --------------------------------------------------------------------------------------------------
 
-if [ "$(uname)" = "Darwin" ]; then
-  # nodejs
-  brew install gpg gawk
+load_brew() {
+  if [ "$OS" = "Darwin" ]; then
+    if [ -f "/opt/homebrew/bin/brew" ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -f "/usr/local/bin/brew" ]; then
+      eval "$(/usr/local/bin/brew shellenv)"
+    fi
+  elif [ "$OS" = "Linux" ]; then
+    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [ -d "$HOME/.linuxbrew" ]; then
+      eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
+    fi
+  fi
+}
 
-  brew tap homebrew/cask-fonts
-  brew install --cask font-hack-nerd-font font-cica
+# --------------------------------------------------------------------------------------------------
+#  Installation Functions
+# --------------------------------------------------------------------------------------------------
 
-  # tools
-  brew install trash git-flow-avh zsh tmux neovim git fzf bat ripgrep ghq fd translate-shell lazygit gdu
+install_system_dependencies() {
+  if [ "$OS" = "Linux" ]; then
+    e_section "System Dependencies"
+    e_header "Installing apt packages..."
+    export DEBIAN_FRONTEND=noninteractive
+    
+    # Dependencies for Homebrew and basic build tools
+    sudo apt-get update
+    sudo apt-get install -y build-essential procps curl file git
+    
+    # Install zsh if not present
+    sudo apt-get install -y zsh
+    
+    e_done "System dependencies installed"
+  fi
+}
 
-  sudo bash -c "echo '$(brew --prefix)/bin/zsh' >> /etc/shells"
-  sudo chsh -s "$(brew --prefix)/bin/zsh" "$USER"
+install_homebrew() {
+  e_section "Homebrew Setup"
+  if ! has_command brew; then
+    e_header "Installing Homebrew..."
+    # Set CI=1 to avoid interactive prompt
+    CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    
+    load_brew
+    e_done "Homebrew installed"
+  else
+    load_brew
+    e_header "Homebrew already installed"
+  fi
+}
 
-  "$(brew --prefix)/opt/fzf/install"
-elif [ "$(uname)" = "Linux" ]; then
-  export DEBIAN_FRONTEND=noninteractive
+install_packages() {
+  e_section "Package Installation"
+  e_header "Installing packages via Homebrew..."
+  
+  # Update brew
+  brew update
 
-  # apt
-  e_newline && e_header "Apt package installing..."
-  {
-    sudo -E apt-get update
-
-    # nodejs
-    sudo -E apt-get install -y dirmngr gpg curl gawk
-
-    # libs
-    sudo -E apt-get install -y gettext
-
-    # tools
-    sudo -E apt-get install -y zsh tmux git fzf bat ripgrep fd-find unzip
-  } 1> /dev/null
-  e_newline && e_done "Apt package install"
-
-  # golang
-  e_newline && e_header "Golang installing..."
-  {
-    export GOPATH="$HOME/.go"
-    export PATH="$GOPATH/bin:$PATH"
-
-    asdf plugin add golang
-    go_version=$(asdf list all golang | rg '^[0-9]+\.[0-9]+\.[0-9]+$' | tail -1)
-    asdf install golang "$go_version"
-    asdf global golang "$go_version"
-  } 1> /dev/null
-  e_newline && e_done "Golang install"
-
-  # ghq
-  e_newline && e_header "ghq installing..."
-  {
-    go install github.com/x-motemen/ghq@latest
-    go install github.com/jesseduffield/lazygit@latest
-  } 1> /dev/null
-  e_newline && e_done "ghq install"
-
-  # neovim
-  e_newline && e_header "neovim installing..."
-  {
-    ghq get -b stable --shallow https://github.com/neovim/neovim.git
-    (
-      cd ~/.ghq/github.com/neovim/neovim || exit
-      make CMAKE_BUILD_TYPE=RelWithDebInfo 1>/dev/null
-      sudo make install 1>/dev/null
+  # Common tools list
+  local formulas=(
+    asdf
+    bat
+    curl
+    fd
+    fzf
+    gdu
+    ghq
+    git
+    git-delta
+    eza
+    lazygit
+    neovim
+    ripgrep
+    tmux
+    wget
+    zsh
+  )
+  
+  # OS specific additions
+  if [ "$OS" = "Darwin" ]; then
+    formulas+=(
+      gpg
+      gawk
+      translate-shell
+      git-flow-avh
+      trash
     )
-  } 1> /dev/null
-  e_newline && e_done "neovim install"
+  elif [ "$OS" = "Linux" ]; then
+    formulas+=(
+      gcc
+      gettext
+    )
+  fi
 
-  sudo chsh -s "/usr/bin/zsh" "$USER"
-fi
+  brew install "${formulas[@]}"
+  
+  # Casks for macOS
+  if [ "$OS" = "Darwin" ]; then
+    e_header "Installing Casks..."
+    brew tap homebrew/cask-fonts
+    brew install --cask font-hack-nerd-font font-cica
+  fi
 
-# oh my zsh
-e_newline && e_header "oh-my-zsh installing..."
-{
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
+  # Setup fzf
+  if [ -f "$(brew --prefix)/opt/fzf/install" ]; then
+    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish
+  fi
+  
+  e_done "Packages installed"
+}
 
-  mkdir -p "$HOME/.zsh"
-  git clone https://github.com/sindresorhus/pure.git "$HOME/.zsh/pure"
+# --------------------------------------------------------------------------------------------------
+#  Configuration Functions
+# --------------------------------------------------------------------------------------------------
 
-  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-} 1> /dev/null
-e_newline && e_done "oh-my-zsh install"
+configure_shell() {
+  e_section "Shell Configuration"
+  e_header "Configuring zsh..."
+  
+  local zsh_path
+  zsh_path="$(brew --prefix)/bin/zsh"
+  
+  if [ ! -x "$zsh_path" ]; then
+    e_warning "Homebrew zsh not found, falling back to system zsh"
+    if [ -x "/bin/zsh" ]; then zsh_path="/bin/zsh"; fi
+    if [ -x "/usr/bin/zsh" ]; then zsh_path="/usr/bin/zsh"; fi
+  fi
 
-# rust
-e_newline && e_header "Rust installing..."
-{
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-  source "$HOME/.cargo/env"
-  cargo install eza git-delta
-} 1> /dev/null
-e_newline && e_done "Rust install"
+  # Add to /etc/shells if not present
+  if ! grep -q "$zsh_path" /etc/shells; then
+    e_header "Adding $zsh_path to /etc/shells..."
+    echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+  fi
 
-make deploy
+  # Change shell
+  if [ "$SHELL" != "$zsh_path" ]; then
+    e_header "Changing shell to $zsh_path..."
+    sudo chsh -s "$zsh_path" "$USER"
+  fi
+  
+  e_done "Shell configured"
+}
+
+configure_asdf() {
+  e_section "Tool Configuration"
+  e_header "Configuring asdf..."
+  
+  # Source asdf
+  if [ -f "$(brew --prefix asdf)/libexec/asdf.sh" ]; then
+    source "$(brew --prefix asdf)/libexec/asdf.sh"
+  else
+    e_warning "asdf script not found, skipping configuration"
+    return
+  fi
+  
+  e_done "asdf configured"
+}
+
+configure_ghq() {
+  e_header "Configuring ghq..."
+  git config --global ghq.root ~/.ghq
+  e_done "ghq configured"
+}
+
+# --------------------------------------------------------------------------------------------------
+#  Main Logic
+# --------------------------------------------------------------------------------------------------
+
+main() {
+  e_section "Setup Start"
+  e_header "Starting setup for $OS..."
+
+  if [ "$OS" = "Linux" ]; then
+    install_system_dependencies
+  fi
+  
+  install_homebrew
+  install_packages
+  
+  configure_shell
+  configure_asdf
+  configure_ghq
+  
+  # Run make deploy if Makefile exists
+  if [ -f "Makefile" ]; then
+    e_section "Deployment"
+    e_header "Running make deploy..."
+    make deploy
+    e_done "Deploy complete"
+  fi
+
+  e_section "Complete"
+  e_done "All setup tasks completed successfully!"
+}
+
+main
