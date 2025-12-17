@@ -75,23 +75,24 @@ install_packages() {
 
   # Common tools list
   local formulas=(
-    asdf
     bat
     curl
+    eza
     fd
     fzf
     gdu
     ghq
     git
     git-delta
-    eza
     lazygit
+    mise
     neovim
     ripgrep
     sheldon
     starship
     tmux
     wget
+    zoxide
     zsh
   )
   
@@ -160,19 +161,18 @@ configure_shell() {
   e_done "Shell configured"
 }
 
-configure_asdf() {
+configure_mise() {
   e_section "Tool Configuration"
-  e_header "Configuring asdf..."
+  e_header "Configuring mise..."
   
-  # Source asdf
-  if [ -f "$(brew --prefix asdf)/libexec/asdf.sh" ]; then
-    source "$(brew --prefix asdf)/libexec/asdf.sh"
+  if has_command mise; then
+    e_header "mise is installed. Basic configuration assumed via dotfiles."
   else
-    e_warning "asdf script not found, skipping configuration"
+    e_warning "mise command not found, skipping configuration"
     return
   fi
   
-  e_done "asdf configured"
+  e_done "mise configured"
 }
 
 configure_ghq() {
@@ -207,7 +207,7 @@ main() {
   install_packages
   
   configure_shell
-  configure_asdf
+  configure_mise
   configure_ghq
   configure_tpm
   

@@ -21,5 +21,5 @@ github = "zsh-users/zsh-syntax-highlighting"
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
 
-[plugins.asdf]
-github = "asdf-vm/asdf"
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"

@@ -1,3 +1,4 @@
-tmux/
-tmux-sensible/
-tpm/
+*
+!.gitignore
+!plugins.conf
+!rose-pine.conf
