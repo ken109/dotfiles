@@ -55,6 +55,10 @@ symbol = ''
 [line_break]
 disabled = true
 
+[python]
+format = 'python:[$version]($style) '
+symbol = ''
+
 [rust]
 format = 'rust:[$version]($style) '
 symbol = ''
