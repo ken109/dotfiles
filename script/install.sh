@@ -68,7 +68,7 @@ dotfiles_logo=$(
   "8a,   ,d88  "8a,   ,a8"   88,      88     88  88  "8b,   ,aa  aa    ]8I
    `"8bbdP"Y8   `"YbbdP"'    "Y888    88     88  88   `"Ybbd8"'  `"YbbdP"'
 
-   
+
 EOF
 )
 

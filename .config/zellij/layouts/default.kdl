@@ -18,7 +18,7 @@ layout {
 
                 tab_normal "#[fg=#6C7086] {name} "
                 tab_active "#[fg=#9399B2,bold,italic] {name} "
-                tab_separator "#[fg=#6C7086,bg=#181825] | "
+                tab_separator "#[fg=#6C7086] | "
 
                 datetime "#[fg=#6C7086,bold] {format} "
                 datetime_format "%A, %d %b %Y %H:%M"

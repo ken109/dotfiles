@@ -47,9 +47,9 @@ RUN cd /tmp/dotfiles-repo && \
 ENV DOTFILES_GITHUB="/tmp/dotfiles-repo"
 
 # Run install.sh
-# We pipe it to bash to simulate 'curl | bash' style execution, 
+# We pipe it to bash to simulate 'curl | bash' style execution,
 # or run directly. install.sh expects to clone the repo.
 RUN bash /tmp/dotfiles-repo/script/install.sh
 
 # Set zsh as default entrypoint to verify configuration
-CMD ["/home/linuxbrew/.linuxbrew/bin/tmux", "new-session", "-A", "-s", "main"]
+CMD ["/home/linuxbrew/.linuxbrew/bin/zellij"]

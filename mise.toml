@@ -1,0 +1,81 @@
+[tasks.setup-lua-lsp]
+description = "NeovimとHammerspoonの型定義をルートの .luarc.json に統合して生成する"
+run = '''
+#!/usr/bin/env bash
+set -e
+
+echo "=== 🚀 Starting Lua LSP Setup for Dotfiles ==="
+
+# --- 変数定義 ---
+NVIM_STUB_DIR="$HOME/.local/share/nvim-stubs"
+HS_SPOON_DIR="$HOME/.hammerspoon/Spoons"
+TARGET_JSON="./.luarc.json"
+
+mkdir -p "$NVIM_STUB_DIR"
+mkdir -p "$HS_SPOON_DIR"
+
+# --- 1. Neovim Stubs ---
+echo "📦 Updating Neovim stubs..."
+if [ ! -d "$NVIM_STUB_DIR/neodev.nvim" ]; then
+  git clone --depth 1 https://github.com/folke/neodev.nvim.git "$NVIM_STUB_DIR/neodev.nvim"
+else
+  git -C "$NVIM_STUB_DIR/neodev.nvim" pull
+fi
+
+if [ ! -d "$NVIM_STUB_DIR/luvit-meta" ]; then
+  git clone --depth 1 https://github.com/Bilal2453/luvit-meta.git "$NVIM_STUB_DIR/luvit-meta"
+else
+  git -C "$NVIM_STUB_DIR/luvit-meta" pull
+fi
+
+VIM_RUNTIME=$(nvim --headless --noplugin -c "lua print(vim.env.VIMRUNTIME)" -c q 2>&1)
+
+
+# --- 2. Hammerspoon Stubs ---
+echo "🔨 Updating Hammerspoon stubs..."
+
+rm -rf "$HS_SPOON_DIR/EmmyLua.spoon"
+echo "📥 Downloading EmmyLua.spoon..."
+curl -L -o /tmp/EmmyLua.zip https://github.com/Hammerspoon/Spoons/raw/master/Spoons/EmmyLua.spoon.zip
+unzip -q -o /tmp/EmmyLua.zip -d "$HS_SPOON_DIR"
+
+if [ ! -f "$HS_SPOON_DIR/EmmyLua.spoon/annotations/timestamps.json" ]; then
+  mkdir -p "$HS_SPOON_DIR/EmmyLua.spoon/annotations"
+  echo "{}" > "$HS_SPOON_DIR/EmmyLua.spoon/annotations/timestamps.json"
+fi
+
+echo "🔄 Reloading Hammerspoon config to load new Spoon..."
+hs -c "hs.reload()"
+
+echo "⏳ Waiting 5 seconds for reload..."
+sleep 5
+
+echo "🔄 Generating stubs..."
+hs -c "local emmy = hs.loadSpoon('EmmyLua'); if emmy then emmy:init(); print('Generate Success'); else print('Load Failed'); end"
+
+
+# --- 3. 統合設定ファイル生成 ---
+echo "📝 Generating root $TARGET_JSON..."
+rm -f .config/nvim/.luarc.json
+rm -f .hammerspoon/.luarc.json
+
+cat <<EOF > "$TARGET_JSON"
+{
+  "workspace": {
+    "checkThirdParty": false,
+    "library": [
+      "$NVIM_STUB_DIR/neodev.nvim/types/stable",
+      "$NVIM_STUB_DIR/luvit-meta/library",
+      "$VIM_RUNTIME/lua",
+      "$HS_SPOON_DIR/EmmyLua.spoon/annotations"
+    ]
+  },
+  "diagnostics": {
+    "globals": ["vim", "hs", "spoon"],
+    "disable": ["lowercase-global"]
+  }
+}
+EOF
+
+echo "=== ✅ Setup Complete! Please restart Zed (Cmd+Q) ==="
+'''

@@ -4,3 +4,5 @@
 .gemini/
 openspec/
 AGENTS.md
+
+.luarc.json

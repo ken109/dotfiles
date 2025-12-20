@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 $env.config.show_banner = false
 
 mkdir ($nu.data-dir | path join "vendor/autoload")

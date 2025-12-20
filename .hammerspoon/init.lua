@@ -1,3 +1,5 @@
+require("hs.ipc")
+
 require("global/alert")
 
 require("applications/alacritty")
