@@ -47,7 +47,7 @@ has_command() {
 
 get_dotfiles() {
   local dotpath="${DOTPATH:-$HOME/.dotfiles}"
-  local exclusions=(".config" ".DS_Store" ".git" ".gitignore" ".idea" "Dockerfile" "Makefile" "README.md" "LICENSE" "openspec" "script")
+  local exclusions=(".config" ".serena" ".DS_Store" ".git" ".gitignore" ".idea" ".luarc.json")
 
   if [ "$(uname -s)" != "Darwin" ]; then
     exclusions+=(".hammerspoon")

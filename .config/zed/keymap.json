@@ -1,7 +1,7 @@
 [
   {
     "bindings": {
-      "cmd-alt-g": ["agent::NewExternalAgentThread", { "agent": "gemini" }],
+      "cmd-alt-g": "agent::NewExternalAgentThread",
     },
   },
 ]
