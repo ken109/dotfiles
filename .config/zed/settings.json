@@ -1,0 +1,36 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "buffer_font_weight": 400.0,
+  "buffer_font_family": "Hack Nerd Font Mono",
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": true,
+  },
+  "vim_mode": true,
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)",
+  },
+  "base_keymap": "JetBrains",
+  "theme": "Ayu Dark",
+  "buffer_font_size": 12.0,
+
+  "code_actions_on_format": {
+    "source.organizeImports.biome": true,
+    "source.fixAll.biome": true,
+  },
+
+  "agent_servers": {
+    "gemini": {
+      "ignore_system_version": false,
+    },
+  },
+}
