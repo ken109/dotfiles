@@ -40,7 +40,8 @@
         "serena",
         "start-mcp-server",
         "--context",
-        "ide"
+        "ide",
+        "--project-from-cwd"
       ]
     }
   },
