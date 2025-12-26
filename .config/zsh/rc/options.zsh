@@ -12,6 +12,7 @@ export SAVEHIST=1000000
 
 export BAT_THEME=ansi
 
+setopt AUTO_CD
 
 # shellcheck disable=SC2016
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -hl --icons --no-permissions --no-filesize --no-user --time-style=long-iso --group-directories-first --color=always $realpath'
