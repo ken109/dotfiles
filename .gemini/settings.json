@@ -1,0 +1,47 @@
+{
+  "context": {
+    "fileName": ["AGENTS.md", "GEMINI.md"],
+    "fileFiltering": {
+      "respectGitIgnore": false,
+      "respectGeminiIgnore": false
+    }
+  },
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_TOKEN"]
+    },
+    "github": {
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer $GITHUB_MCP_PAT"
+      }
+    },
+    "linear": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.linear.app/sse"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@automatalabs/mcp-server-playwright"]
+    }
+  },
+  "ide": {
+    "enabled": true,
+    "hasSeenNudge": true
+  },
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "general": {
+    "vimMode": false,
+    "enablePromptCompletion": false,
+    "debugKeystrokeLogging": false,
+    "previewFeatures": true
+  },
+  "output": {
+    "format": "text"
+  }
+}
