@@ -116,7 +116,6 @@ install_packages() {
   # Casks for macOS
   if [ "$OS" = "Darwin" ]; then
     e_header "Installing Casks..."
-    brew tap homebrew/cask-fonts
     brew install --cask font-hack-nerd-font font-cica hammerspoon alacritty
   fi
 
