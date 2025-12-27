@@ -55,13 +55,15 @@ dotfiles_initialize() {
   e_done "Initialize"
 }
 
-dotfiles_logo=$(
-  cat <<'EOF'
+print_logo() {
+  local dotfiles_logo
+
+  IFS= read -r -d '' dotfiles_logo <<'EOF'
 
 
            88                          ad88  88  88
-           88                ,d       d8"    ""  88
-           88                88       88         88
+           88                  ,d     d8"    ""  88
+           88                  88     88         88
    ,adPPYb,88   ,adPPYba,  MM88MMM  MM88MMM  88  88   ,adPPYba,  ,adPPYba,
   a8"    `Y88  a8"     "8a   88       88     88  88  a8P_____88  I8[    ""
   8b       88  8b       d8   88       88     88  88  8PP"""""""   `"Y8ba,
@@ -70,16 +72,21 @@ dotfiles_logo=$(
 
 
 EOF
-)
+
+  echo "$dotfiles_logo"
+}
 
 dotfiles_install() {
   if [ -d "$DOTPATH" ]; then
+    print_logo
+
     e_header "Dotfiles already downloaded at $DOTPATH"
     dotfiles_initialize
     exit 0
   fi
 
-  echo "$dotfiles_logo" # Display the logo here
+  print_logo
+
   e_header "  *** WHAT IS INSIDE? ***"
   e_header "  1. Download $DOTFILES_GITHUB"
   e_header "  2. Execute sh files within \`script/setup\`"
