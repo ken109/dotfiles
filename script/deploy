@@ -9,29 +9,29 @@ source "$SCRIPT_DIR/utils.sh"
 DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
 
 deploy() {
-  e_section "Deploying Dotfiles"
+    e_section "Deploying Dotfiles"
 
-  e_header "Linking files to $HOME..."
+    e_header "Linking files to $HOME..."
 
-  local dotfiles
-  dotfiles=$(get_dotfiles)
+    local dotfiles
+    dotfiles=$(get_dotfiles)
 
-  for file in $dotfiles; do
-    # Link logic
-    local src="$DOTPATH/$file"
-    local dest="$HOME/$file"
+    for file in $dotfiles; do
+        # Link logic
+        local src="$DOTPATH/$file"
+        local dest="$HOME/$file"
 
-    # Ensure parent dir exists
-    mkdir -p "$(dirname "$dest")"
+        # Ensure parent dir exists
+        mkdir -p "$(dirname "$dest")"
 
-    # Remove existing file/link if it exists
-    rm -rf "$dest"
+        # Remove existing file/link if it exists
+        rm -rf "$dest"
 
-    # Create symlink
-    ln -sfnv "$src" "$dest"
-  done
+        # Create symlink
+        ln -sfnv "$src" "$dest"
+    done
 
-  e_done "Dotfiles deployed"
+    e_done "Dotfiles deployed"
 }
 
 deploy

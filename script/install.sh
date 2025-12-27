@@ -14,51 +14,51 @@ e_done() { printf " \033[37;1m%s\033[m...\033[32mOK\033[m\n" "✔ $*"; }
 e_newline() { printf "\n"; }
 
 is_exists() {
-  which "$1" >/dev/null 2>&1
-  return $?
+    which "$1" >/dev/null 2>&1
+    return $?
 }
 
 dotfiles_download() {
-  if [ -d "$DOTPATH" ]; then
-    e_error "$DOTPATH: already exists"
-    return 1
-  fi
-
-  e_header "Downloading dotfiles..."
-
-  if is_exists "git"; then
-    git clone --recursive "$DOTFILES_GITHUB" "$DOTPATH"
-  elif is_exists "curl" || is_exists "wget"; then
-    if is_exists "curl"; then
-      curl -L "$TARBALL_URL" | tar xvz
-    elif is_exists "wget"; then
-      wget -O - "$TARBALL_URL" | tar xvz
+    if [ -d "$DOTPATH" ]; then
+        e_error "$DOTPATH: already exists"
+        return 1
     fi
-    mv -f dotfiles-master "$DOTPATH"
-  else
-    e_error "curl or wget required"
-    exit 1
-  fi
 
-  e_done "Download"
+    e_header "Downloading dotfiles..."
+
+    if is_exists "git"; then
+        git clone --recursive "$DOTFILES_GITHUB" "$DOTPATH"
+    elif is_exists "curl" || is_exists "wget"; then
+        if is_exists "curl"; then
+            curl -L "$TARBALL_URL" | tar xvz
+        elif is_exists "wget"; then
+            wget -O - "$TARBALL_URL" | tar xvz
+        fi
+        mv -f dotfiles-master "$DOTPATH"
+    else
+        e_error "curl or wget required"
+        exit 1
+    fi
+
+    e_done "Download"
 }
 
 dotfiles_initialize() {
-  e_header "Initializing dotfiles..."
-  if [ -f "$DOTPATH/script/setup" ]; then
-    # Execute setup script
-    "$DOTPATH/script/setup"
-  else
-    e_error "setup script not found"
-    exit 1
-  fi
-  e_done "Initialize"
+    e_header "Initializing dotfiles..."
+    if [ -f "$DOTPATH/script/setup" ]; then
+        # Execute setup script
+        "$DOTPATH/script/setup"
+    else
+        e_error "setup script not found"
+        exit 1
+    fi
+    e_done "Initialize"
 }
 
 print_logo() {
-  local dotfiles_logo
+    local dotfiles_logo
 
-  IFS= read -r -d '' dotfiles_logo <<'EOF'
+    IFS= read -r -d '' dotfiles_logo <<'EOF'
 
 
            88                          ad88  88  88
@@ -73,34 +73,34 @@ print_logo() {
 
 EOF
 
-  echo "$dotfiles_logo"
+    echo "$dotfiles_logo"
 }
 
 dotfiles_install() {
-  if [ -d "$DOTPATH" ]; then
+    if [ -d "$DOTPATH" ]; then
+        print_logo
+
+        e_header "Dotfiles already downloaded at $DOTPATH"
+        dotfiles_initialize
+        exit 0
+    fi
+
     print_logo
 
-    e_header "Dotfiles already downloaded at $DOTPATH"
+    e_header "  *** WHAT IS INSIDE? ***"
+    e_header "  1. Download $DOTFILES_GITHUB"
+    e_header "  2. Execute sh files within \`script/setup\`"
+    e_header "  See the README for documentation."
+    e_header "  https://github.com/ken109/dotfiles"
+    e_newline
+
+    dotfiles_download
     dotfiles_initialize
-    exit 0
-  fi
-
-  print_logo
-
-  e_header "  *** WHAT IS INSIDE? ***"
-  e_header "  1. Download $DOTFILES_GITHUB"
-  e_header "  2. Execute sh files within \`script/setup\`"
-  e_header "  See the README for documentation."
-  e_header "  https://github.com/ken109/dotfiles"
-  e_newline
-
-  dotfiles_download
-  dotfiles_initialize
 }
 # Execution guard
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-  # Script is being sourced, do nothing
-  return 0
+    # Script is being sourced, do nothing
+    return 0
 fi
 
 # Run install

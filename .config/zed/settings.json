@@ -33,4 +33,16 @@
       "ignore_system_version": false,
     },
   },
+
+  "languages": {
+    "Shell Script": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "beautysh",
+          "arguments": ["-"],
+        },
+      },
+    },
+  },
 }

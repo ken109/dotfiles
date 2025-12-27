@@ -23,9 +23,8 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 
 # rust env
-if [[ -d "$HOME/.cargo/bin" ]]; then
-    export RUST_BACKTRACE=1
-    export PATH="$HOME/.cargo/bin:$PATH"
+if [[ -f "$HOME/.cargo/env" ]]; then
+    . "$HOME/.cargo/env"
 fi
 
 # go env

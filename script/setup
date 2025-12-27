@@ -15,19 +15,19 @@ OS="$(uname -s)"
 # --------------------------------------------------------------------------------------------------
 
 load_brew() {
-  if [ "$OS" = "Darwin" ]; then
-    if [ -f "/opt/homebrew/bin/brew" ]; then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ -f "/usr/local/bin/brew" ]; then
-      eval "$(/usr/local/bin/brew shellenv)"
+    if [ "$OS" = "Darwin" ]; then
+        if [ -f "/opt/homebrew/bin/brew" ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [ -f "/usr/local/bin/brew" ]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    elif [ "$OS" = "Linux" ]; then
+        if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        elif [ -d "$HOME/.linuxbrew" ]; then
+            eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
+        fi
     fi
-  elif [ "$OS" = "Linux" ]; then
-    if [ -d "/home/linuxbrew/.linuxbrew" ]; then
-      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    elif [ -d "$HOME/.linuxbrew" ]; then
-      eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
-    fi
-  fi
 }
 
 # --------------------------------------------------------------------------------------------------
@@ -35,91 +35,109 @@ load_brew() {
 # --------------------------------------------------------------------------------------------------
 
 install_system_dependencies() {
-  if [ "$OS" = "Linux" ]; then
-    e_section "System Dependencies"
-    e_header "Installing apt packages..."
-    export DEBIAN_FRONTEND=noninteractive
+    if [ "$OS" = "Linux" ]; then
+        e_section "System Dependencies"
+        e_header "Installing apt packages..."
+        export DEBIAN_FRONTEND=noninteractive
 
-    # Dependencies for Homebrew and basic build tools
-    sudo apt-get update
-    sudo apt-get install -y build-essential procps curl file git
+        # Dependencies for Homebrew and basic build tools
+        sudo apt-get update
+        sudo apt-get install -y build-essential procps curl file git
 
-    # Install zsh if not present
-    sudo apt-get install -y zsh
+        # Install zsh if not present
+        sudo apt-get install -y zsh
 
-    e_done "System dependencies installed"
-  fi
+        e_done "System dependencies installed"
+    fi
 }
 
 install_homebrew() {
-  e_section "Homebrew Setup"
-  if ! has_command brew; then
-    e_header "Installing Homebrew..."
-    # Set CI=1 to avoid interactive prompt
-    CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    e_section "Homebrew Setup"
+    if ! has_command brew; then
+        e_header "Installing Homebrew..."
+        # Set CI=1 to avoid interactive prompt
+        CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-    load_brew
-    e_done "Homebrew installed"
-  else
-    load_brew
-    e_header "Homebrew already installed"
-  fi
+        load_brew
+        e_done "Homebrew installed"
+    else
+        load_brew
+        e_header "Homebrew already installed"
+    fi
 }
 
 install_packages() {
-  e_section "Package Installation"
-  e_header "Installing packages via Homebrew..."
+    e_section "Package Installation"
+    e_header "Installing packages via Homebrew..."
 
-  # Update brew
-  brew update
+    # Update brew
+    brew update
 
-  # Common tools list
-  local formulas=(
-    bat
-    curl
-    eza
-    fd
-    fzf
-    gdu
-    ghq
-    git
-    gitui
-    git-delta
-    mise
-    neovim
-    ripgrep
-    sheldon
-    starship
-    tmux
-    wget
-    zellij
-    zoxide
-    zsh
-  )
-
-  # OS specific additions
-  if [ "$OS" = "Darwin" ]; then
-    formulas+=(
-      gpg
-      gawk
-      trash
+    # Common tools list
+    local formulas=(
+        bat
+        beautysh
+        curl
+        eza
+        fd
+        fzf
+        gdu
+        ghq
+        git
+        gitui
+        git-delta
+        libyaml
+        mise
+        neovim
+        nushell
+        ripgrep
+        sheldon
+        shfmt
+        starship
+        tmux
+        wget
+        zellij
+        zoxide
+        zsh
     )
-  elif [ "$OS" = "Linux" ]; then
-    formulas+=(
-      gcc
-      gettext
-    )
-  fi
 
-  brew install "${formulas[@]}"
+    # OS specific additions
+    if [ "$OS" = "Darwin" ]; then
+        formulas+=(
+            gpg
+            gawk
+            trash
+        )
+    elif [ "$OS" = "Linux" ]; then
+        formulas+=(
+            gcc
+            gettext
+        )
+    fi
 
-  # Casks for macOS
-  if [ "$OS" = "Darwin" ]; then
-    e_header "Installing Casks..."
-    brew install --cask font-hack-nerd-font font-cica hammerspoon alacritty
-  fi
+    brew install "${formulas[@]}"
 
-  e_done "Packages installed"
+    # Casks for macOS
+    if [ "$OS" = "Darwin" ]; then
+        local casks=(
+            1password
+            alacritty
+            antigravity
+            font-cica
+            font-hack-nerd-font
+            hammerspoon
+            jetbrains-toolbox
+            raycast
+            slack
+            thebrowsercompany-dia
+            zed
+        )
+
+        e_header "Installing Casks..."
+        brew install --cask "${casks[@]}"
+    fi
+
+    e_done "Packages installed"
 }
 
 # --------------------------------------------------------------------------------------------------
@@ -127,61 +145,55 @@ install_packages() {
 # --------------------------------------------------------------------------------------------------
 
 configure_shell() {
-  e_section "Shell Configuration"
-  e_header "Configuring zsh..."
+    e_section "Shell Configuration"
+    e_header "Configuring zsh..."
 
-  local zsh_path
-  zsh_path="$(brew --prefix)/bin/zsh"
+    local zsh_path
+    zsh_path="$(brew --prefix)/bin/zsh"
 
-  if [ ! -x "$zsh_path" ]; then
-    e_warning "Homebrew zsh not found, falling back to system zsh"
-    if [ -x "/bin/zsh" ]; then zsh_path="/bin/zsh"; fi
-    if [ -x "/usr/bin/zsh" ]; then zsh_path="/usr/bin/zsh"; fi
-  fi
+    if [ ! -x "$zsh_path" ]; then
+        e_warning "Homebrew zsh not found, falling back to system zsh"
+        if [ -x "/bin/zsh" ]; then zsh_path="/bin/zsh"; fi
+        if [ -x "/usr/bin/zsh" ]; then zsh_path="/usr/bin/zsh"; fi
+    fi
 
-  # Add to /etc/shells if not present
-  if ! grep -q "$zsh_path" /etc/shells; then
-    e_header "Adding $zsh_path to /etc/shells..."
-    echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
-  fi
+    # Add to /etc/shells if not present
+    if ! grep -q "$zsh_path" /etc/shells; then
+        e_header "Adding $zsh_path to /etc/shells..."
+        echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+    fi
 
-  # Change shell
-  if [ "$SHELL" != "$zsh_path" ]; then
-    e_header "Changing shell to $zsh_path..."
-    sudo chsh -s "$zsh_path" "$USER"
-  fi
+    # Change shell
+    if [ "$SHELL" != "$zsh_path" ]; then
+        e_header "Changing shell to $zsh_path..."
+        sudo chsh -s "$zsh_path" "$USER"
+    fi
 
-  e_done "Shell configured"
+    e_done "Shell configured"
 }
 
 configure_mise() {
-  e_section "Tool Configuration"
-  e_header "Configuring mise..."
+    e_section "Tool Configuration"
+    e_header "Configuring mise..."
 
-  if has_command mise; then
-    e_header "mise is installed. Basic configuration assumed via dotfiles."
-  else
-    e_warning "mise command not found, skipping configuration"
-    return
-  fi
+    if has_command mise; then
+        e_header "mise is installed. Basic configuration assumed via dotfiles."
+    else
+        e_warning "mise command not found, skipping configuration"
+        return
+    fi
 
-  e_done "mise configured"
-}
-
-configure_ghq() {
-  e_header "Configuring ghq..."
-  git config --global ghq.root ~/.ghq
-  e_done "ghq configured"
+    e_done "mise configured"
 }
 
 configure_tpm() {
-  e_header "Configuring tpm..."
-  if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    e_done "tpm installed"
-  else
-    e_header "tpm already installed"
-  fi
+    e_header "Configuring tpm..."
+    if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+        git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+        e_done "tpm installed"
+    else
+        e_header "tpm already installed"
+    fi
 }
 
 # --------------------------------------------------------------------------------------------------
@@ -189,30 +201,29 @@ configure_tpm() {
 # --------------------------------------------------------------------------------------------------
 
 main() {
-  e_section "Setup Start"
-  e_header "Starting setup for $OS..."
+    e_section "Setup Start"
+    e_header "Starting setup for $OS..."
 
-  if [ "$OS" = "Linux" ]; then
-    install_system_dependencies
-  fi
+    if [ "$OS" = "Linux" ]; then
+        install_system_dependencies
+    fi
 
-  install_homebrew
-  install_packages
+    install_homebrew
+    install_packages
 
-  configure_shell
-  configure_mise
-  configure_ghq
-  configure_tpm
+    configure_shell
+    configure_mise
+    configure_tpm
 
-  # Deploy dotfiles
-  if [ -f "$SCRIPT_DIR/deploy" ]; then
-    "$SCRIPT_DIR/deploy"
-  else
-    e_error "Deploy script not found!"
-  fi
+    # Deploy dotfiles
+    if [ -f "$SCRIPT_DIR/deploy" ]; then
+        "$SCRIPT_DIR/deploy"
+    else
+        e_error "Deploy script not found!"
+    fi
 
-  e_section "Complete"
-  e_done "All setup tasks completed successfully!"
+    e_section "Complete"
+    e_done "All setup tasks completed successfully!"
 }
 
 main

@@ -9,20 +9,20 @@ source "$SCRIPT_DIR/utils.sh"
 DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
 
 list_dotfiles() {
-  e_section "Managed Dotfiles"
+    e_section "Managed Dotfiles"
 
-  local dotfiles
-  dotfiles=$(get_dotfiles)
+    local dotfiles
+    dotfiles=$(get_dotfiles)
 
-  printf " \033[36;1m%-30s\033[m %s\n" "SOURCE" "DESTINATION"
-  printf " \033[36;1m%-30s\033[m %s\n" "------" "-----------"
+    printf " \033[36;1m%-30s\033[m %s\n" "SOURCE" "DESTINATION"
+    printf " \033[36;1m%-30s\033[m %s\n" "------" "-----------"
 
-  for file in $dotfiles; do
-    local dest="$HOME/$file"
-    printf " \033[36m%-30s\033[m %s\n" "$file" "-> $dest"
-  done
+    for file in $dotfiles; do
+        local dest="$HOME/$file"
+        printf " \033[36m%-30s\033[m %s\n" "$file" "-> $dest"
+    done
 
-  printf "\n"
+    printf "\n"
 }
 
 list_dotfiles

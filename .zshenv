@@ -13,3 +13,4 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+. "$HOME/.cargo/env"

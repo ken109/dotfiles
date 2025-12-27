@@ -16,21 +16,21 @@ fi
 
 if (( ${+commands[ghq]} )); then
     function cdg() {
-      local root="$(ghq root)"
-      local repo
+        local root="$(ghq root)"
+        local repo
 
-      repo=$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $root/{}/README.*")
+        repo=$(ghq list | fzf --preview "bat --color=always --style=header,grid --line-range :80 $root/{}/README.*")
 
-      if [ -n "$repo" ]; then
-        cd "$root/$repo"
-      fi
+        if [ -n "$repo" ]; then
+            cd "$root/$repo"
+        fi
     }
 fi
 
 function dotfiles() {
     local cmd="$1"
     local dotpath="$HOME/.dotfiles"
-    
+
     case "$cmd" in
         list)
             "$dotpath/script/list"

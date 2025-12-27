@@ -5,3 +5,5 @@ openspec/
 AGENTS.md
 
 .luarc.json
+
+.config/git/
