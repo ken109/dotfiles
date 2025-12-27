@@ -78,6 +78,8 @@ install_packages() {
         bat
         beautysh
         curl
+        docker
+        docker-compose
         eza
         fd
         fzf
@@ -127,6 +129,7 @@ install_packages() {
             font-hack-nerd-font
             hammerspoon
             jetbrains-toolbox
+            orbstack
             raycast
             slack
             thebrowsercompany-dia
