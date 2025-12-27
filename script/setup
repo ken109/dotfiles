@@ -130,6 +130,7 @@ install_packages() {
             hammerspoon
             jetbrains-toolbox
             orbstack
+            parallels
             raycast
             slack
             thebrowsercompany-dia
