@@ -12,6 +12,7 @@ deploy() {
     e_section "Deploying Dotfiles"
 
     e_header "Linking files to $HOME..."
+    e_newline
 
     local dotfiles
     dotfiles=$(get_dotfiles)
@@ -28,8 +29,10 @@ deploy() {
         rm -rf "$dest"
 
         # Create symlink
-        ln -sfnv "$src" "$dest"
+        ln -sfn "$src" "$dest"
     done
+
+    "$SCRIPT_DIR/list" --no-header
 
     e_done "Dotfiles deployed"
 }

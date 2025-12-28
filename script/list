@@ -9,20 +9,87 @@ source "$SCRIPT_DIR/utils.sh"
 DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
 
 list_dotfiles() {
-    e_section "Managed Dotfiles"
+    local show_header=true
+
+    while (( $# > 0 )); do
+        case "$1" in
+            --no-header)
+                show_header=false
+                ;;
+            *)
+                ;;
+        esac
+        shift
+    done
+
+    if [[ "$show_header" == "true" ]]; then
+        e_section "Managed Dotfiles"
+    fi
 
     local dotfiles
     dotfiles=$(get_dotfiles)
 
-    printf " \033[36;1m%-30s\033[m %s\n" "SOURCE" "DESTINATION"
-    printf " \033[36;1m%-30s\033[m %s\n" "------" "-----------"
+    local max_len=6
+    local item_list=""
 
+    local OLD_IFS="$IFS"
+    IFS=$'\n'
     for file in $dotfiles; do
-        local dest="$HOME/$file"
-        printf " \033[36m%-30s\033[m %s\n" "$file" "-> $dest"
+        local len=${#file}
+        if (( len > max_len )); then
+            max_len=$len
+        fi
+
+        local app_name=""
+        if [[ "$file" == .config/* ]]; then
+            local rel="${file#.config/}"
+
+            if [[ "$rel" == */* ]]; then
+                app_name="${rel%%/*}"
+            else
+                app_name="${rel%%.*}"
+            fi
+        else
+            local temp="${file#.}"
+            app_name="${temp%%/*}"
+        fi
+
+        item_list+="${app_name}|${file}"$'\n'
     done
+    IFS="$OLD_IFS"
+
+    local sorted_list
+    sorted_list=$(echo -n "$item_list" | sort)
+
+    local width=$((max_len + 2))
+
+    local separator=""
+    for ((i=0; i<width; i++)); do separator="${separator}-"; done
+
+    printf " \033[36;1m%-*s\033[m %s\n" "$width" "SOURCE" "DESTINATION"
+    printf " \033[36;1m%-*s\033[m %s\n" "$width" "$separator" "-----------"
+
+    local current_app=""
+
+    IFS=$'\n'
+    for line in $sorted_list; do
+        if [ -z "$line" ]; then continue; fi
+
+        local app_name="${line%%|*}"
+        local file="${line#*|}"
+        local dest="$HOME/$file"
+
+        if [[ "$app_name" != "$current_app" ]]; then
+            echo ""
+            printf " \033[33;1m[ %s ]\033[m\n" "$app_name"
+            current_app="$app_name"
+        fi
+
+        printf " \033[36m%-*s\033[m %s\n" "$width" "$file" "-> $dest"
+    done
+    IFS="$OLD_IFS"
 
     printf "\n"
 }
 
-list_dotfiles
+list_dotfiles "$@"
