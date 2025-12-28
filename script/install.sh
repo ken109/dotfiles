@@ -97,11 +97,6 @@ dotfiles_install() {
     dotfiles_download
     dotfiles_initialize
 }
-# Execution guard
-if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
-    # Script is being sourced, do nothing
-    return 0
-fi
 
 # Run install
 dotfiles_install
