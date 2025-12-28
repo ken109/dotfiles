@@ -8,8 +8,6 @@ gui:
   theme:
     selectedLineBgColor:
       - underline
-    selectedRangeBgColor:
-      - underline
 
 refresher:
   refreshInterval: 3

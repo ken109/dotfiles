@@ -47,38 +47,21 @@ has_command() {
 
 get_dotfiles() {
     local dotpath="${DOTPATH:-$HOME/.dotfiles}"
-    local exclusions=(".config" ".serena" ".DS_Store" ".git" ".gitignore" ".idea" ".luarc.json")
+    local targets=(".config" ".gemini" ".zshenv")
 
-    if [ "$(uname -s)" != "Darwin" ]; then
-        exclusions+=(".hammerspoon")
+    if [ "$(uname -s)" = "Darwin" ]; then
+        targets+=(".hammerspoon")
     fi
 
-    # Find candidates: .config subdirectories and dotfiles in root
-    # Use a subshell to change directory without affecting the caller
     (
         cd "$dotpath" || return 1
-        local candidates
-        if [ -d ".config" ]; then
-            candidates=$(find .config -mindepth 1 -maxdepth 1)
-        else
-            candidates=""
-        fi
-        candidates+=" $(find . -maxdepth 1 -name ".*" -not -name "." -not -name ".." | sed 's|^\./||')"
 
-        for file in $candidates; do
-            local skip=false
-            for exclusion in "${exclusions[@]}"; do
-                if [[ "$file" == "$exclusion" ]]; then
-                    skip=true
-                    break
-                fi
-            done
-
-            if [[ "$skip" == "true" ]]; then
-                continue
+        for target in "${targets[@]}"; do
+            if [ -d "$target" ]; then
+                fd -H -t f . "$target"
+            elif [ -f "$target" ]; then
+                echo "$target"
             fi
-
-            echo "$file"
         done
     )
 }

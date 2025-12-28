@@ -1,9 +1,7 @@
-.idea
+/.idea
 *.log
 
-openspec/
-AGENTS.md
+/openspec/
+/AGENTS.md
 
-.luarc.json
-
-.config/git/
+/.luarc.json

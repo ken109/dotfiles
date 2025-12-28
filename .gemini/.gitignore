@@ -1,7 +1,0 @@
-*
-
-!commands/
-!commands/**/*
-!.gitignore
-!GEMINI.md
-!settings.json
