@@ -1,3 +1,21 @@
 [user]
-        name = Kensuke Kubo
-        email = kensukekubo19@gmail.com
+    name = Kensuke Kubo
+    email = kensukekubo19@gmail.com
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[core]
+    pager = delta
+    autocrlf = input
+    precomposeunicode = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    side-by-side = true
