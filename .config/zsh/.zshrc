@@ -1,13 +1,15 @@
 #!/usr/bin/env zsh
 
+local ZSH_CONFIG="${XDG_CONFIG_HOME}/zsh"
+
 # Load configurations
-source "$ZDOTDIR/rc/env.zsh"
-source "$ZDOTDIR/rc/completion.zsh"
-source "$ZDOTDIR/rc/init.zsh"
-source "$ZDOTDIR/rc/options.zsh"
-source "$ZDOTDIR/rc/aliases.zsh"
-source "$ZDOTDIR/rc/functions.zsh"
-source "$ZDOTDIR/rc/hooks.zsh"
+source "$ZSH_CONFIG/rc/env.zsh"
+source "$ZSH_CONFIG/rc/completion.zsh"
+source "$ZSH_CONFIG/rc/init.zsh"
+source "$ZSH_CONFIG/rc/options.zsh"
+source "$ZSH_CONFIG/rc/aliases.zsh"
+source "$ZSH_CONFIG/rc/functions.zsh"
+source "$ZSH_CONFIG/rc/hooks.zsh"
 
 # =======================================================
 # local

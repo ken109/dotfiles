@@ -55,6 +55,9 @@ symbol = ''
 [line_break]
 disabled = true
 
+[nix_shell]
+format = 'nix-shell:[$state( \($name\))]($style) '
+
 [python]
 format = 'python:[$version]($style) '
 symbol = ''

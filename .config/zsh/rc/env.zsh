@@ -19,6 +19,7 @@ elif [[ "$(uname)" = "Linux" ]]; then
     fi
 fi
 
+export PATH="/usr/local/bin:$PATH"
 # Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
 export PATH="$HOME/.local/bin:$PATH"
 
