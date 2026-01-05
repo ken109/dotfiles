@@ -22,18 +22,16 @@
   "base_keymap": "JetBrains",
   "theme": "Ayu Dark",
   "buffer_font_size": 12.0,
-
+  "load_direnv": "shell_hook",
   "code_actions_on_format": {
     "source.organizeImports.biome": true,
     "source.fixAll.biome": true,
   },
-
   "agent_servers": {
     "gemini": {
       "ignore_system_version": false,
     },
   },
-
   "languages": {
     "Shell Script": {
       "format_on_save": "on",
@@ -43,9 +41,6 @@
           "arguments": ["-"],
         },
       },
-    },
-    "Nix": {
-      "language_servers": ["nixd", "!nil"],
     },
   },
 }

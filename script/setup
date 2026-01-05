@@ -78,6 +78,7 @@ install_packages() {
         bat
         beautysh
         curl
+        direnv
         docker
         docker-compose
         eza
@@ -129,12 +130,14 @@ install_packages() {
             font-hack-nerd-font
             hammerspoon
             jetbrains-toolbox
+            nordvpn
             orbstack
             parallels
             raycast
             slack
             thebrowsercompany-dia
             zed
+            zoom
         )
 
         e_header "Installing Casks..."
