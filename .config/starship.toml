@@ -13,6 +13,10 @@ error_symbol = '[>](red)'
 [directory]
 truncation_length = 0
 
+[docker_context]
+format = 'docker:[$context]($style) '
+detect_folders = ['docker']
+
 [git_branch]
 always_show_remote = false
 format = 'on [$symbol($remote_name/$remote_branch:)$branch]($style) '
