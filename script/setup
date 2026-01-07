@@ -133,6 +133,7 @@ install_packages() {
             nordvpn
             orbstack
             parallels
+            postman
             raycast
             slack
             thebrowsercompany-dia
