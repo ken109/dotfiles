@@ -1,0 +1,29 @@
+[[rule]]
+mcpName = "linear"
+toolName = "get_issue"
+decision = "allow"
+priority = 200
+
+[[rule]]
+mcpName = "serena"
+toolName = "initial_instructions"
+decision = "allow"
+priority = 200
+
+[[rule]]
+mcpName = "serena"
+toolName = "check_onboarding_performed"
+decision = "allow"
+priority = 200
+
+[[rule]]
+mcpName = "serena"
+toolName = "list_dir"
+decision = "allow"
+priority = 200
+
+[[rule]]
+mcpName = "serena"
+toolName = "search_for_pattern"
+decision = "allow"
+priority = 200

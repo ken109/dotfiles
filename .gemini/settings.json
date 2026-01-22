@@ -25,8 +25,7 @@
       }
     },
     "linear": {
-      "command": "npx",
-      "args": ["mcp-remote", "https://mcp.linear.app/sse"]
+      "httpUrl": "https://mcp.linear.app/mcp"
     },
     "playwright": {
       "command": "npx",
@@ -49,7 +48,7 @@
     "fileName": ["AGENTS.md", "GEMINI.md"],
     "fileFiltering": {
       "respectGitIgnore": false,
-      "respectGeminiIgnore": false
+      "respectGeminiIgnore": true
     }
   },
   "ide": {
@@ -59,7 +58,8 @@
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
-    }
+    },
+    "enablePermanentToolApproval": true
   },
   "general": {
     "vimMode": false,
@@ -69,5 +69,12 @@
   },
   "output": {
     "format": "text"
+  },
+  "hooks": {
+    "enabled": true
+  },
+  "experimental": {
+    "skills": true,
+    "jitContext": true
   }
 }

@@ -13,3 +13,8 @@ normal = { family = "Hack Nerd Font Mono" }
 
 [terminal]
 shell = { program = "/opt/homebrew/bin/zellij" }
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
