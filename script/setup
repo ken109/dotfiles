@@ -91,6 +91,7 @@ install_packages() {
         bat
         beautysh
         curl
+        devbox
         direnv
         docker
         docker-compose
@@ -129,6 +130,11 @@ install_packages() {
             gcc
             gettext
         )
+
+        if has_command pacman; then
+            e_header "Installing Alacritty and fonts via pacman..."
+            sudo pacman -S --noconfirm alacritty ttf-hack-nerd
+        fi
     fi
 
     brew install "${formulas[@]}"
@@ -213,7 +219,7 @@ configure_tpm() {
         git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
         e_done "tpm installed"
     else
-        e_header "tpm already installed"
+        e_done "tpm already installed"
     fi
 }
 
@@ -235,6 +241,7 @@ main() {
     configure_shell
     configure_mise
     configure_tpm
+    configure_alacritty
 
     # Deploy dotfiles
     if [ -f "$SCRIPT_DIR/deploy" ]; then

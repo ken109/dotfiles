@@ -9,6 +9,8 @@ source "$SCRIPT_DIR/utils.sh"
 DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
 
 deploy() {
+    configure_alacritty
+
     e_section "Deploying Dotfiles"
 
     e_header "Linking files to $HOME..."

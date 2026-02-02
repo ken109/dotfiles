@@ -45,6 +45,30 @@ has_command() {
     command -v "$1" >/dev/null 2>&1
 }
 
+configure_alacritty() {
+    local dotpath="${DOTPATH:-$HOME/.dotfiles}"
+    local os
+    os="$(uname -s)"
+
+    e_section "Alacritty Configuration"
+    local zellij_path
+    zellij_path=$(command -v zellij)
+
+    if [ -n "$zellij_path" ]; then
+        e_header "Setting Zellij path in alacritty.toml to $zellij_path..."
+        local config_file="$dotpath/.config/alacritty/alacritty.toml"
+
+        if [ "$os" = "Darwin" ]; then
+            sed -i '' "s|program = \".*zellij\"|program = \"$zellij_path\"|" "$config_file"
+        else
+            sed -i "s|program = \".*zellij\"|program = \"$zellij_path\"|" "$config_file"
+        fi
+        e_done "Alacritty configured with absolute path"
+    else
+        e_warning "zellij not found, skipping Alacritty path configuration"
+    fi
+}
+
 get_dotfiles() {
     local dotpath="${DOTPATH:-$HOME/.dotfiles}"
     local targets=(".config" ".gemini" ".zshenv")
