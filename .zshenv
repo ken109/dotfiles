@@ -10,10 +10,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
     launchctl setenv XDG_CACHE_HOME "$XDG_CACHE_HOME"
     launchctl setenv XDG_DATA_HOME "$XDG_DATA_HOME"
     launchctl setenv XDG_STATE_HOME "$XDG_STATE_HOME"
-
-    export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-elif [[ "$OSTYPE" == linux* ]]; then
-    export SSH_AUTH_SOCK=~/.1password/agent.sock
 fi
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

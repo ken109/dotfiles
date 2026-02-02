@@ -1,8 +1,11 @@
 # =======================================================
 # path
 # =======================================================
-
-export XDG_CONFIG_HOME="$HOME/.config"
+if [[ "$(uname)" == "Darwin" ]]; then
+    export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+elif [[ "$(uname)" == "Linux" ]]; then
+    export SSH_AUTH_SOCK=~/.1password/agent.sock
+fi
 
 # Homebrew PATH initialization (must be early)
 if [[ "$(uname)" = "Darwin" ]]; then
