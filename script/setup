@@ -37,17 +37,30 @@ load_brew() {
 install_system_dependencies() {
     if [ "$OS" = "Linux" ]; then
         e_section "System Dependencies"
-        e_header "Installing apt packages..."
-        export DEBIAN_FRONTEND=noninteractive
 
-        # Dependencies for Homebrew and basic build tools
-        sudo apt-get update
-        sudo apt-get install -y build-essential procps curl file git
+        if has_command apt-get; then
+            e_header "Installing apt packages..."
+            export DEBIAN_FRONTEND=noninteractive
 
-        # Install zsh if not present
-        sudo apt-get install -y zsh
+            # Dependencies for Homebrew and basic build tools
+            sudo apt-get update
+            sudo apt-get install -y build-essential procps curl file git
 
-        e_done "System dependencies installed"
+            # Install zsh if not present
+            sudo apt-get install -y zsh
+
+            e_done "System dependencies installed"
+        elif has_command pacman; then
+            e_header "Installing pacman packages..."
+
+            # Sync and update system
+            sudo pacman -Syu --noconfirm
+
+            # Dependencies for Homebrew and basic build tools
+            sudo pacman -S --noconfirm base-devel curl git zsh procps-ng file
+
+            e_done "System dependencies installed"
+        fi
     fi
 }
 
