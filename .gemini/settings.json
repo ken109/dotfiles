@@ -9,39 +9,38 @@
       "run_shell_command(echo)",
       "run_shell_command(git branch --show-current)",
       "run_shell_command(git diff main...HEAD)",
-      "run_shell_command(git log main..HEAD)"
+      "run_shell_command(git log main..HEAD)",
+      "run_shell_command(openspec validate)"
     ],
     "exclude": ["run_shell_command(git push)"]
   },
   "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_TOKEN"]
-    },
     "github": {
       "httpUrl": "https://api.githubcopilot.com/mcp/",
       "headers": {
         "Authorization": "Bearer $GITHUB_MCP_PAT"
-      }
+      },
+      "includeTools": ["pull_request_read", "create_pull_request", "update_pull_request"]
     },
-    "linear": {
-      "httpUrl": "https://mcp.linear.app/mcp"
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@automatalabs/mcp-server-playwright"]
     },
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--context",
-        "ide",
-        "--project-from-cwd"
-      ]
+    "linear": {
+      "httpUrl": "https://mcp.linear.app/mcp",
+      "includeTools": ["get_issue", "get_issue_status", "list_issues"]
+    },
+    "vibe_kanban": {
+      "command": "npx",
+      "args": ["-y", "vibe-kanban@latest", "--mcp"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_TOKEN"]
     }
   },
   "context": {
@@ -70,11 +69,7 @@
   "output": {
     "format": "text"
   },
-  "hooks": {
-    "enabled": true
-  },
   "experimental": {
-    "skills": true,
     "jitContext": true
   }
 }
