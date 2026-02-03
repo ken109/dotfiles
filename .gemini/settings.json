@@ -12,7 +12,7 @@
       "run_shell_command(git log main..HEAD)",
       "run_shell_command(openspec validate)"
     ],
-    "exclude": ["run_shell_command(git push)"]
+    "exclude": ["run_shell_command(git commit)", "run_shell_command(git push)"]
   },
   "mcpServers": {
     "github": {
