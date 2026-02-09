@@ -12,7 +12,7 @@ size = 12
 normal = { family = "Hack Nerd Font Mono" }
 
 [terminal]
-shell = { program = "/usr/bin/zellij" }
+shell = { program = "/opt/homebrew/bin/zellij" }
 
 [[keyboard.bindings]]
 key = "Return"

@@ -7,6 +7,11 @@
       "run_shell_command(ls)",
       "run_shell_command(cat)",
       "run_shell_command(echo)",
+      "run_shell_command(find)",
+      "run_shell_command(fd)",
+      "run_shell_command(grep)",
+      "run_shell_command(rg)",
+      "run_shell_command(head)",
       "run_shell_command(git branch --show-current)",
       "run_shell_command(git diff main...HEAD)",
       "run_shell_command(git log main..HEAD)",
@@ -18,25 +23,29 @@
     "github": {
       "httpUrl": "https://api.githubcopilot.com/mcp/",
       "headers": {
-        "Authorization": "Bearer $GITHUB_MCP_PAT"
+        "Authorization": "Bearer $GITHUB_MCP_PAT",
+        "X-MCP-Toolsets": "context,pull_requests,actions"
       },
-      "includeTools": ["pull_request_read", "create_pull_request", "update_pull_request"]
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "includeTools": [
+        "pull_request_read",
+        "create_pull_request",
+        "update_pull_request",
+        "get_job_logs"
+      ]
     },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@automatalabs/mcp-server-playwright"]
     },
     "linear": {
-      "httpUrl": "https://mcp.linear.app/mcp",
-      "includeTools": ["get_issue", "get_issue_status", "list_issues"]
-    },
-    "vibe_kanban": {
       "command": "npx",
-      "args": ["-y", "vibe-kanban@latest", "--mcp"]
+      "args": ["-y", "mcp-remote", "https://mcp.linear.app/mcp"],
+      "includeTools": [
+        "get_issue",
+        "get_issue_status",
+        "list_comments",
+        "list_issues"
+      ]
     },
     "context7": {
       "command": "npx",
