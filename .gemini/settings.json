@@ -1,24 +1,4 @@
 {
-  "tools": {
-    "autoAccept": true,
-    "allowed": [
-      "web_fetch",
-      "google_web_search",
-      "run_shell_command(ls)",
-      "run_shell_command(cat)",
-      "run_shell_command(echo)",
-      "run_shell_command(find)",
-      "run_shell_command(fd)",
-      "run_shell_command(grep)",
-      "run_shell_command(rg)",
-      "run_shell_command(head)",
-      "run_shell_command(git branch --show-current)",
-      "run_shell_command(git diff main...HEAD)",
-      "run_shell_command(git log main..HEAD)",
-      "run_shell_command(openspec validate)"
-    ],
-    "exclude": ["run_shell_command(git commit)", "run_shell_command(git push)"]
-  },
   "mcpServers": {
     "github": {
       "httpUrl": "https://api.githubcopilot.com/mcp/",
@@ -32,10 +12,6 @@
         "update_pull_request",
         "get_job_logs"
       ]
-    },
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@automatalabs/mcp-server-playwright"]
     },
     "linear": {
       "command": "npx",
@@ -73,7 +49,12 @@
     "vimMode": false,
     "enablePromptCompletion": false,
     "debugKeystrokeLogging": false,
-    "previewFeatures": true
+    "previewFeatures": true,
+    "sessionRetention": {
+      "enabled": true,
+      "maxAge": "30d",
+      "warningAcknowledged": true
+    }
   },
   "output": {
     "format": "text"

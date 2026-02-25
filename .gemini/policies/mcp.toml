@@ -1,0 +1,11 @@
+[[rule]]
+mcpName = "linear"
+toolName = "get_issue"
+decision = "allow"
+priority = 200
+
+[[rule]]
+mcpName = "linear"
+toolName = "list_issues"
+decision = "allow"
+priority = 200

@@ -11,9 +11,6 @@ option_as_alt = "Both"
 size = 12
 normal = { family = "Hack Nerd Font Mono" }
 
-[terminal]
-shell = { program = "/opt/homebrew/bin/zellij" }
-
 [[keyboard.bindings]]
 key = "Return"
 mods = "Shift"

@@ -16,3 +16,36 @@ source "$ZSH_CONFIG/rc/hooks.zsh"
 # =======================================================
 
 [ -f "$HOME/.zlocal" ] && source "$HOME/.zlocal"
+
+# =======================================================
+# run zellij
+# =======================================================
+
+if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$ZELLIJ" ]]; then
+    local sessions=$(zellij list-sessions -n 2>/dev/null)
+
+    local selection=$(
+        { echo "[Create New Session]"; echo "$sessions"; } | \
+            fzf --header "Zellij: Select session or create new" \
+            --height 40% --reverse --exit-0
+    )
+
+    if [[ -z "$selection" ]]; then
+        return
+    fi
+
+    if [[ "$selection" == "[Create New Session]" ]]; then
+        echo -n "Enter new session name (leave blank for random): "
+        read session_name
+        if [[ -n "$session_name" ]]; then
+            zellij -s "$session_name"
+        else
+            zellij
+        fi
+    else
+        # 【重要】awk を使って、最初のスペースより前の「セッション名」だけを抜き出す
+        # これにより "j-cat [Created...]" から "j-cat" だけが抽出されます
+        local session_id=$(echo "$selection" | awk '{print $1}')
+        zellij attach "$session_id"
+    fi
+fi

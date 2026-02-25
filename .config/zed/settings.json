@@ -7,6 +7,9 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "edit_predictions": {
+    "provider": "zed"
+  },
   "buffer_font_weight": 400.0,
   "buffer_font_family": "Hack Nerd Font Mono",
   "telemetry": {

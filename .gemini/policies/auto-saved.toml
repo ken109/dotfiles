@@ -1,5 +1,0 @@
-[[rule]]
-mcpName = "linear"
-toolName = "get_issue"
-decision = "allow"
-priority = 200
