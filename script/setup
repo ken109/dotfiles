@@ -42,22 +42,36 @@ install_system_dependencies() {
             e_header "Installing apt packages..."
             export DEBIAN_FRONTEND=noninteractive
 
-            # Dependencies for Homebrew and basic build tools
             sudo apt-get update
-            sudo apt-get install -y build-essential procps curl file git
-
-            # Install zsh if not present
-            sudo apt-get install -y zsh
+            sudo apt-get install -y \
+                build-essential \
+                ca-certificates \
+                curl \
+                file \
+                gettext \
+                git \
+                libyaml-dev \
+                procps \
+                tmux \
+                wget \
+                zsh
 
             e_done "System dependencies installed"
         elif has_command pacman; then
             e_header "Installing pacman packages..."
 
-            # Sync and update system
             sudo pacman -Syu --noconfirm
-
-            # Dependencies for Homebrew and basic build tools
-            sudo pacman -S --noconfirm base-devel curl git zsh procps-ng file
+            sudo pacman -S --noconfirm \
+                base-devel \
+                curl \
+                file \
+                gettext \
+                git \
+                libyaml \
+                procps-ng \
+                tmux \
+                wget \
+                zsh
 
             e_done "System dependencies installed"
         fi
@@ -90,20 +104,13 @@ install_packages() {
     local formulas=(
         bat
         beautysh
-        curl
-        devbox
-        direnv
-        docker
-        docker-compose
         eza
         fd
         fzf
         gdu
         ghq
-        git
         gitui
         git-delta
-        libyaml
         mise
         neovim
         nushell
@@ -111,26 +118,26 @@ install_packages() {
         sheldon
         shfmt
         starship
-        tmux
-        wget
         zellij
         zoxide
-        zsh
     )
 
     # OS specific additions
     if [ "$OS" = "Darwin" ]; then
         formulas+=(
+            curl
+            docker
+            docker-compose
+            git
             gpg
             gawk
+            libyaml
+            tmux
             trash
+            wget
+            zsh
         )
     elif [ "$OS" = "Linux" ]; then
-        formulas+=(
-            gcc
-            gettext
-        )
-
         if has_command pacman; then
             e_header "Installing Alacritty and fonts via pacman..."
             sudo pacman -S --noconfirm alacritty ttf-hack-nerd
@@ -170,6 +177,42 @@ install_packages() {
 # --------------------------------------------------------------------------------------------------
 #  Configuration Functions
 # --------------------------------------------------------------------------------------------------
+
+install_docker() {
+    if [ "$OS" != "Linux" ]; then
+        return
+    fi
+
+    e_section "Docker Installation"
+
+    if has_command docker; then
+        e_header "Docker already installed"
+        return
+    fi
+
+    if has_command apt-get; then
+        e_header "Installing Docker via apt..."
+        export DEBIAN_FRONTEND=noninteractive
+
+        sudo install -m 0755 -d /etc/apt/keyrings
+        sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+        sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+        # shellcheck disable=SC1091
+        sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null <<HEREDOC
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+HEREDOC
+
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+        e_done "Docker installed"
+    fi
+}
 
 configure_shell() {
     e_section "Shell Configuration"
@@ -237,6 +280,7 @@ main() {
 
     install_homebrew
     install_packages
+    install_docker
 
     configure_shell
     configure_mise
