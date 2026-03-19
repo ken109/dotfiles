@@ -7,3 +7,6 @@ eval "$(sheldon source)"
 eval "$(mise activate zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
