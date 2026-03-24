@@ -8,7 +8,7 @@
 // from the command palette or from `Zed` application menu.
 {
   "edit_predictions": {
-    "provider": "zed"
+    "provider": "zed",
   },
   "buffer_font_weight": 400.0,
   "buffer_font_family": "Hack Nerd Font Mono",
@@ -29,11 +29,6 @@
   "code_actions_on_format": {
     "source.organizeImports.biome": true,
     "source.fixAll.biome": true,
-  },
-  "agent_servers": {
-    "gemini": {
-      "ignore_system_version": false,
-    },
   },
   "languages": {
     "Shell Script": {
