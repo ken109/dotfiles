@@ -57,11 +57,11 @@ install_system_dependencies() {
                 zsh
 
             e_done "System dependencies installed"
-        elif has_command pacman; then
-            e_header "Installing pacman packages..."
+        elif has_command yay; then
+            e_header "Installing yay packages..."
 
-            sudo pacman -Syu --noconfirm
-            sudo pacman -S --noconfirm \
+            yay -Syu --noconfirm
+            yay -S --noconfirm \
                 base-devel \
                 curl \
                 file \
@@ -138,22 +138,27 @@ install_packages() {
             zsh
         )
     elif [ "$OS" = "Linux" ]; then
-        if has_command pacman; then
-            e_header "Installing Alacritty and fonts via pacman..."
-            sudo pacman -S --noconfirm alacritty ttf-hack-nerd
+        if has_command yay; then
+            e_header "Installing Ghostty via yay..."
+            yay -S --noconfirm ghostty
+        elif has_command apt-get; then
+            e_header "Installing Ghostty via ghostty-ubuntu..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
         fi
     fi
 
     brew install "${formulas[@]}"
 
-    # Casks for macOS
+    # Casks
+    local casks=(
+        font-cica
+    )
+
     if [ "$OS" = "Darwin" ]; then
-        local casks=(
+        casks+=(
             1password
-            alacritty
+            ghostty
             antigravity
-            font-cica
-            font-hack-nerd-font
             hammerspoon
             jetbrains-toolbox
             nordvpn
@@ -166,10 +171,10 @@ install_packages() {
             zed
             zoom
         )
-
-        e_header "Installing Casks..."
-        brew install --cask "${casks[@]}"
     fi
+
+    e_header "Installing Casks..."
+    brew install --cask "${casks[@]}"
 
     e_done "Packages installed"
 }

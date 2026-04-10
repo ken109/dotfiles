@@ -11,7 +11,7 @@
     "provider": "zed",
   },
   "buffer_font_weight": 400.0,
-  "buffer_font_family": "Hack Nerd Font Mono",
+  "buffer_font_family": "Cica",
   "telemetry": {
     "diagnostics": true,
     "metrics": true,
