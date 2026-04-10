@@ -1,0 +1,10 @@
+{
+  "app": {
+    "appearance": "dark",
+    "minimalMode": true,
+    "sendAnonymousTelemetry": false
+  },
+  "automation": {
+    "claudeCodeIntegration": true
+  }
+}
