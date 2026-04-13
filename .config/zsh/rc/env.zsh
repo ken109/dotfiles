@@ -41,3 +41,8 @@ if (( ${+commands[go]} )); then
     fi
     export PATH="$GOPATH/bin:$PATH"
 fi
+
+# Vite+ bin (https://viteplus.dev)
+if [[ -f "$HOME/.vite-plus/env" ]]; then
+    . "$HOME/.vite-plus/env"
+fi
