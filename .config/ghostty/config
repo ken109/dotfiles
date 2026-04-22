@@ -2,8 +2,8 @@
 theme = Vercel
 
 # Font
-font-family = Cica
-font-size = 12
+font-family = Hack Nerd Font Mono
+font-size = 10
 
 # Window
 window-padding-x = 10
