@@ -3,7 +3,7 @@ require("hs.ipc")
 require("global/alert")
 require("global/ime")
 
-require("applications/ghostty")
+require("applications/terminal")
 require("applications/brew")
 require("applications/hammerspoon")
 

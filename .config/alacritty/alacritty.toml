@@ -1,0 +1,49 @@
+[window]
+padding = { x = 10, y = 10 }
+decorations = "None"
+opacity = 0.75
+blur = true
+startup_mode = "Maximized"
+level = "AlwaysOnTop"
+option_as_alt = "Both"
+
+[font]
+size = 12
+normal = { family = "Cica" }
+
+[colors.primary]
+background = "#101010"
+foreground = "#fafafa"
+
+[colors.cursor]
+cursor = "#f32882"
+text = "#fafafa"
+
+[colors.selection]
+background = "#005be7"
+text = "#fafafa"
+
+[colors.normal]
+black   = "#000000"
+red     = "#fc0036"
+green   = "#29a948"
+yellow  = "#ffae00"
+blue    = "#006aff"
+magenta = "#f32882"
+cyan    = "#00ac96"
+white   = "#feffff"
+
+[colors.bright]
+black   = "#a8a8a8"
+red     = "#ff8080"
+green   = "#4be15d"
+yellow  = "#ffae00"
+blue    = "#49aeff"
+magenta = "#f97ea8"
+cyan    = "#00e4c4"
+white   = "#fefefe"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
