@@ -17,3 +17,6 @@ fi
 if [[ $_Z_COMPDUMP -nt ${_Z_COMPDUMP}.zwc || ! -f ${_Z_COMPDUMP}.zwc ]]; then
     zcompile "$_Z_COMPDUMP"
 fi
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
