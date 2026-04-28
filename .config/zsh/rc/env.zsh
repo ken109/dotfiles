@@ -46,3 +46,9 @@ fi
 if [[ -f "$HOME/.vite-plus/env" ]]; then
     . "$HOME/.vite-plus/env"
 fi
+
+# bun
+if [[ -d "$HOME/.bun" ]]; then
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+fi
