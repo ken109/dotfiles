@@ -49,3 +49,8 @@ if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$ZELLIJ" ]]; then
         zellij attach "$session_id"
     fi
 fi
+
+# bun completions
+[ -s "/Users/ken109/.bun/_bun" ] && source "/Users/ken109/.bun/_bun"
+
+. "$HOME/.local/share/../bin/env"
