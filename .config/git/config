@@ -19,3 +19,5 @@
 
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
+[coderabbit]
+	machineId = cli/f9ff3c7ba10243aab4b3c4c044cdf78e
