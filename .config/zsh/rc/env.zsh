@@ -22,6 +22,16 @@ elif [[ "$(uname)" = "Linux" ]]; then
     fi
 fi
 
+# `brew shellenv` exports FPATH, which leaks a stale Cellar functions path into
+# child shells across zsh upgrades (e.g. .../zsh/5.9 lingers after 5.9.1 lands).
+# Make sure the running zsh's own functions dir is in fpath, prune dead entries,
+# and stop FPATH from being exported so the stale value can't propagate again.
+if [[ -d "${HOMEBREW_PREFIX}/share/zsh/functions" ]]; then
+    fpath=("${HOMEBREW_PREFIX}/share/zsh/functions" $fpath)
+fi
+fpath=(${^fpath}(N))   # drop non-existent directories
+typeset +x FPATH       # un-export so child shells recompute their own
+
 export PATH="/usr/local/bin:$PATH"
 # Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
 export PATH="$HOME/.local/bin:$PATH"
