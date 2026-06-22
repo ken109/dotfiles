@@ -21,7 +21,7 @@ source "$ZSH_CONFIG/rc/hooks.zsh"
 # run zellij
 # =======================================================
 
-if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$ZELLIJ" ]]; then
+if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$ZELLIJ" && -z "$ZED_TERM" ]]; then
     local sessions=$(zellij list-sessions -n 2>/dev/null)
 
     local selection=$(
