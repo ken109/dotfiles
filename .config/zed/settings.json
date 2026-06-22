@@ -7,6 +7,23 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
+  "base_keymap": "JetBrains",
+  "git": {
+    
+  },
+  "terminal": {
+    "blinking": "terminal_controlled",
+    "toolbar": {
+      "breadcrumbs": false
+    },
+    "flexible": true
+  },
+  "proxy": "",
   "project_panel": {
     "dock": "left"
   },
@@ -34,12 +51,7 @@
     "metrics": true,
   },
   "vim_mode": true,
-  "icon_theme": {
-    "mode": "dark",
-    "light": "Zed (Default)",
-    "dark": "Zed (Default)",
-  },
-  "base_keymap": "JetBrains",
+  "icon_theme": "Zed (Default)",
   "theme": "Ayu Dark",
   "buffer_font_size": 10.0,
   "load_direnv": "shell_hook",
