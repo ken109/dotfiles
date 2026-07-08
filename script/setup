@@ -278,6 +278,66 @@ configure_tpm() {
     fi
 }
 
+# GNOME (Wayland): enable the Alacritty toggle extension and bind Super+Shift+Return
+# to it. This replaces the X11-only `tdrop`, which cannot toggle native Wayland
+# windows. The extension itself is deployed as a symlink under
+# ~/.local/share/gnome-shell/extensions by the deploy script.
+configure_gnome() {
+    if [ "$OS" != "Linux" ]; then
+        return
+    fi
+
+    if ! has_command gnome-extensions || ! has_command gsettings; then
+        return
+    fi
+
+    e_section "GNOME Configuration"
+
+    local uuid="alacritty-toggle@ken109"
+
+    e_header "Enabling GNOME extension: $uuid..."
+    # A brand-new extension is unknown to the already-running shell, so
+    # `gnome-extensions enable` fails on Wayland (no hot rescan). Fall back to
+    # writing the enabled-extensions key directly; the shell picks it up on the
+    # next login.
+    if gnome-extensions enable "$uuid" 2>/dev/null; then
+        e_done "Extension enabled"
+    else
+        local enabled
+        enabled="$(gsettings get org.gnome.shell enabled-extensions)"
+        if [[ "$enabled" != *"'$uuid'"* ]]; then
+            if [ "$enabled" = "@as []" ] || [ "$enabled" = "[]" ]; then
+                gsettings set org.gnome.shell enabled-extensions "['$uuid']"
+            else
+                gsettings set org.gnome.shell enabled-extensions "${enabled%]*}, '$uuid']"
+            fi
+        fi
+        e_warning "Extension queued; it activates after the next login (log out/in)."
+    fi
+
+    e_header "Binding Super+Shift+Return to the terminal toggle..."
+    local schema="org.gnome.settings-daemon.plugins.media-keys"
+    local kb_path="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/alacritty-toggle/"
+    local kb_schema="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$kb_path"
+
+    # Register the custom keybinding path (idempotent).
+    local current
+    current="$(gsettings get "$schema" custom-keybindings)"
+    if [[ "$current" != *"$kb_path"* ]]; then
+        if [ "$current" = "@as []" ] || [ "$current" = "[]" ]; then
+            gsettings set "$schema" custom-keybindings "['$kb_path']"
+        else
+            gsettings set "$schema" custom-keybindings "${current%]*}, '$kb_path']"
+        fi
+    fi
+
+    gsettings set "$kb_schema" name "Alacritty Toggle"
+    gsettings set "$kb_schema" command "/usr/bin/gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/AlacrittyToggle --method org.gnome.Shell.Extensions.AlacrittyToggle.Toggle Alacritty alacritty"
+    gsettings set "$kb_schema" binding "<Shift><Super>Return"
+
+    e_done "GNOME configured"
+}
+
 # --------------------------------------------------------------------------------------------------
 #  Main Logic
 # --------------------------------------------------------------------------------------------------
@@ -305,6 +365,9 @@ main() {
     else
         e_error "Deploy script not found!"
     fi
+
+    # GNOME setup must run after deploy so the extension symlink exists.
+    configure_gnome
 
     e_section "Complete"
     e_done "All setup tasks completed successfully!"

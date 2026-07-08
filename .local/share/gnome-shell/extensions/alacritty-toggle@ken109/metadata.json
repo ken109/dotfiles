@@ -1,0 +1,8 @@
+{
+  "uuid": "alacritty-toggle@ken109",
+  "name": "Alacritty Toggle",
+  "description": "Wayland-native drop-down/toggle for a terminal (or any app) by wm_class. Exposes a D-Bus Toggle method used by a GNOME keyboard shortcut: focus the window if hidden, minimize it if focused, launch it if it does not exist. Replaces the X11-only tdrop on GNOME Wayland.",
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
+  "session-modes": ["user"],
+  "url": "https://github.com/ken109/dotfiles"
+}

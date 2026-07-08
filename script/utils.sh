@@ -51,6 +51,9 @@ get_dotfiles() {
 
     if [ "$(uname -s)" = "Darwin" ]; then
         targets+=(".hammerspoon")
+    else
+        # Linux-only: GNOME Shell extensions live under ~/.local/share
+        targets+=(".local")
     fi
 
     (
