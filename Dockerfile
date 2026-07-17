@@ -52,4 +52,4 @@ ENV DOTFILES_GITHUB="/tmp/dotfiles-repo"
 RUN bash /tmp/dotfiles-repo/script/install.sh
 
 # Set zsh as default entrypoint to verify configuration
-CMD ["/home/linuxbrew/.linuxbrew/bin/zellij"]
+CMD ["/home/linuxbrew/.linuxbrew/bin/herdr"]

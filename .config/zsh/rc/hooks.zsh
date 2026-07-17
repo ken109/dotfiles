@@ -13,10 +13,10 @@ function do_on_dir_change() {
 add-zsh-hook chpwd do_on_dir_change
 
 # -------------------------------------
-# Zellij Tab Name Update (非同期実行)
+# Herdr Tab Name Update (非同期実行)
 # -------------------------------------
-if [[ -n $ZELLIJ ]]; then
-    function _zellij_tab_name_update_logic() {
+if [[ -n $HERDR_ENV ]]; then
+    function _herdr_tab_name_update_logic() {
         local current_dir="${PWD##*/}"
         if [[ "$PWD" == "$HOME" ]]; then
             current_dir="~"
@@ -29,20 +29,20 @@ if [[ -n $ZELLIJ ]]; then
             local repo_name="${git_root##*/}"
 
             if [[ "$PWD" == "$git_root" ]]; then
-                command zellij action rename-tab "$repo_name"
+                command herdr tab rename "$HERDR_TAB_ID" "$repo_name"
             else
-                command zellij action rename-tab "$current_dir ($repo_name)"
+                command herdr tab rename "$HERDR_TAB_ID" "$current_dir ($repo_name)"
             fi
         else
-            command zellij action rename-tab "$current_dir"
+            command herdr tab rename "$HERDR_TAB_ID" "$current_dir"
         fi
     }
 
-    function zellij_tab_name_update() {
-        _zellij_tab_name_update_logic &!
+    function herdr_tab_name_update() {
+        _herdr_tab_name_update_logic &!
     }
 
-    add-zsh-hook chpwd zellij_tab_name_update
+    add-zsh-hook chpwd herdr_tab_name_update
 
-    zellij_tab_name_update
+    herdr_tab_name_update
 fi

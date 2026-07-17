@@ -19,7 +19,7 @@ This repository manages configurations for:
   - [Zed](https://zed.dev/) - High-performance multiplayer code editor.
 - **Terminal & Multiplexers**:
   - [Alacritty](https://alacritty.org/) - GPU-accelerated terminal emulator.
-  - [Tmux](https://github.com/tmux/tmux) & [Zellij](https://zellij.dev/).
+  - [Tmux](https://github.com/tmux/tmux) & [Herdr](https://herdr.dev/) - Agent multiplexer.
 - **System & Tools**:
   - [Mise](https://mise.jdx.dev/) - Runtime executor & version manager (Node, Python, etc.).
   - [Hammerspoon](https://www.hammerspoon.org/) - macOS automation.
