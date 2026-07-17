@@ -52,6 +52,13 @@
 # manifest_check = true
 
 [keys]
+# 直接バインド (prefix不要)。Alacrittyは option_as_alt = "Both" のためoption=alt。
+# option + ←/→ でタブ切り替え、option + ↑/↓ でspace(workspace)切り替え。
+previous_tab = "alt+left"
+next_tab = "alt+right"
+previous_workspace = "alt+up"
+next_workspace = "alt+down"
+
 # Prefix key to enter prefix mode (default: "ctrl+b")
 # Examples: "ctrl+b", "f12", "esc", "-"
 # Action bindings use explicit syntax: "prefix+n" requires the prefix;
@@ -185,7 +192,8 @@
 
 # Ask for a tab name before creating a new tab.
 # Set false to create tabs immediately with generated names.
-# prompt_new_tab_name = true
+# タブ名はchpwdフックでディレクトリ名に自動更新されるためプロンプトは不要。
+prompt_new_tab_name = false
 
 # Draw borders around split panes.
 # pane_borders = true
