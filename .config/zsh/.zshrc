@@ -49,6 +49,6 @@ if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$HERDR_ENV" && -z "$ZED_TERM" ]]; then
 fi
 
 # bun completions
-[ -s "/Users/ken109/.bun/_bun" ] && source "/Users/ken109/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 . "$HOME/.local/share/../bin/env"
