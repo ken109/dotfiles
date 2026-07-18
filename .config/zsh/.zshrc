@@ -22,30 +22,8 @@ source "$ZSH_CONFIG/rc/hooks.zsh"
 # =======================================================
 
 if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$HERDR_ENV" && -z "$ZED_TERM" ]]; then
-    # ヘッダー行(NR>1)を除き、1列目のセッション名だけを抜き出す
-    local sessions=$(herdr session list 2>/dev/null | awk 'NR>1 {print $1}')
-
-    local selection=$(
-        { echo "[Create New Session]"; echo "$sessions"; } | \
-            fzf --header "Herdr: Select session or create new" \
-            --height 40% --reverse --exit-0
-    )
-
-    if [[ -z "$selection" ]]; then
-        return
-    fi
-
-    if [[ "$selection" == "[Create New Session]" ]]; then
-        echo -n "Enter new session name (leave blank for default): "
-        read session_name
-        if [[ -n "$session_name" ]]; then
-            herdr --session "$session_name"
-        else
-            herdr
-        fi
-    else
-        herdr session attach "$selection"
-    fi
+    # 常にdefaultセッションへアタッチ(なければ起動)。workspaceで分けて運用する
+    herdr
 fi
 
 # bun completions
