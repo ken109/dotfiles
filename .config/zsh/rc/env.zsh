@@ -36,6 +36,11 @@ export PATH="/usr/local/bin:$PATH"
 # Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
 export PATH="$HOME/.local/bin:$PATH"
 
+# local bin env (uv などが配置)
+if [[ -f "$HOME/.local/bin/env" ]]; then
+    . "$HOME/.local/bin/env"
+fi
+
 # rust env
 if [[ -f "$HOME/.cargo/env" ]]; then
     . "$HOME/.cargo/env"

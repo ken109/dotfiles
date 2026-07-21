@@ -25,8 +25,3 @@ if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$HERDR_ENV" && -z "$ZED_TERM" ]]; then
     # 常にdefaultセッションへアタッチ(なければ起動)。workspaceで分けて運用する
     herdr
 fi
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-. "$HOME/.local/share/../bin/env"
