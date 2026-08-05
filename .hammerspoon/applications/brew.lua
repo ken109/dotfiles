@@ -12,6 +12,8 @@ end
 local function runBrewUpgrade()
     hs.notify.new({ title = "Hammerspoon", informativeText = "🍺 brew upgrade を開始しました..." }):send()
 
+    -- Homebrew 6 以降は ask モードがデフォルトで確認プロンプトが出る。
+    -- tty の無い定時実行では応答できず固まるため -y を付ける。
     local task = hs.task.new(brewPath, function(exitCode, stdOut, stdErr)
         local message = ""
         if exitCode == 0 then
@@ -23,7 +25,7 @@ local function runBrewUpgrade()
         hs.notify.new({ title = "Hammerspoon", informativeText = message }):send()
 
         print(message)
-    end, { "upgrade" })
+    end, { "upgrade", "-y" })
 
     task:start()
 end
