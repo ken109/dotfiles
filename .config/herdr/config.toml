@@ -3,6 +3,8 @@
 
 # Show first-run notification setup on startup.
 # Missing also shows onboarding; set false after you've chosen.
+# 明示的に false にしておかないと、onboarding 完了時に herdr が
+# config.toml を上書きして dotfiles へのシンボリックリンクを破壊する。
 onboarding = false
 
 [theme]
