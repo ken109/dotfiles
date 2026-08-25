@@ -1,6 +1,6 @@
 # =======================================================
 # theme — tokyonight (night)
-# 単一ソース: .config/theme/tokyonight-night.toml
+# 単一ソース: theme.toml (sennit render が生成する)
 # =======================================================
 
 export BAT_THEME="tokyonight_night"

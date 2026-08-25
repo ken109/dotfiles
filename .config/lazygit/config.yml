@@ -5,7 +5,7 @@ git:
 
 gui:
   sidePanelWidth: 0.20
-  # tokyonight (night) — 単一ソース: .config/theme/tokyonight-night.toml
+  # tokyonight (night) — 単一ソース: theme.toml (sennit render が生成する)
   # 選択行は既存の方針どおり背景塗りではなく underline のままにしている。
   theme:
     activeBorderColor:

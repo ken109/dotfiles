@@ -102,6 +102,9 @@ install_packages() {
     # Update brew
     brew update
 
+    # 自作ツール(sennit)の tap
+    brew tap ken109/tap
+
     # Common tools list
     local formulas=(
         bat
@@ -122,6 +125,7 @@ install_packages() {
         neovim
         nushell
         ripgrep
+        sennit
         sheldon
         shellcheck
         shfmt
