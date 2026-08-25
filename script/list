@@ -11,7 +11,7 @@ DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
 list_dotfiles() {
     local show_header=true
 
-    while (( $# > 0 )); do
+    while (($# > 0)); do
         case "$1" in
             --no-header)
                 show_header=false
@@ -36,7 +36,7 @@ list_dotfiles() {
     IFS=$'\n'
     for file in $dotfiles; do
         local len=${#file}
-        if (( len > max_len )); then
+        if ((len > max_len)); then
             max_len=$len
         fi
 
@@ -64,7 +64,7 @@ list_dotfiles() {
     local width=$((max_len + 2))
 
     local separator=""
-    for ((i=0; i<width; i++)); do separator="${separator}-"; done
+    for ((i = 0; i < width; i++)); do separator="${separator}-"; done
 
     printf " \033[36;1m%-*s\033[m %s\n" "$width" "SOURCE" "DESTINATION"
     printf " \033[36;1m%-*s\033[m %s\n" "$width" "$separator" "-----------"
