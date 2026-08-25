@@ -5,7 +5,9 @@ export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
-if [[ "$OSTYPE" == darwin* ]]; then
+# GUI アプリへ XDG を伝播させるのが目的なので、login shell の初回だけでよい。
+# 全 zsh 起動で回すと 1 spawn あたり数ms を無条件に払うことになる。
+if [[ "$OSTYPE" == darwin* && -o login ]]; then
     launchctl setenv XDG_CONFIG_HOME "$XDG_CONFIG_HOME"
     launchctl setenv XDG_CACHE_HOME "$XDG_CACHE_HOME"
     launchctl setenv XDG_DATA_HOME "$XDG_DATA_HOME"
