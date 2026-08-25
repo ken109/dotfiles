@@ -17,6 +17,11 @@ deploy() {
     local dotfiles
     dotfiles=$(get_dotfiles)
 
+    # get_dotfiles は改行区切りで返す。script/list と同じく IFS を改行に固定し、
+    # パス名展開も止めて空白入りのパスで壊れないようにする。
+    local OLD_IFS="$IFS"
+    IFS=$'\n'
+    set -f
     for file in $dotfiles; do
         # Link logic
         local src="$DOTPATH/$file"
@@ -31,6 +36,8 @@ deploy() {
         # Create symlink
         ln -sfn "$src" "$dest"
     done
+    set +f
+    IFS="$OLD_IFS"
 
     "$SCRIPT_DIR/list" --no-header
 
