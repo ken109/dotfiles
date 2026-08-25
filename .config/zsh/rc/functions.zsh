@@ -33,13 +33,13 @@ function dotfiles() {
 
     case "$cmd" in
         list)
-            "$dotpath/script/list"
+            (cd "$dotpath" && sennit list)
             ;;
         update)
             if ! (
                 cd "$dotpath" || exit 1
                 git pull || exit 1
-                "$dotpath/script/deploy" || exit 1
+                sennit apply || exit 1
             ); then
                 echo "dotfiles update: failed, shell not reloaded" >&2
                 return 1

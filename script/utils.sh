@@ -44,28 +44,3 @@ is_exists() {
 has_command() {
     command -v "$1" >/dev/null 2>&1
 }
-
-get_dotfiles() {
-    local dotpath="${DOTPATH:-$HOME/.dotfiles}"
-    local targets=(".config" ".zshenv")
-
-    if [ "$(uname -s)" = "Darwin" ]; then
-        targets+=(".hammerspoon")
-    else
-        # Linux-only: GNOME Shell extensions live under ~/.local/share
-        targets+=(".local")
-    fi
-
-    (
-        cd "$dotpath" || return 1
-
-        for target in "${targets[@]}"; do
-            if [ -d "$target" ]; then
-                # *.tmpl は sennit の生成元であって配置対象ではない
-                fd -H -t f -E '*.tmpl' . "$target"
-            elif [ -f "$target" ]; then
-                echo "$target"
-            fi
-        done
-    )
-}

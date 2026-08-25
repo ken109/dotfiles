@@ -28,7 +28,7 @@ jobs:
 
       # -x で source 先も追跡する。追跡しないと SC1091 が出る。
       - name: shellcheck
-        run: shellcheck -x -S warning script/setup script/deploy script/list script/install.sh script/utils.sh
+        run: shellcheck -x -S warning script/setup script/install.sh script/utils.sh
 
       - name: zsh syntax
         run: |
@@ -84,17 +84,18 @@ jobs:
       - name: render --check (templates vs generated)
         run: ./sennit render --check
 
-      # symlink 配置が既存の script/deploy と同じ結果になることを確認する。
-      # deploy は fd に依存している(sennit は walkdir なので依存しない)。
-      - name: apply parity with script/deploy
+      # 隔離した HOME に対して apply が期待どおり動くことを確認する。
+      # script/deploy は撤去済みなので、比較ではなく自己完結の検証にする。
+      - name: apply into an isolated HOME
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq fd-find
-          sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd
-          a=$(mktemp -d); b=$(mktemp -d)
-          HOME="$a" DOTPATH="$PWD" bash script/deploy >/dev/null
-          ./sennit --home "$b" apply >/dev/null
-          diff <(cd "$a" && find . -type l | sort) <(cd "$b" && find . -type l | sort)
-          echo "parity ok ($(find "$b" -type l | wc -l) links)"
+          h=$(mktemp -d)
+          n=$(./sennit --home "$h" apply | tail -1)
+          echo "$n"
+          # 2 回目は差分ゼロ(冪等)
+          ./sennit --home "$h" apply | grep -q "already up to date"
+          # テンプレートは配置されない
+          test "$(find "$h" -name '*.tmpl' | wc -l)" -eq 0
+          echo "links: $(find "$h" -type l | wc -l)"
 
   install-test:
     name: Install on Ubuntu

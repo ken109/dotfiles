@@ -142,11 +142,6 @@ kind = "extension"
 manager = "mise"
 # mise が管理する。env.zsh が GOPATH を設定するために存在を見ている
 
-[packages.cmux]
-optional = true
-# 2b0452c で Ghostty と同時に入った設定だが本体は未導入。Alacritty へ
-# 一本化した際に Ghostty 側は削除済みで、これは取り残し。要棚卸し
-
 [packages.kubectl]
 optional = true
 # 現状 setup の管理外(Docker Desktop 等が置く)。aliases.zsh の k エイリアス用

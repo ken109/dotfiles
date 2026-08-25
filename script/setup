@@ -398,12 +398,13 @@ main() {
     configure_tpm
 
     # Deploy dotfiles
-    if [ -f "$SCRIPT_DIR/deploy" ]; then
-        "$SCRIPT_DIR/deploy"
+    if has_command sennit; then
+        e_section "Deploying Dotfiles"
+        (cd "$SCRIPT_DIR/.." && sennit apply)
         configure_bat_themes
         configure_git_hooks
     else
-        e_error "Deploy script not found!"
+        e_error "sennit not found; cannot deploy"
     fi
 
     # GNOME setup must run after deploy so the extension symlink exists.
