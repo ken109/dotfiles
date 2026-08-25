@@ -1,0 +1,22 @@
+# commit 時にシェルスクリプトを整形・検査する。
+# shfmt / shellcheck は script/setup が入れる。未インストールなら黙って飛ばす。
+pre-commit:
+  parallel: true
+  commands:
+    shfmt:
+      glob: "script/*"
+      run: |
+        command -v shfmt >/dev/null || exit 0
+        shfmt -i 4 -ci -w {staged_files}
+        git add {staged_files}
+    shellcheck:
+      glob: "script/*"
+      # -x で source 先も追跡する(SC1091 回避)
+      run: |
+        command -v shellcheck >/dev/null || exit 0
+        shellcheck -x -S warning {staged_files}
+    zsh-syntax:
+      glob: "*.zsh"
+      run: |
+        command -v zsh >/dev/null || exit 0
+        for f in {staged_files}; do zsh -n "$f" || exit 1; done

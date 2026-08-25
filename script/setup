@@ -115,11 +115,13 @@ install_packages() {
         herdr
         hunk
         lazygit
+        lefthook
         mise
         neovim
         nushell
         ripgrep
         sheldon
+        shellcheck
         shfmt
         starship
         zoxide
@@ -181,6 +183,19 @@ install_packages() {
     brew install --cask "${casks[@]}"
 
     e_done "Packages installed"
+}
+
+configure_git_hooks() {
+    if ! has_command lefthook; then
+        return
+    fi
+
+    e_section "Git Hooks"
+    e_header "Installing lefthook hooks..."
+    # lefthook.yml の pre-commit(shfmt / shellcheck / zsh -n)を .git/hooks に配線する
+    # SCRIPT_DIR は script/ を指すので、その親がリポジトリルート
+    (cd "$SCRIPT_DIR/.." && lefthook install >/dev/null)
+    e_done "Git hooks installed"
 }
 
 configure_bat_themes() {
@@ -380,6 +395,7 @@ main() {
     if [ -f "$SCRIPT_DIR/deploy" ]; then
         "$SCRIPT_DIR/deploy"
         configure_bat_themes
+        configure_git_hooks
     else
         e_error "Deploy script not found!"
     fi
