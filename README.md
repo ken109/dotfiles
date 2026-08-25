@@ -3,8 +3,16 @@
 A comprehensive configuration management for my development environment, primarily targeted at **macOS** (with Linux support).
 Managed with automated scripts and modern CLI tools to provide a reproducible and efficient workflow.
 
+[![CI](https://github.com/ken109/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/ken109/dotfiles/actions/workflows/ci.yml)
 ![License](https://img.shields.io/github/license/ken109/dotfiles?style=flat-square)
 ![Top Language](https://img.shields.io/github/languages/top/ken109/dotfiles?style=flat-square)
+
+![demo](.github/demo/sennit.gif)
+
+Managed with [sennit](https://github.com/ken109/sennit), a dotfiles manager written for
+this repository. `packages.toml` declares every dependency, `theme.toml` is the single
+source for the color scheme, and CI fails if a config references something that is not
+declared.
 
 ## 🛠 Features
 
