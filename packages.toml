@@ -44,13 +44,11 @@ zoxide     = {}
 # ---------------------------------------------------------------------------
 [packages.curl]
 # darwin: brew / linux: apt・yay(install_system_dependencies)
-[packages.docker]
-os = ["darwin"]
-[packages.docker-compose]
-os = ["darwin"]
 [packages.git]
 # darwin: brew / linux: apt・yay(install_system_dependencies)
-[packages.gpg]
+[packages.gnupg]
+# brew の formula 名は gnupg。gpg はその別名で brew list には出ない
+provides = ["gpg"]
 os = ["darwin"]
 [packages.gawk]
 os = ["darwin"]
@@ -85,8 +83,9 @@ kind = "font"
 manager = "brew-cask"
 os = ["darwin"]
 [packages.alacritty]
-# darwin: brew-cask / linux: yay・apt
+# darwin は cask。linux は cask が使えないので script/setup が yay・apt で入れる
 manager = "brew-cask"
+os = ["darwin"]
 [packages.antigravity]
 manager = "brew-cask"
 os = ["darwin"]
@@ -100,9 +99,10 @@ os = ["darwin"]
 [packages.nordvpn]
 manager = "brew-cask"
 os = ["darwin"]
-[packages.orbstack]
+[packages.docker-desktop]
 manager = "brew-cask"
 os = ["darwin"]
+provides = ["docker", "docker-compose"]
 [packages.parallels]
 manager = "brew-cask"
 os = ["darwin"]

@@ -97,58 +97,18 @@ install_homebrew() {
 
 install_packages() {
     e_section "Package Installation"
-    e_header "Installing packages via Homebrew..."
 
-    # Update brew
     brew update
 
-    # 自作ツール(sennit)の tap
+    # sennit 自身は sennit sync では入れられないので、ここだけ直接入れる
+    e_header "Installing sennit..."
     brew tap ken109/tap
+    # Homebrew は非公式 tap の formula を明示的に trust しないと読み込まない
+    brew trust --tap ken109/tap
+    brew install sennit
 
-    # Common tools list
-    local formulas=(
-        bat
-        beautysh
-        direnv
-        eza
-        fd
-        fzf
-        gdu
-        gh
-        ghq
-        git-delta
-        herdr
-        hunk
-        lazygit
-        lefthook
-        mise
-        neovim
-        nushell
-        ripgrep
-        sennit
-        sheldon
-        shellcheck
-        shfmt
-        starship
-        zoxide
-    )
-
-    # OS specific additions
-    if [ "$OS" = "Darwin" ]; then
-        formulas+=(
-            curl
-            docker
-            docker-compose
-            git
-            gpg
-            gawk
-            libyaml
-            tmux
-            trash
-            wget
-            zsh
-        )
-    elif [ "$OS" = "Linux" ]; then
+    # Linux の Alacritty は cask が使えないので、こちらは shell が持つ
+    if [ "$OS" = "Linux" ]; then
         if has_command yay; then
             e_header "Installing Alacritty via yay..."
             yay -S --noconfirm alacritty
@@ -158,35 +118,10 @@ install_packages() {
         fi
     fi
 
-    brew install "${formulas[@]}"
-
-    # Casks
-    local casks=(
-        font-cica
-        font-hack-nerd-font
-    )
-
-    if [ "$OS" = "Darwin" ]; then
-        casks+=(
-            1password
-            alacritty
-            antigravity
-            hammerspoon
-            jetbrains-toolbox
-            nordvpn
-            orbstack
-            parallels
-            postman
-            raycast
-            slack
-            thebrowsercompany-dia
-            zed
-            zoom
-        )
-    fi
-
-    e_header "Installing Casks..."
-    brew install --cask "${casks[@]}"
+    # 残りは packages.toml の宣言から sennit が入れる。
+    # 何をどのマネージャで入れるかは packages.toml が唯一のソース。
+    e_header "Installing declared packages via sennit..."
+    (cd "$SCRIPT_DIR/.." && sennit sync)
 
     e_done "Packages installed"
 }
