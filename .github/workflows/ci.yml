@@ -81,6 +81,10 @@ jobs:
       - name: check (drift)
         run: ./sennit/target/release/sennit check
 
+      # テンプレートを直して生成し忘れる、という食い違いを落とす
+      - name: render --check (templates vs generated)
+        run: ./sennit/target/release/sennit render --check
+
       # symlink 配置が既存の script/deploy と同じ結果になることを確認する
       - name: apply parity with script/deploy
         run: |

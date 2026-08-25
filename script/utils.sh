@@ -61,7 +61,8 @@ get_dotfiles() {
 
         for target in "${targets[@]}"; do
             if [ -d "$target" ]; then
-                fd -H -t f . "$target"
+                # *.tmpl は sennit の生成元であって配置対象ではない
+                fd -H -t f -E '*.tmpl' . "$target"
             elif [ -f "$target" ]; then
                 echo "$target"
             fi

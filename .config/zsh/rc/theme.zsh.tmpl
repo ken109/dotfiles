@@ -1,0 +1,16 @@
+# =======================================================
+# theme — tokyonight (night)
+# 単一ソース: .config/theme/tokyonight-night.toml
+# =======================================================
+
+export BAT_THEME="tokyonight_night"
+
+export FZF_DEFAULT_OPTS="\
+--color=bg+:{{ ui.selection }},bg:{{ ui.bg_dark }},border:{{ extended.border }},fg:{{ ui.fg }} \
+--color=gutter:{{ ui.bg_dark }},header:{{ accent.orange }},hl+:{{ extended.blue1 }},hl:{{ extended.blue1 }} \
+--color=info:{{ extended.dark3 }},marker:{{ extended.magenta2 }},pointer:{{ extended.magenta2 }} \
+--color=prompt:{{ extended.blue1 }},query:{{ ui.fg }}:regular,scrollbar:{{ extended.border }} \
+--color=separator:{{ accent.orange }},spinner:{{ extended.magenta2 }}"
+
+# eza: ディレクトリ=blue, シンボリックリンク=cyan, 実行可能=green
+export EZA_COLORS="di=38;2;122;162;247:ln=38;2;125;207;255:ex=38;2;158;206;106:ur=38;2;224;175;104:uw=38;2;247;118;142:ux=38;2;158;206;106"

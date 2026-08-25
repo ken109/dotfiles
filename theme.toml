@@ -1,0 +1,50 @@
+# 配色の単一ソース。sennit render がこの値を各ツールの設定へ流し込む。
+# テンプレートは *.tmpl で、生成物はリポジトリにコミットする
+# (差分が git で見え、sennit check も生成後のファイルを読めるため)。
+#
+# tokyonight (night) — 出典: folke/tokyonight.nvim の night variant
+
+[ui]
+bg           = "#1a1b26"
+bg_dark      = "#16161e"
+bg_highlight = "#292e42"
+fg           = "#c0caf5"
+fg_dark      = "#a9b1d6"
+fg_gutter    = "#3b4261"
+comment      = "#565f89"
+selection    = "#283457"
+cursor       = "#c0caf5"
+
+[normal]
+black   = "#15161e"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#a9b1d6"
+
+[bright]
+black   = "#414868"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#c0caf5"
+
+[accent]
+# UI のアクセント。normal.magenta と同じ値だが意味が違うので別に持つ。
+# ここだけ変えるとプロンプトの紫はそのままに、UI の強調色だけが変わる。
+# 旧テーマのマゼンタ系アクセント (#f32882) の後継。
+primary = "#bb9af7"
+orange  = "#ff9e64"
+
+[extended]
+# tokyonight night の拡張色。fzf の配色などが参照する
+blue1    = "#2ac3de"
+border   = "#27a1b9"
+dark3    = "#545c7e"
+magenta2 = "#ff007c"

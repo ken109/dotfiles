@@ -1,7 +1,8 @@
 # sennit のマニフェスト。どのパスを $HOME に配置するかを宣言する。
 #
 # link  : リポジトリのファイルへ symlink を張る(生の編集ループを保つ)
-# render: テンプレートから生成する(v0.2 以降。現在は未使用)
+# render: theme.toml から生成する。生成物はコミットするので、配置自体は
+#         link と同じく symlink で行われる
 #
 # ディレクトリを指定した場合はその下のファイルを個別に symlink する。
 # ディレクトリごと symlink すると、そのディレクトリに他のツールが
@@ -13,5 +14,16 @@ darwin = [".hammerspoon"]
 linux = [".local"]
 
 # リポジトリ内にあっても配置しないもの。
-# v0.1 は既存の script/deploy と完全に同じ結果になることを目標にしているので空。
-ignore = []
+# テンプレートは生成元であって配置対象ではない。
+ignore = ["*.tmpl"]
+
+# theme.toml から生成するファイル。<出力パス> = <テンプレート>
+#
+# 配色を持つファイルだけを対象にする。残りは link のまま触らない。
+# これが「symlink の生の編集感を保ったままテンプレートを足す」という
+# このツールの設計上の主張そのもの。
+[render]
+".config/alacritty/alacritty.toml" = ".config/alacritty/alacritty.toml.tmpl"
+".config/starship.toml" = ".config/starship.toml.tmpl"
+".config/lazygit/config.yml" = ".config/lazygit/config.yml.tmpl"
+".config/zsh/rc/theme.zsh" = ".config/zsh/rc/theme.zsh.tmpl"

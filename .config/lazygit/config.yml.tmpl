@@ -1,0 +1,35 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
+
+gui:
+  sidePanelWidth: 0.20
+  # tokyonight (night) — 単一ソース: .config/theme/tokyonight-night.toml
+  # 選択行は既存の方針どおり背景塗りではなく underline のままにしている。
+  theme:
+    activeBorderColor:
+      - "{{ accent.primary }}"
+      - bold
+    inactiveBorderColor:
+      - "{{ ui.comment }}"
+    searchingActiveBorderColor:
+      - "{{ normal.yellow }}"
+    optionsTextColor:
+      - "{{ normal.blue }}"
+    selectedLineBgColor:
+      - underline
+    cherryPickedCommitFgColor:
+      - "{{ normal.magenta }}"
+    cherryPickedCommitBgColor:
+      - "{{ ui.selection }}"
+    unstagedChangesColor:
+      - "{{ normal.red }}"
+    defaultFgColor:
+      - "{{ ui.fg }}"
+
+refresher:
+  refreshInterval: 3
+
+os:
+  editPreset: "nvim-remote"

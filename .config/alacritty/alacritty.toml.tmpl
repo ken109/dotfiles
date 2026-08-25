@@ -1,0 +1,50 @@
+[window]
+padding = { x = 10, y = 10 }
+decorations = "None"
+opacity = 0.85
+blur = true
+startup_mode = "Maximized"
+level = "AlwaysOnTop"
+option_as_alt = "Both"
+
+[font]
+size = 10
+normal = { family = "Hack Nerd Font Mono" }
+
+# tokyonight (night) — .config/theme/tokyonight-night.toml が単一ソース
+[colors.primary]
+background = "{{ ui.bg }}"
+foreground = "{{ ui.fg }}"
+
+[colors.cursor]
+cursor = "{{ ui.fg }}"
+text   = "{{ ui.bg }}"
+
+[colors.selection]
+background = "{{ ui.selection }}"
+text       = "{{ ui.fg }}"
+
+[colors.normal]
+black   = "{{ normal.black }}"
+red     = "{{ normal.red }}"
+green   = "{{ normal.green }}"
+yellow  = "{{ normal.yellow }}"
+blue    = "{{ normal.blue }}"
+magenta = "{{ normal.magenta }}"
+cyan    = "{{ normal.cyan }}"
+white   = "{{ ui.fg_dark }}"
+
+[colors.bright]
+black   = "{{ bright.black }}"
+red     = "{{ normal.red }}"
+green   = "{{ normal.green }}"
+yellow  = "{{ normal.yellow }}"
+blue    = "{{ normal.blue }}"
+magenta = "{{ normal.magenta }}"
+cyan    = "{{ normal.cyan }}"
+white   = "{{ ui.fg }}"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001b\r"
