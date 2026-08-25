@@ -24,6 +24,5 @@ ignore = ["*.tmpl"]
 # このツールの設計上の主張そのもの。
 [render]
 ".config/alacritty/alacritty.toml" = ".config/alacritty/alacritty.toml.tmpl"
-".config/starship.toml" = ".config/starship.toml.tmpl"
 ".config/lazygit/config.yml" = ".config/lazygit/config.yml.tmpl"
 ".config/zsh/rc/theme.zsh" = ".config/zsh/rc/theme.zsh.tmpl"

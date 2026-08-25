@@ -1,22 +1,5 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# tokyonight (night) — theme.toml が単一ソース。sennit render が生成する。
-# 標準の色名を上書きしているので、各モジュールの style 指定はそのまま使える。
-palette = 'tokyonight'
-
-[palettes.tokyonight]
-black   = '#15161e'
-red     = '#f7768e'
-green   = '#9ece6a'
-yellow  = '#e0af68'
-blue    = '#7aa2f7'
-magenta = '#bb9af7'
-purple  = '#bb9af7'
-cyan    = '#7dcfff'
-white   = '#c0caf5'
-orange  = '#ff9e64'
-comment = '#565f89'
-
 format = """
 [┌$time─────────────────────────────────────────────────](bold white)
 [│](bold white) $directory$all
