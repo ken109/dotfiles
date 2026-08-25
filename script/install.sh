@@ -49,11 +49,15 @@ dotfiles_download() {
 
 dotfiles_initialize() {
     e_header "Initializing dotfiles..."
-    if [ -f "$DOTPATH/script/setup" ]; then
-        # Execute setup script
-        "$DOTPATH/script/setup"
-    else
+    if [ ! -f "$DOTPATH/script/setup" ]; then
         e_error "setup script not found"
+        exit 1
+    fi
+
+    # set -e が無いので、setup の失敗を明示的に伝播させる。
+    # これが無いと setup がどこで落ちても "Initialize...OK" と表示されていた。
+    if ! "$DOTPATH/script/setup"; then
+        e_error "setup failed"
         exit 1
     fi
     e_done "Initialize"
