@@ -85,9 +85,12 @@ jobs:
       - name: render --check (templates vs generated)
         run: ./sennit/target/release/sennit render --check
 
-      # symlink 配置が既存の script/deploy と同じ結果になることを確認する
+      # symlink 配置が既存の script/deploy と同じ結果になることを確認する。
+      # deploy は fd に依存している(sennit は walkdir なので依存しない)。
       - name: apply parity with script/deploy
         run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fd-find
+          sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd
           a=$(mktemp -d); b=$(mktemp -d)
           HOME="$a" DOTPATH="$PWD" bash script/deploy >/dev/null
           ./sennit/target/release/sennit --home "$b" apply >/dev/null
