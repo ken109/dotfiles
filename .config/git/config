@@ -16,6 +16,11 @@
 [delta]
     navigate = true
     side-by-side = true
+    syntax-theme = tokyonight_night
+    minus-style = syntax "#3f2d3d"
+    minus-emph-style = syntax "#763842"
+    plus-style = syntax "#283b4d"
+    plus-emph-style = syntax "#316172"
 
 [url "ssh://git@github.com/"]
     pushInsteadOf = https://github.com/

@@ -1,7 +1,7 @@
 [window]
 padding = { x = 10, y = 10 }
 decorations = "None"
-opacity = 0.75
+opacity = 0.85
 blur = true
 startup_mode = "Maximized"
 level = "AlwaysOnTop"
@@ -11,37 +11,38 @@ option_as_alt = "Both"
 size = 10
 normal = { family = "Hack Nerd Font Mono" }
 
+# tokyonight (night) — .config/theme/tokyonight-night.toml が単一ソース
 [colors.primary]
-background = "#101010"
-foreground = "#fafafa"
+background = "#1a1b26"
+foreground = "#c0caf5"
 
 [colors.cursor]
-cursor = "#f32882"
-text = "#fafafa"
+cursor = "#c0caf5"
+text   = "#1a1b26"
 
 [colors.selection]
-background = "#005be7"
-text = "#fafafa"
+background = "#283457"
+text       = "#c0caf5"
 
 [colors.normal]
-black   = "#000000"
-red     = "#fc0036"
-green   = "#29a948"
-yellow  = "#ffae00"
-blue    = "#006aff"
-magenta = "#f32882"
-cyan    = "#00ac96"
-white   = "#feffff"
+black   = "#15161e"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#a9b1d6"
 
 [colors.bright]
-black   = "#a8a8a8"
-red     = "#ff8080"
-green   = "#4be15d"
-yellow  = "#ffae00"
-blue    = "#49aeff"
-magenta = "#f97ea8"
-cyan    = "#00e4c4"
-white   = "#fefefe"
+black   = "#414868"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+magenta = "#bb9af7"
+cyan    = "#7dcfff"
+white   = "#c0caf5"
 
 [[keyboard.bindings]]
 key = "Return"

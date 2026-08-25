@@ -4,6 +4,7 @@ local ZSH_CONFIG="${XDG_CONFIG_HOME}/zsh"
 
 # Load configurations
 source "$ZSH_CONFIG/rc/env.zsh"
+source "$ZSH_CONFIG/rc/theme.zsh"
 source "$ZSH_CONFIG/rc/completion.zsh"
 source "$ZSH_CONFIG/rc/init.zsh"
 source "$ZSH_CONFIG/rc/options.zsh"
