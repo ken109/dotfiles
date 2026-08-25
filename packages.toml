@@ -1,0 +1,170 @@
+# パッケージの単一ソース。sennit check がこのファイルと設定ファイルを突き合わせ、
+# 設定が参照しているのに宣言されていない依存を検出する。
+#
+# provides に書くのは「設定ファイルから参照されうる名前」。
+# コマンド名は kind = "command"、フォント名は kind = "font"、
+# エディタ拡張は kind = "extension" として扱う。
+# パッケージ名と一致するコマンドは provides を省略できる。
+
+[defaults]
+# 何も指定がなければ brew の formula として全 OS に入れる
+manager = "brew"
+
+# ---------------------------------------------------------------------------
+# 共通
+# ---------------------------------------------------------------------------
+[packages]
+bat        = {}
+beautysh   = {}
+direnv     = {}
+eza        = {}
+fd         = {}
+fzf        = {}
+gdu        = {}
+gh         = {}
+ghq        = {}
+git-delta  = { provides = ["delta"] }
+herdr      = {}
+hunk       = {}
+lazygit    = {}
+lefthook   = {}
+mise       = {}
+neovim     = { provides = ["nvim"] }
+nushell    = { provides = ["nu"] }
+ripgrep    = { provides = ["rg"] }
+sheldon    = {}
+shellcheck = {}
+shfmt      = {}
+starship   = {}
+zoxide     = {}
+
+# ---------------------------------------------------------------------------
+# macOS のみ
+# ---------------------------------------------------------------------------
+[packages.curl]
+os = ["darwin"]
+[packages.docker]
+os = ["darwin"]
+[packages.docker-compose]
+os = ["darwin"]
+[packages.git]
+os = ["darwin"]
+[packages.gpg]
+os = ["darwin"]
+[packages.gawk]
+os = ["darwin"]
+[packages.libyaml]
+os = ["darwin"]
+[packages.tmux]
+os = ["darwin"]
+[packages.trash]
+os = ["darwin"]
+[packages.wget]
+os = ["darwin"]
+[packages.zsh]
+os = ["darwin"]
+
+# ---------------------------------------------------------------------------
+# フォント (cask)
+# ---------------------------------------------------------------------------
+[packages.font-cica]
+manager = "brew-cask"
+provides = ["Cica"]
+kind = "font"
+
+[packages.font-hack-nerd-font]
+manager = "brew-cask"
+provides = ["Hack Nerd Font", "Hack Nerd Font Mono"]
+kind = "font"
+
+# ---------------------------------------------------------------------------
+# GUI アプリ (cask, macOS のみ)
+# ---------------------------------------------------------------------------
+[packages.1password]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.alacritty]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.antigravity]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.hammerspoon]
+manager = "brew-cask"
+os = ["darwin"]
+provides = ["hs"]
+[packages.jetbrains-toolbox]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.nordvpn]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.orbstack]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.parallels]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.postman]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.raycast]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.slack]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.thebrowsercompany-dia]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.zed]
+manager = "brew-cask"
+os = ["darwin"]
+[packages.zoom]
+manager = "brew-cask"
+os = ["darwin"]
+
+# ---------------------------------------------------------------------------
+# エディタ拡張
+# ---------------------------------------------------------------------------
+[packages.tokyo-night]
+manager = "zed-extension"
+kind = "extension"
+
+# ---------------------------------------------------------------------------
+# setup では入れないが、設定が存在を前提に分岐しているもの
+#
+# optional = true は「知っている依存だが自動導入はしない」という宣言。
+# ignore と違い、何が optional なのかがファイルに残る。
+# ---------------------------------------------------------------------------
+[packages.go]
+manager = "mise"
+# mise が管理する。env.zsh が GOPATH を設定するために存在を見ている
+
+[packages.cmux]
+optional = true
+# 2b0452c で Ghostty と同時に入った設定だが本体は未導入。Alacritty へ
+# 一本化した際に Ghostty 側は削除済みで、これは取り残し。要棚卸し
+
+[packages.kubectl]
+optional = true
+# 現状 setup の管理外(Docker Desktop 等が置く)。aliases.zsh の k エイリアス用
+
+[packages.translate-shell]
+optional = true
+provides = ["trans"]
+# aliases.zsh の ja-en / en-ja 用。現在このマシンにも未インストールで
+# エイリアスは定義されていない
+
+# ---------------------------------------------------------------------------
+# 検査から除外する名前
+# ---------------------------------------------------------------------------
+[ignore]
+# ブートストラップ時点で存在する、または OS が提供するもの。
+# Linux では git / curl / zsh を apt が入れるため packages には macOS 分しか無い。
+commands = [
+    "brew", "git", "curl", "wget", "zsh", "bash", "sh", "sudo", "apt-get", "yay",
+    "launchctl", "uname", "whoami", "command", "printf", "echo", "test",
+    # ツールではないもの
+    "theme",
+]
