@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shfmt
+        run: |
+          curl -fsSL -o /usr/local/bin/shfmt \
+            https://github.com/mvdan/sh/releases/download/v3.13.1/shfmt_v3.13.1_linux_amd64
+          chmod +x /usr/local/bin/shfmt
+
+      - name: shfmt (formatting)
+        run: shfmt -i 4 -ci -d script/
+
+      # -x で source 先も追跡する。追跡しないと SC1091 が出る。
+      - name: shellcheck
+        run: shellcheck -x -S warning script/setup script/deploy script/list script/install.sh script/utils.sh
+
+      - name: zsh syntax
+        run: |
+          sudo apt-get update && sudo apt-get install -y zsh
+          for f in .zshenv .config/zsh/.zshrc .config/zsh/rc/*.zsh; do
+            zsh -n "$f"
+          done
+
+      - name: Config file syntax
+        run: |
+          python3 - <<'PY'
+          import tomllib, json, re, io, sys, pathlib
+          fail = []
+          for p in pathlib.Path('.').rglob('*.toml'):
+              if '.git' in p.parts: continue
+              try: tomllib.load(open(p, 'rb'))
+              except Exception as e: fail.append(f'{p}: {e}')
+          for p in ['.config/zed/settings.json']:
+              s = io.open(p, encoding='utf-8').read()
+              s = re.sub(r'//.*', '', s)
+              s = re.sub(r',(\s*[}\]])', r'\1', s)   # JSONC の末尾カンマを許容
+              try: json.loads(s)
+              except Exception as e: fail.append(f'{p}: {e}')
+          if fail:
+              print('\n'.join(fail)); sys.exit(1)
+          print('config syntax OK')
+          PY
+
+  install-test:
+    name: Install on Ubuntu
+    # 実機インストールは Homebrew ごと構築するため重い。
+    # main への push と手動実行、週次のみに絞る。
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image (runs script/install.sh end to end)
+        run: docker build -t dotfiles-test .
