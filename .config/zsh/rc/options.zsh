@@ -10,8 +10,6 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=1000000
 
-export BAT_THEME=ansi
-
 setopt AUTO_CD
 
 # shellcheck disable=SC2016
