@@ -39,7 +39,7 @@ if [[ -n $HERDR_ENV ]]; then
     }
 
     function herdr_tab_name_update() {
-        _herdr_tab_name_update_logic &!
+        { _herdr_tab_name_update_logic } >/dev/null 2>&1 &!
     }
 
     add-zsh-hook chpwd herdr_tab_name_update
