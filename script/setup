@@ -142,11 +142,11 @@ install_packages() {
         )
     elif [ "$OS" = "Linux" ]; then
         if has_command yay; then
-            e_header "Installing Ghostty via yay..."
-            yay -S --noconfirm ghostty
+            e_header "Installing Alacritty via yay..."
+            yay -S --noconfirm alacritty
         elif has_command apt-get; then
-            e_header "Installing Ghostty via ghostty-ubuntu..."
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
+            e_header "Installing Alacritty via apt..."
+            sudo apt-get install -y alacritty
         fi
     fi
 
@@ -161,7 +161,7 @@ install_packages() {
     if [ "$OS" = "Darwin" ]; then
         casks+=(
             1password
-            ghostty
+            alacritty
             antigravity
             hammerspoon
             jetbrains-toolbox
