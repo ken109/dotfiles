@@ -183,6 +183,19 @@ install_packages() {
     e_done "Packages installed"
 }
 
+configure_bat_themes() {
+    if ! has_command bat; then
+        return
+    fi
+
+    e_section "Bat Themes"
+    e_header "Building bat theme cache (registers tokyonight_night)..."
+    # .config/bat/themes/*.tmTheme を bat のキャッシュに登録する。
+    # これを行わないと BAT_THEME=tokyonight_night が解決できず、delta も既定色に落ちる。
+    bat cache --build >/dev/null
+    e_done "Bat themes built"
+}
+
 install_viteplus() {
     e_section "Vite Plus"
     e_header "Installing vite.plus..."
@@ -366,6 +379,7 @@ main() {
     # Deploy dotfiles
     if [ -f "$SCRIPT_DIR/deploy" ]; then
         "$SCRIPT_DIR/deploy"
+        configure_bat_themes
     else
         e_error "Deploy script not found!"
     fi
