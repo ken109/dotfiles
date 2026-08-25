@@ -1,0 +1,9 @@
+# .git を持ち込むと Dockerfile 内の git init が既存リポジトリの再初期化になり、
+# git add . が差分ゼロになって git commit が失敗する。
+.git
+
+# ビルド成果物・ローカル専用
+sennit/target
+.idea
+.serena
+*.log
