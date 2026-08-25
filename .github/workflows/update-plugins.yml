@@ -1,0 +1,52 @@
+name: Update nvim plugins
+
+# Renovate は lazy.nvim の lock ファイルを扱えない。dotfiles で最も腐りやすい
+# 部分なので、専用に更新をかけて PR にする。
+#
+# sheldon はここでは扱わない。plugins.toml がリビジョンを固定しておらず
+# (github = "user/repo" のみ)、リポジトリに lock を持たないため、更新すべき
+# ファイルが存在しない。
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 毎週月曜 09:00 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - name: Update lazy.nvim lockfile
+        env:
+          XDG_CONFIG_HOME: ${{ github.workspace }}/.config
+          XDG_DATA_HOME: ${{ runner.temp }}/share
+          XDG_STATE_HOME: ${{ runner.temp }}/state
+          XDG_CACHE_HOME: ${{ runner.temp }}/cache
+        run: |
+          # lazy.nvim は初回起動でプラグインを clone し lazy-lock.json を書き換える
+          nvim --headless "+Lazy! update" +qa 2>&1 | tail -30
+
+      - name: Show what changed
+        run: git --no-pager diff --stat
+
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: chore/update-nvim-plugins
+          title: "chore(nvim): lazy-lock.json を更新"
+          commit-message: "chore(nvim): lazy-lock.json を更新"
+          body: |
+            Renovate が扱えない lazy.nvim のロックファイルの自動更新です。
+
+            マージ前に手元で `nvim` を開いて問題が無いか確認してください。
+          delete-branch: true
+          add-paths: .config/nvim/lazy-lock.json
