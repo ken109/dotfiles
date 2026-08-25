@@ -111,10 +111,10 @@ install_packages() {
         gdu
         gh
         ghq
-        gitui
         git-delta
         herdr
         hunk
+        lazygit
         mise
         neovim
         nushell
