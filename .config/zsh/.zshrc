@@ -21,7 +21,8 @@ source "$ZSH_CONFIG/rc/hooks.zsh"
 # run herdr
 # =======================================================
 
-if [[ "$ALACRITTY_WINDOW_ID" != "" && -z "$HERDR_ENV" && -z "$ZED_TERM" ]]; then
+if [[ -n "$ALACRITTY_WINDOW_ID" && -z "$HERDR_ENV" && -z "$ZED_TERM" ]] \
+    && (( ${+commands[herdr]} )); then
     # 常にdefaultセッションへアタッチ(なければ起動)。workspaceで分けて運用する
     herdr
 fi

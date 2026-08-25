@@ -2,8 +2,10 @@
 # tools initialization
 # =======================================================
 
-eval "$(starship init zsh)"
-eval "$(sheldon source)"
-eval "$(mise activate zsh)"
-eval "$(fzf --zsh)"
-eval "$(zoxide init zsh)"
+# 未インストールのツールがあってもプロンプトごと壊れないよう、
+# aliases.zsh / functions.zsh と同じく存在チェックしてから読み込む。
+(( ${+commands[starship]} )) && eval "$(starship init zsh)"
+(( ${+commands[sheldon]} ))  && eval "$(sheldon source)"
+(( ${+commands[mise]} ))     && eval "$(mise activate zsh)"
+(( ${+commands[fzf]} ))      && eval "$(fzf --zsh)"
+(( ${+commands[zoxide]} ))   && eval "$(zoxide init zsh)"
