@@ -34,7 +34,11 @@ dotfiles_download() {
         elif is_exists "wget"; then
             wget -O - "$TARBALL_URL" | tar xvz
         fi
-        mv -f dotfiles-master "$DOTPATH"
+        # TARBALL_URL の main ブランチは dotfiles-main として展開される
+        mv -f dotfiles-main "$DOTPATH" || {
+            e_error "failed to move extracted archive to $DOTPATH"
+            exit 1
+        }
     else
         e_error "curl or wget required"
         exit 1
