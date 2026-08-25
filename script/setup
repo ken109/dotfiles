@@ -104,14 +104,17 @@ install_packages() {
     local formulas=(
         bat
         beautysh
+        direnv
         eza
         fd
         fzf
         gdu
+        gh
         ghq
         gitui
         git-delta
         herdr
+        hunk
         mise
         neovim
         nushell
@@ -152,6 +155,7 @@ install_packages() {
     # Casks
     local casks=(
         font-cica
+        font-hack-nerd-font
     )
 
     if [ "$OS" = "Darwin" ]; then
