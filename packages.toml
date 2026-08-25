@@ -42,13 +42,13 @@ zoxide     = {}
 # macOS のみ
 # ---------------------------------------------------------------------------
 [packages.curl]
-os = ["darwin"]
+# darwin: brew / linux: apt・yay(install_system_dependencies)
 [packages.docker]
 os = ["darwin"]
 [packages.docker-compose]
 os = ["darwin"]
 [packages.git]
-os = ["darwin"]
+# darwin: brew / linux: apt・yay(install_system_dependencies)
 [packages.gpg]
 os = ["darwin"]
 [packages.gawk]
@@ -56,13 +56,13 @@ os = ["darwin"]
 [packages.libyaml]
 os = ["darwin"]
 [packages.tmux]
-os = ["darwin"]
+# darwin: brew / linux: apt・yay(install_system_dependencies)
 [packages.trash]
 os = ["darwin"]
 [packages.wget]
-os = ["darwin"]
+# darwin: brew / linux: apt・yay(install_system_dependencies)
 [packages.zsh]
-os = ["darwin"]
+# darwin: brew / linux: apt・yay(install_system_dependencies)
 
 # ---------------------------------------------------------------------------
 # フォント (cask)
@@ -84,8 +84,8 @@ kind = "font"
 manager = "brew-cask"
 os = ["darwin"]
 [packages.alacritty]
+# darwin: brew-cask / linux: yay・apt
 manager = "brew-cask"
-os = ["darwin"]
 [packages.antigravity]
 manager = "brew-cask"
 os = ["darwin"]

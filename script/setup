@@ -53,6 +53,7 @@ install_system_dependencies() {
                 libyaml-dev \
                 procps \
                 tmux \
+                unzip \
                 wget \
                 zsh
 
@@ -70,6 +71,7 @@ install_system_dependencies() {
                 libyaml \
                 procps-ng \
                 tmux \
+                unzip \
                 wget \
                 zsh
 
