@@ -13,3 +13,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+# macOS のターミナルが SSH 越しに LC_CTYPE=UTF-8 を送ってくるが、
+# glibc にその名前のロケールは無いため perl 等が警告を吐く。Linux 側で正規化する。
+if [[ "$OSTYPE" != darwin* && "$LC_CTYPE" == "UTF-8" ]]; then
+    export LC_CTYPE="${LANG:-C.UTF-8}"
+fi
