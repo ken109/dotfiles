@@ -36,15 +36,14 @@ function dotfiles() {
             "$dotpath/script/list"
             ;;
         update)
-            autoload -Uz catch
-            autoload -Uz throw
-
-            (
-                cd "$dotpath" && {
-                    git pull || throw 'PullError'
-                    "$dotpath/script/deploy" || throw 'DeployError'
-                }
-            )
+            if ! (
+                cd "$dotpath" || exit 1
+                git pull || exit 1
+                "$dotpath/script/deploy" || exit 1
+            ); then
+                echo "dotfiles update: failed, shell not reloaded" >&2
+                return 1
+            fi
             exec zsh -l
             ;;
         *)
