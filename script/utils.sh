@@ -47,7 +47,7 @@ has_command() {
 
 get_dotfiles() {
     local dotpath="${DOTPATH:-$HOME/.dotfiles}"
-    local targets=(".config" ".gemini" ".zshenv")
+    local targets=(".config" ".zshenv")
 
     if [ "$(uname -s)" = "Darwin" ]; then
         targets+=(".hammerspoon")
