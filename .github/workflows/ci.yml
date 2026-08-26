@@ -75,14 +75,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      # 設定が参照している依存が packages.toml に宣言されているかを検証する。
-      # これが落ちるのは「設定だけ更新してパッケージ側が追随していない」状態。
-      - name: check (drift)
-        run: ./sennit check
-
       # テンプレートを直して生成し忘れる、という食い違いを落とす
       - name: render --check (templates vs generated)
         run: ./sennit render --check
+
+      # 宣言した名前がこのランナーで解決するか。formula 名の間違いを捕まえる。
+      # ランナーには何も入っていないので、ここでは Linux 向けの宣言のうち
+      # 実際に導入されるものだけが対象になる install-test 側で見る。
+      - name: check (drift)
+        run: ./sennit check
 
       # 隔離した HOME に対して apply が期待どおり動くことを確認する。
       # script/deploy は撤去済みなので、比較ではなく自己完結の検証にする。
@@ -108,3 +109,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build image (runs script/install.sh end to end)
         run: docker build -t dotfiles-test .
+
+      # 実際に入った状態で、宣言した名前がすべて解決するか確かめる。
+      # formula 名の間違いや、インストールが黙って失敗した状態を捕まえる。
+      - name: Verify declarations resolve inside the image
+        run: |
+          docker run --rm dotfiles-test \
+            /home/linuxbrew/.linuxbrew/bin/sennit --root /home/testuser/.dotfiles verify

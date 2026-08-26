@@ -52,9 +52,8 @@ yay = "git"
 # brew の formula 名は gnupg。gpg はその別名で brew list には出ない
 provides = ["gpg"]
 os = ["darwin"]
-[packages.gawk]
-os = ["darwin"]
 [packages.libyaml]
+kind = "library"   # 実行ファイルを持たない
 apt = "libyaml-dev"
 yay = "libyaml"
 [packages.tmux]
@@ -78,6 +77,7 @@ apt = "build-essential"
 yay = "base-devel"
 
 [packages.ca-certificates]
+kind = "library"
 os = ["linux"]
 apt = "ca-certificates"
 yay = "ca-certificates"
@@ -97,12 +97,6 @@ os = ["linux"]
 apt = "procps"
 yay = "procps-ng"
 
-[packages.unzip]
-# brew の cask(font-cica)が zip 展開に使う
-os = ["linux"]
-apt = "unzip"
-yay = "unzip"
-
 # Alacritty は macOS では cask、Linux ではディストリのパッケージ
 [packages.alacritty]
 manager = "brew-cask"
@@ -112,14 +106,9 @@ yay = "alacritty"
 # ---------------------------------------------------------------------------
 # フォント (cask)
 # ---------------------------------------------------------------------------
-[packages.font-cica]
-manager = "brew-cask"
-provides = ["Cica"]
-kind = "font"
-
 [packages.font-hack-nerd-font]
 manager = "brew-cask"
-provides = ["Hack Nerd Font", "Hack Nerd Font Mono"]
+provides = ["Hack Nerd Font Mono"]
 kind = "font"
 
 # ---------------------------------------------------------------------------

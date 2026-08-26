@@ -1,0 +1,98 @@
+name: Mutation test
+
+# packages.toml の宣言が本当に必要かを、推論ではなく実行で確かめる。
+#
+# check は設定を読んで推論し、verify はマシンの状態を見る。どちらも
+# 「その宣言を外したら何が壊れるか」には答えられない。font-cica を外すと
+# 何も壊れないが、unzip を外すと font cask の展開が落ちる — この違いは
+# 実際に外して動かすまで分からない。
+#
+# 全 58 件を回すとコンテナビルド 58 回になるので、PR で変更された宣言だけを
+# 対象にする。全件は手動実行。
+on:
+  pull_request:
+    paths: ["packages.toml"]
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: "Space-separated package names (empty = every declaration)"
+        required: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.pick.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: pick
+        name: Decide which declarations to test
+        run: |
+          if [ -n "${{ inputs.packages }}" ]; then
+            names="${{ inputs.packages }}"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            # 追加・変更された [packages.x] と x = { ... } を拾う
+            names=$(git diff "origin/${{ github.base_ref }}"...HEAD -- packages.toml \
+              | grep '^+' \
+              | sed -nE 's/^\+\[packages\.([^]]+)\].*/\1/p; s/^\+([a-z0-9_-]+)[[:space:]]*=[[:space:]]*\{.*/\1/p' \
+              | sort -u | tr '\n' ' ')
+          else
+            names=$(python3 -c "
+          import tomllib
+          print(' '.join(sorted(tomllib.load(open('packages.toml','rb'))['packages'])))")
+          fi
+          names=$(echo "$names" | tr -s ' ' | sed 's/^ //; s/ $//')
+          echo "testing: ${names:-<none>}"
+          # matrix 用の JSON 配列にする
+          json=$(python3 -c "
+          import json, sys
+          print(json.dumps(sys.argv[1].split() if sys.argv[1] else []))" "$names")
+          echo "packages=$json" >> "$GITHUB_OUTPUT"
+
+  mutate:
+    needs: plan
+    if: needs.plan.outputs.packages != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        package: ${{ fromJson(needs.plan.outputs.packages) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove ${{ matrix.package }} from packages.toml
+        run: |
+          python3 - "${{ matrix.package }}" <<'PY'
+          import re, sys, io
+          name = sys.argv[1]
+          src = io.open("packages.toml", encoding="utf-8").read()
+          section = re.compile(r"(?:^|\n)\[packages\.%s\]\n(?:(?!\n\[|\n#).*\n)*" % re.escape(name))
+          inline = re.compile(r"\n%s\s*=[^\n]*\n" % re.escape(name))
+          out = section.sub("\n", src, count=1)
+          if out == src:
+              out = inline.sub("\n", src, count=1)
+          if out == src:
+              sys.exit(f"{name}: no declaration found")
+          io.open("packages.toml", "w", encoding="utf-8").write(out)
+          PY
+          git --no-pager diff --stat packages.toml
+
+      # 宣言を外した状態で丸ごとインストールする。ここが落ちれば、
+      # その宣言は本当に必要だったということ。
+      - name: Install without it
+        id: install
+        continue-on-error: true
+        run: docker build -t mutant .
+
+      - name: Judge
+        run: |
+          if [ "${{ steps.install.outcome }}" = "failure" ]; then
+            echo "::notice::${{ matrix.package }} is required — the install breaks without it"
+          else
+            echo "::warning::${{ matrix.package }} may be unnecessary — the install still succeeds without it"
+          fi
