@@ -155,11 +155,15 @@ jobs:
           #   このビルドは何も変わらない
           #
           # どちらも「外しても壊れない」であって「要らない」ではない。
+          # 読むのは変異前の packages.toml。作業ツリーのものは直前の
+          # ステップが当の宣言を消した後なので、os を引いても必ず空になり、
+          # darwin 限定の枝が一度も通らない。
+          git show HEAD:packages.toml > /tmp/packages-before.toml
           if python3 - "$PACKAGE" <<'PY'
           import sys, tomllib
           name = sys.argv[1]
           bootstrap = {"build-essential", "ca-certificates", "curl", "file", "git", "procps"}
-          pkg = tomllib.load(open("packages.toml", "rb"))["packages"].get(name, {})
+          pkg = tomllib.load(open("/tmp/packages-before.toml", "rb"))["packages"].get(name, {})
           sys.exit(0 if name in bootstrap or pkg.get("os") == ["darwin"] else 1)
           PY
           then
