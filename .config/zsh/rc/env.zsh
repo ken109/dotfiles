@@ -32,7 +32,10 @@ fi
 fpath=(${^fpath}(N))   # drop non-existent directories
 typeset +x FPATH       # un-export so child shells recompute their own
 
-export PATH="/usr/local/bin:$PATH"
+# /usr/local/bin は /etc/paths に既にあるので足す必要がない。ここで前置すると
+# Homebrew の prefix より前に出てしまい、Apple Silicon で /opt/homebrew より
+# 古い Intel 側や手置きのバイナリが優先される。brew 自身も入れ替わるので、
+# dotfiles update や sennit sync が別の prefix を触りに行く。
 # Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
 export PATH="$HOME/.local/bin:$PATH"
 
