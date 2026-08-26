@@ -149,14 +149,35 @@ if ! command -v zsh >/dev/null; then
     printf "  \033[33mskip\033[m  XDG agreement with .zshenv (zsh is not installed)\n"
 else
     for var in XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME; do
-        # setup 側が落ちたら空が返る。比較は続ける —— 1 つ目で суite ごと
-        # 抜けると、残りの 3 つが一度も比べられない。
+        # printenv で子プロセスから見る。シェルの中で echo すると export の
+        # 有無が見えず、子プロセスに渡るかどうかというこの検査の要点を
+        # まるごと外す。brew trust が読めなかったのは、まさに export されて
+        # いない値だった。比較は 4 つとも続ける。1 つ目で抜けない。
         from_setup="$(SETUP_LIB=1 env -u "$var" bash -c '
-            source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1; echo "${'"$var"'-}"' 2>/dev/null || true)"
+            source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1; printenv "'"$var"'"' 2>/dev/null || true)"
         from_zshenv="$(env -u "$var" zsh -c '
-            source "'"$SCRIPT_DIR"'/../.zshenv" >/dev/null 2>&1; echo "${'"$var"'-}"' 2>/dev/null || true)"
-        check "$var agrees with .zshenv" "$from_zshenv" "$from_setup"
+            source "'"$SCRIPT_DIR"'/../.zshenv" >/dev/null 2>&1; printenv "'"$var"'"' 2>/dev/null || true)"
+        check "$var is exported and agrees with .zshenv" "$from_zshenv" "$from_setup"
     done
+fi
+
+# --- setup 自身のシェルオプション ------------------------------------------
+# ハーネスはどれも自分で set -euo pipefail を敷いてから source するので、
+# setup の 1 行目が消えても気づけない。消えると `curl ... | bash` が curl の
+# 失敗を捨て、落ちたダウンロードを「入れた」と表示する。ファイルから直に読む。
+opts="$(sed -n 's/^set -\([a-z]*\).*/\1/p' "$SCRIPT_DIR/setup" | head -1)"
+case "$opts" in
+    *e*) ok "setup sets errexit" ;;
+    *) ng "setup sets errexit" "the first set line was [set -$opts]" ;;
+esac
+case "$opts" in
+    *u*) ok "setup sets nounset" ;;
+    *) ng "setup sets nounset" "the first set line was [set -$opts]" ;;
+esac
+if grep -qE '^set -[a-z]*o pipefail' "$SCRIPT_DIR/setup"; then
+    ok "setup sets pipefail"
+else
+    ng "setup sets pipefail" "curl | bash would report a failed download as success"
 fi
 
 echo

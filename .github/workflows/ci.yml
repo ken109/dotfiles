@@ -110,7 +110,17 @@ jobs:
           ./sennit --home "$h" apply | grep -qE "already up to date|link\(s\) in place"
           # テンプレートは配置されない
           test "$(find "$h" -name '*.tmpl' | wc -l)" -eq 0
-          echo "links: $(find "$h" -type l | wc -l)"
+
+          # 実際に張られた本数を見る。数えて表示するだけでは、[link] の
+          # パスを打ち間違えた PR が「冪等です」と言いながら 0 本しか
+          # 置かない状態で通る。install-test は PR では走らないので、
+          # ここが唯一の関門になる。
+          links=$(find "$h" -type l | wc -l)
+          echo "links: $links"
+          if [ "$links" -lt 40 ]; then
+            echo "::error::only $links link(s) were placed; expected at least 40"
+            exit 1
+          fi
 
   install-test:
     name: Install on Ubuntu

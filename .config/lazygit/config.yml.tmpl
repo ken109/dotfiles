@@ -1,7 +1,12 @@
 git:
-  pagers:
+  # lazygit 0.5x で git.pagers -> git.diffRenderers、pager -> command に
+  # 変わった。古い名前でも起動はするが、lazygit が自動移行して設定ファイルを
+  # 書き戻そうとする。生成物は読み取り専用なので書き込みに失敗し、TUI が
+  # 立ち上がらない。しかもエラーは権限の話に見えるので、原因が名前の方だと
+  # 分からない。
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      command: delta --dark --paging=never
 
 gui:
   sidePanelWidth: 0.20
