@@ -28,7 +28,7 @@ jobs:
 
       # -x で source 先も追跡する。追跡しないと SC1091 が出る。
       - name: shellcheck
-        run: shellcheck -x -S warning script/setup script/install.sh script/utils.sh
+        run: shellcheck -x -S warning script/*
 
       - name: zsh syntax
         run: |
