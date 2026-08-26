@@ -15,13 +15,27 @@ FAILED_STEPS=()
 # 外部ネットワークに依存する工程はこれで包む。tpm の git clone や Docker の
 # apt リポジトリは、こちらに何の落ち度が無くても落ちる。落ちたことは
 # 最後に報告するが、配置までは進める。
+#
+# `if "$@"` と書いてはいけない。条件の位置に置くと errexit がその呼び出しの
+# 間ずっと無効になり、包んだ関数は失敗した行を素通りして最後の e_done まで
+# 走る。e_done は printf なので 0 を返し、全部失敗しても「成功」になる。
+# 包まなかった頃より悪い。errexit を効かせた副シェルで走らせて、終了状態は
+# 条件の外で受け取る。
 optional_step() {
     local name="$1"
     shift
-    if "$@"; then
+    local rc=0
+    set +e
+    (
+        set -e
+        "$@"
+    )
+    rc=$?
+    set -e
+    if [ "$rc" -eq 0 ]; then
         return 0
     fi
-    e_error "$name failed"
+    e_error "$name failed (exit $rc)"
     FAILED_STEPS+=("$name")
     return 0
 }

@@ -55,14 +55,15 @@ To install and set up everything, simply run the following command:
 
 ```bash
 curl -fsSL -o /tmp/dotfiles-install.sh \
-  https://raw.githubusercontent.com/ken109/dotfiles/main/script/install.sh
-bash /tmp/dotfiles-install.sh
+  https://raw.githubusercontent.com/ken109/dotfiles/main/script/install.sh \
+  && bash /tmp/dotfiles-install.sh
 ```
 
-Two steps rather than `bash -c "$(curl …)"` on purpose: a command substitution throws away
-curl's exit status, so a 404 or a connection dropped mid-body would feed bash a truncated
-script — which, since this one is all function definitions with a single call on the last
-line, exits 0 having done nothing.
+Two steps joined with `&&` rather than `bash -c "$(curl …)"` on purpose. A command
+substitution throws away curl's exit status, so a 404 or a connection dropped mid-body
+would feed bash a truncated script — which, since this one is all function definitions
+with a single call on the last line, exits 0 having done nothing. `-f` catches the 404 and
+the `&&` catches the truncation, which `curl` reports as exit 18.
 
 It clones the repository to `~/.dotfiles`, installs Homebrew and enough to run `sennit`,
 and hands the rest over: `sennit sync` installs what `packages.toml` declares, and

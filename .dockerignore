@@ -2,6 +2,13 @@
 # git add . が差分ゼロになって git commit が失敗する。
 .git
 
+# 生成物。sennit apply --secrets を通したマシンでは .npmrc に GitHub の
+# トークンが入る。git は無視するが、docker build の COPY は見てしまう。
+.npmrc
+.config/alacritty/alacritty.toml
+.config/lazygit/config.yml
+.config/zsh/rc/theme.zsh
+
 # ビルド成果物・ローカル専用
 sennit/target
 .idea
