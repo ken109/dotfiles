@@ -264,6 +264,8 @@ configure_mise() {
     e_done "mise configured"
 }
 
+# 配置のあとに呼ぶこと。tpm はプラグイン一覧も置き場も tmux.conf から
+# 読むので、設定がまだ無い状態では abort する。
 configure_tpm() {
     e_header "Configuring tpm..."
     if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
@@ -361,7 +363,6 @@ main() {
 
     configure_shell
     configure_mise
-    optional_step tpm configure_tpm
 
     # Deploy dotfiles
     #
@@ -373,6 +374,11 @@ main() {
     fi
     e_section "Deploying Dotfiles"
     (cd "$SCRIPT_DIR/.." && sennit apply)
+
+    # tpm もここから。プラグインの一覧も置き場も tmux.conf から読むので、
+    # 配置前に走らせると設定が無く、abort して 1 つも入らない。しかも
+    # optional_step が拾うので「失敗しました」とだけ出る。
+    optional_step tpm configure_tpm
 
     # GNOME setup must run after deploy so the extension symlink exists.
     configure_gnome
