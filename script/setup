@@ -12,6 +12,20 @@ USER="${USER:-$(whoami)}"
 # 配置されない、というのが最悪の結果なので。
 FAILED_STEPS=()
 
+# 外部ネットワークに依存する工程はこれで包む。tpm の git clone や Docker の
+# apt リポジトリは、こちらに何の落ち度が無くても落ちる。落ちたことは
+# 最後に報告するが、配置までは進める。
+optional_step() {
+    local name="$1"
+    shift
+    if "$@"; then
+        return 0
+    fi
+    e_error "$name failed"
+    FAILED_STEPS+=("$name")
+    return 0
+}
+
 # Load utilities
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
@@ -80,9 +94,14 @@ install_homebrew() {
             e_error "could not download the Homebrew installer"
             exit 1
         fi
-        # Set CI=1 to avoid interactive prompt
-        CI=1 /bin/bash "$installer"
+        # Set CI=1 to avoid interactive prompt。落ちても後始末はする。
+        local rc=0
+        CI=1 /bin/bash "$installer" || rc=$?
         rm -f "$installer"
+        if [ "$rc" -ne 0 ]; then
+            e_error "the Homebrew installer failed"
+            exit "$rc"
+        fi
 
         load_brew
         e_done "Homebrew installed"
@@ -304,11 +323,11 @@ main() {
     install_homebrew
     install_packages
     install_viteplus
-    install_docker
+    optional_step docker install_docker
 
     configure_shell
     configure_mise
-    configure_tpm
+    optional_step tpm configure_tpm
 
     # Deploy dotfiles
     #

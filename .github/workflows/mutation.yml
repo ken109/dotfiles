@@ -128,11 +128,11 @@ jobs:
         run: |
           # ブートストラップが先に入れるものは、宣言を外してもビルドが通る。
           # 構造上そうなるだけなので「要らない」と読ませない。
-          # Dockerfile が入れるもの(curl git sudo make build-essential locales
-          # vim)と script/setup:58 の apt bootstrap(build-essential curl file
-          # git procps)。zsh はここには無く packages.toml から入るので、
-          # 外せば configure_shell が落ちる — 測れる側。
-          case " build-essential curl file git procps locales vim " in
+          # Dockerfile と apt bootstrap が入れるもの、およびそれらが依存として
+          # 引き込むもの(ca-certificates は curl の依存として先に入る)。
+          # zsh はここには無く packages.toml から入るので、外せば
+          # configure_shell が落ちる — 測れる側。
+          case " build-essential ca-certificates curl file git procps " in
             *" ${{ matrix.package }} "*) bootstrapped=yes ;;
             *) bootstrapped=no ;;
           esac
