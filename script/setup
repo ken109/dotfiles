@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-set -eu
+# pipefail が無いと `curl ... | bash` が curl の失敗を捨てる。bash は空の
+# 標準入力を読んで 0 で終わるので、ネットワークが落ちていても「入れた」と
+# 表示されたまま先へ進む。
+set -euo pipefail
 
 USER="${USER:-$(whoami)}"
 
@@ -273,12 +276,15 @@ main() {
     configure_tpm
 
     # Deploy dotfiles
-    if has_command sennit; then
-        e_section "Deploying Dotfiles"
-        (cd "$SCRIPT_DIR/.." && sennit apply)
-    else
+    #
+    # ここで抜けると 1 つも配置されないまま「完了しました」と出る。
+    # e_error は printf でしかないので、明示的に落とす必要がある。
+    if ! has_command sennit; then
         e_error "sennit not found; cannot deploy"
+        exit 1
     fi
+    e_section "Deploying Dotfiles"
+    (cd "$SCRIPT_DIR/.." && sennit apply)
 
     # GNOME setup must run after deploy so the extension symlink exists.
     configure_gnome
