@@ -92,32 +92,6 @@ install_packages() {
     e_done "Packages installed"
 }
 
-configure_git_hooks() {
-    if ! has_command lefthook; then
-        return
-    fi
-
-    e_section "Git Hooks"
-    e_header "Installing lefthook hooks..."
-    # lefthook.yml の pre-commit(shfmt / shellcheck / zsh -n)を .git/hooks に配線する
-    # SCRIPT_DIR は script/ を指すので、その親がリポジトリルート
-    (cd "$SCRIPT_DIR/.." && lefthook install >/dev/null)
-    e_done "Git hooks installed"
-}
-
-configure_bat_themes() {
-    if ! has_command bat; then
-        return
-    fi
-
-    e_section "Bat Themes"
-    e_header "Building bat theme cache (registers tokyonight_night)..."
-    # .config/bat/themes/*.tmTheme を bat のキャッシュに登録する。
-    # これを行わないと BAT_THEME=tokyonight_night が解決できず、delta も既定色に落ちる。
-    bat cache --build >/dev/null
-    e_done "Bat themes built"
-}
-
 install_viteplus() {
     e_section "Vite Plus"
     e_header "Installing vite.plus..."
@@ -302,8 +276,6 @@ main() {
     if has_command sennit; then
         e_section "Deploying Dotfiles"
         (cd "$SCRIPT_DIR/.." && sennit apply)
-        configure_bat_themes
-        configure_git_hooks
     else
         e_error "sennit not found; cannot deploy"
     fi

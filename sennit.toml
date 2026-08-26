@@ -28,3 +28,19 @@ ignore = ["*.tmpl"]
 ".config/zsh/rc/theme.zsh" = ".config/zsh/rc/theme.zsh.tmpl"
 # 秘密を含むので apply では飛ばされる。sennit apply --secrets で生成する
 ".npmrc" = ".npmrc.tmpl"
+
+# ファイルのモード。トークンを含むものが 0644 で置かれても何も壊れないので、
+# 宣言しておいて verify に検査させる。
+[modes]
+".npmrc" = "600"
+
+# 配置したあとに走らせる処理。監視対象が変わったときだけ実行される。
+[hooks.bat-themes]
+# .config/bat/themes/*.tmTheme を bat のキャッシュに登録する。
+# これを踏まないと BAT_THEME=tokyonight_night が解決できず、delta も既定色に落ちる。
+when-changed = [".config/bat/themes"]
+run = "command -v bat >/dev/null && bat cache --build >/dev/null || true"
+
+[hooks.git-hooks]
+when-changed = ["lefthook.yml"]
+run = "command -v lefthook >/dev/null && lefthook install >/dev/null || true"
