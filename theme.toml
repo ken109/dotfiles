@@ -1,6 +1,6 @@
 # 配色の単一ソース。sennit render がこの値を各ツールの設定へ流し込む。
-# テンプレートは *.tmpl で、生成物はリポジトリにコミットする
-# (差分が git で見え、sennit check も生成後のファイルを読めるため)。
+# テンプレートは *.tmpl で、生成物はコミットしない(.gitignore にある)。
+# 生成物は apply が毎回作り直すので、読み取り専用で置かれる。
 #
 # tokyonight (night) — 出典: folke/tokyonight.nvim の night variant
 

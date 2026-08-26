@@ -30,7 +30,7 @@ Sleep 2500ms
 
 Type "# theme.toml から配色を生成する" Enter
 Sleep 400ms
-Type "sennit render --check" Enter
+Type "sennit render" Enter
 Sleep 2200ms
 
 Type "# 宣言済みパッケージの過不足" Enter

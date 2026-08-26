@@ -1,8 +1,8 @@
 # sennit のマニフェスト。どのパスを $HOME に配置するかを宣言する。
 #
 # link  : リポジトリのファイルへ symlink を張る(生の編集ループを保つ)
-# render: theme.toml から生成する。生成物はコミットするので、配置自体は
-#         link と同じく symlink で行われる
+# render: theme.toml から生成する。生成物はコミットせず(.gitignore にある)、
+#         apply が配置の直前に作る。作られた後は link と同じく symlink で置く
 #
 # ディレクトリを指定した場合はその下のファイルを個別に symlink する。
 # ディレクトリごと symlink すると、そのディレクトリに他のツールが
@@ -30,7 +30,9 @@ ignore = ["*.tmpl"]
 ".npmrc" = ".npmrc.tmpl"
 
 # ファイルのモード。トークンを含むものが 0644 で置かれても何も壊れないので、
-# 宣言しておいて verify に検査させる。
+# 宣言しておいて apply に揃えさせ、verify に検査させる。
+# ただし verify が見るのは実在するファイルだけなので、--secrets をまだ
+# 通していないマシンでは .npmrc は検査対象に現れない。
 [modes]
 ".npmrc" = "600"
 
