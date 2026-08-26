@@ -122,8 +122,11 @@ os = ["darwin"]
 
 [packages.1password-cli]
 manager = "brew-cask"
+os = ["darwin"]
 provides = ["op"]
-# テンプレートの {{ op://... }} が使う。宣言が無いまま手で入っていた
+# テンプレートの {{ op://... }} が使う。Linux では cask が使えず、
+# 1Password の apt リポジトリ追加が要るのでここでは入れない。
+# apply は秘密を既定で飛ばすので、op が無くても支障はない。
 [packages.antigravity]
 manager = "brew-cask"
 os = ["darwin"]
