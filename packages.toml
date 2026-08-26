@@ -147,10 +147,8 @@ optional = true
 # 現状 setup の管理外(Docker Desktop 等が置く)。aliases.zsh の k エイリアス用
 
 [packages.translate-shell]
-optional = true
 provides = ["trans"]
-# aliases.zsh の ja-en / en-ja 用。現在このマシンにも未インストールで
-# エイリアスは定義されていない
+# aliases.zsh の ja-en / en-ja が使う
 
 # ---------------------------------------------------------------------------
 # 検査から除外する名前
