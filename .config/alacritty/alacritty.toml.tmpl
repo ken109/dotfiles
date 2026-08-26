@@ -5,7 +5,10 @@ opacity = 0.85
 blur = true
 startup_mode = "Maximized"
 level = "AlwaysOnTop"
+{{ if sennit.os == "darwin" }}
+# Option キーの扱いは macOS 専用の設定
 option_as_alt = "Both"
+{{ end }}
 
 [font]
 size = 10
