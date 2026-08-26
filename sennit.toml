@@ -55,5 +55,12 @@ run = "command -v lefthook >/dev/null && lefthook install >/dev/null || true"
 # されないので、plugins.zsh を配置しても補完だけが効かない状態になる。
 # しかも何のエラーも出ないので気づけない。消しておけば次のシェル起動で
 # 作り直される。
-when-changed = [".config/zsh/rc/plugins.zsh", ".config/sheldon/plugins.toml"]
+# packages.toml も見る。sennit sync が新しい formula を入れると
+# $HOMEBREW_PREFIX/share/zsh/site-functions に補完関数が置かれるが、
+# dump が新しいままだと同じように読まれない。
+when-changed = [
+    ".config/zsh/rc/plugins.zsh",
+    ".config/sheldon/plugins.toml",
+    "packages.toml",
+]
 run = "rm -f \"${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump\" \"${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump.zwc\""

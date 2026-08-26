@@ -7,6 +7,18 @@ set -euo pipefail
 
 USER="${USER:-$(whoami)}"
 
+# .zshenv と同じ既定を、このスクリプトの中でも先に決めておく。
+#
+# セットアップは bash で走り、.zshenv が配置されるのは最後の apply。
+# その間に XDG_CONFIG_HOME 無しで走ったコマンドは ~/.homebrew のような
+# 別の場所に書き、あとで zsh から読むときには見つからない。実際
+# `brew trust` がそれで、インストールは通るのに、あとから開いた zsh では
+# 「untrusted tap」で sennit を触れなくなる。
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
 # 必須でない工程の失敗をためておく。落ちた事実は捨てないが、その場で
 # 中断はしない。第三者のインストーラが落ちたせいで dotfiles が 1 つも
 # 配置されない、というのが最悪の結果なので。
@@ -259,6 +271,14 @@ configure_tpm() {
         e_done "tpm installed"
     else
         e_done "tpm already installed"
+    fi
+
+    # tmux.conf の `run tpm` は入っているプラグインを読むだけで、入れはしない。
+    # 踏まないと .config/tmux/plugins/rose-pine.conf の設定が丸ごと無効な
+    # まま、何のエラーも出ずに既定の見た目になる。冪等なので毎回走らせる。
+    if [ -x "$HOME/.tmux/plugins/tpm/bin/install_plugins" ]; then
+        "$HOME/.tmux/plugins/tpm/bin/install_plugins" >/dev/null
+        e_done "tmux plugins installed"
     fi
 }
 
