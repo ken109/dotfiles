@@ -7,3 +7,10 @@
 
 /.luarc.json
 
+
+# sennit が theme.toml から生成するもの。生成物は追跡しない。
+# コミットすると同じ変更が2回 diff に出るうえ、秘密を含むテンプレートを
+# 使えなくなる。sennit apply が配置前に必ず生成する。
+/.config/alacritty/alacritty.toml
+/.config/lazygit/config.yml
+/.config/zsh/rc/theme.zsh

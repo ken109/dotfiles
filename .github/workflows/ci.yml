@@ -75,10 +75,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      # テンプレートを直して生成し忘れる、という食い違いを落とす
-      - name: render --check (templates vs generated)
-        run: ./sennit render --check
-
       # 宣言した名前がこのランナーで解決するか。formula 名の間違いを捕まえる。
       # ランナーには何も入っていないので、ここでは Linux 向けの宣言のうち
       # 実際に導入されるものだけが対象になる install-test 側で見る。
@@ -87,6 +83,8 @@ jobs:
 
       # 隔離した HOME に対して apply が期待どおり動くことを確認する。
       # script/deploy は撤去済みなので、比較ではなく自己完結の検証にする。
+      # apply は配置の前に render を走らせる。生成物は追跡していないので、
+      # clone 直後のこの状態から作られる。
       - name: apply into an isolated HOME
         run: |
           h=$(mktemp -d)
