@@ -1,7 +1,6 @@
 # Dotfiles
 
-A comprehensive configuration management for my development environment, primarily targeted at **macOS** (with Linux support).
-Managed with automated scripts and modern CLI tools to provide a reproducible and efficient workflow.
+Configuration for my development environment, on **macOS** and **Ubuntu**.
 
 [![CI](https://github.com/ken109/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/ken109/dotfiles/actions/workflows/ci.yml)
 ![License](https://img.shields.io/github/license/ken109/dotfiles?style=flat-square)
@@ -9,10 +8,18 @@ Managed with automated scripts and modern CLI tools to provide a reproducible an
 
 ![demo](.github/demo/sennit.gif)
 
-Managed with [sennit](https://github.com/ken109/sennit), a dotfiles manager written for
-this repository. `packages.toml` declares every dependency, `theme.toml` is the single
-source for the color scheme, and CI fails if a config references something that is not
-declared.
+Managed with [sennit](https://github.com/ken109/sennit), written for this repository.
+Three files describe the whole thing:
+
+| | |
+|---|---|
+| `packages.toml` | every package, and what it provides |
+| `theme.toml` | the colour scheme, once |
+| `sennit.toml` | what gets linked, generated, and run afterwards |
+
+CI installs the whole thing into a fresh Ubuntu container on every push, then checks that
+nothing any config references is missing from `packages.toml`. A pull request that changes
+a declaration is tested by removing it and seeing whether the install still succeeds.
 
 ## 🛠 Features
 
@@ -48,11 +55,9 @@ To install and set up everything, simply run the following command:
 bash -c "$(curl -L https://raw.githubusercontent.com/ken109/dotfiles/main/script/install.sh)"
 ```
 
-This script will:
-1. Download this repository to `~/.dotfiles`.
-2. Install system dependencies and tools (via Homebrew or apt).
-3. Set up Zsh as the default shell.
-4. Symlink configuration files to your home directory.
+It clones the repository to `~/.dotfiles`, installs Homebrew and enough to run `sennit`,
+and hands the rest over: `sennit sync` installs what `packages.toml` declares, and
+`sennit apply` renders the templates and places the symlinks.
 
 ## 📦 Usage
 
@@ -60,8 +65,18 @@ After installation, the following commands and aliases are available:
 
 ### Management
 
-- **`dotfiles list`**: List all managed files and their symlink destinations.
-- **`dotfiles update`**: Pull the latest changes from GitHub and re-deploy symlinks.
+- **`dotfiles update`**: Pull, then re-apply.
+- **`dotfiles list`**: Show every managed path and where it points.
+
+Or use `sennit` directly, from anywhere inside the repository:
+
+```sh
+sennit diff      # what an apply would change
+sennit apply     # place it
+sennit sync      # install anything declared but missing
+sennit check     # is everything the configs need declared?
+sennit verify    # is everything declared actually here?
+```
 
 ### Utilities
 
@@ -72,11 +87,16 @@ After installation, the following commands and aliases are available:
 
 ```
 .dotfiles
-├── .config/       # XDG-compatible configurations (nvim, zsh, tmux, etc.)
-├── .hammerspoon/  # Hammerspoon configuration (macOS only)
-├── script/        # Installation, setup, and deployment scripts
-└── ...
+├── packages.toml    # every package, per OS and package manager
+├── theme.toml       # the colour scheme
+├── sennit.toml      # what to link, what to generate, what to run after
+├── .config/         # XDG configuration (nvim, zsh, tmux, alacritty, ...)
+├── .hammerspoon/    # macOS automation
+├── .local/          # GNOME Shell extensions (Linux)
+└── script/          # bootstrap and setup; everything else is sennit's job
 ```
+
+Files ending in `.tmpl` are generated from `theme.toml`; their output is not committed.
 
 ## 📜 License
 
