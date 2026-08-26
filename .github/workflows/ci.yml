@@ -117,8 +117,11 @@ jobs:
           # ここが唯一の関門になる。
           links=$(find "$h" -type l | wc -l)
           echo "links: $links"
-          if [ "$links" -lt 40 ]; then
-            echo "::error::only $links link(s) were placed; expected at least 40"
+          # 下限は余裕を持たせる。捕まえたいのは「宣言を打ち間違えて
+          # ほとんど張られない」で、その場合は 7 本まで落ちる。実測は
+          # darwin 45 / linux 41 なので、30 なら正当な削除で落ちない。
+          if [ "$links" -lt 30 ]; then
+            echo "::error::only $links link(s) were placed; expected at least 30"
             exit 1
           fi
 
