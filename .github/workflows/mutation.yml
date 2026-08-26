@@ -3,9 +3,9 @@ name: Mutation test
 # packages.toml の宣言が本当に必要かを、推論ではなく実行で確かめる。
 #
 # check は設定を読んで推論し、verify はマシンの状態を見る。どちらも
-# 「その宣言を外したら何が壊れるか」には答えられない。font-cica を外すと
-# 何も壊れないが、unzip を外すと font cask の展開が落ちる — この違いは
-# 実際に外して動かすまで分からない。
+# 「その宣言を外したら何が壊れるか」には答えられない。実際、font cask を
+# 展開するために unzip が要ると分かったのも、font を外した回で初めて
+# だった。この違いは実際に外して動かすまで分からない。
 #
 # 全件を回すとコンテナビルドが宣言の数だけ走るので、PR で追加・変更された
 # 宣言だけを対象にする。全件は手動実行。
@@ -128,7 +128,11 @@ jobs:
         run: |
           # ブートストラップが先に入れるものは、宣言を外してもビルドが通る。
           # 構造上そうなるだけなので「要らない」と読ませない。
-          case " build-essential curl file git procps sudo make zsh " in
+          # Dockerfile が入れるもの(curl git sudo make build-essential locales
+          # vim)と script/setup:58 の apt bootstrap(build-essential curl file
+          # git procps)。zsh はここには無く packages.toml から入るので、
+          # 外せば configure_shell が落ちる — 測れる側。
+          case " build-essential curl file git procps locales vim " in
             *" ${{ matrix.package }} "*) bootstrapped=yes ;;
             *) bootstrapped=no ;;
           esac

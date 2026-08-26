@@ -69,8 +69,20 @@ install_homebrew() {
     e_section "Homebrew Setup"
     if ! has_command brew; then
         e_header "Installing Homebrew..."
+        # コマンド置換の中の curl は、失敗しても置換の結果が空になるだけで
+        # bash は 0 を返す。pipefail もここには届かない。落として、
+        # 空のスクリプトを実行して「入れた」と表示するのを防ぐ。
+        local installer
+        installer="$(mktemp)"
+        if ! curl -fsSL -o "$installer" \
+            https://raw.githubusercontent.com/Homebrew/install/master/install.sh; then
+            rm -f "$installer"
+            e_error "could not download the Homebrew installer"
+            exit 1
+        fi
         # Set CI=1 to avoid interactive prompt
-        CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        CI=1 /bin/bash "$installer"
+        rm -f "$installer"
 
         load_brew
         e_done "Homebrew installed"

@@ -90,6 +90,9 @@ jobs:
       # apply は配置の前に render を走らせる。生成物は追跡していないので、
       # clone 直後のこの状態から作られる。
       - name: apply into an isolated HOME
+        # 既定のシェルには pipefail が無い。`n=$(sennit apply | tail -1)` は
+        # tail の終了状態を採るので、apply が落ちても段は緑になる。
+        shell: bash -euo pipefail {0}
         run: |
           h=$(mktemp -d)
           n=$(./sennit --home "$h" apply | tail -1)
