@@ -35,49 +35,26 @@ load_brew() {
 # --------------------------------------------------------------------------------------------------
 
 install_system_dependencies() {
-    if [ "$OS" = "Linux" ]; then
-        e_section "System Dependencies"
-
-        if has_command apt-get; then
-            e_header "Installing apt packages..."
-            export DEBIAN_FRONTEND=noninteractive
-
-            sudo apt-get update
-            sudo apt-get install -y \
-                build-essential \
-                ca-certificates \
-                curl \
-                file \
-                gettext \
-                git \
-                libyaml-dev \
-                procps \
-                tmux \
-                unzip \
-                wget \
-                zsh
-
-            e_done "System dependencies installed"
-        elif has_command yay; then
-            e_header "Installing yay packages..."
-
-            yay -Syu --noconfirm
-            yay -S --noconfirm \
-                base-devel \
-                curl \
-                file \
-                gettext \
-                git \
-                libyaml \
-                procps-ng \
-                tmux \
-                unzip \
-                wget \
-                zsh
-
-            e_done "System dependencies installed"
-        fi
+    if [ "$OS" != "Linux" ]; then
+        return
     fi
+
+    # sennit 自体を動かす前に必要な最低限だけをここで入れる。
+    # 残りは packages.toml の宣言から sennit sync が入れる。
+    e_section "System Dependencies"
+
+    if has_command apt-get; then
+        e_header "Installing apt bootstrap packages..."
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update
+        sudo apt-get install -y build-essential curl file git procps
+    elif has_command yay; then
+        e_header "Installing yay bootstrap packages..."
+        yay -Syu --noconfirm
+        yay -S --noconfirm base-devel curl file git procps-ng
+    fi
+
+    e_done "System dependencies installed"
 }
 
 install_homebrew() {
@@ -106,17 +83,6 @@ install_packages() {
     # Homebrew は非公式 tap の formula を明示的に trust しないと読み込まない
     brew trust --tap ken109/tap
     brew install sennit
-
-    # Linux の Alacritty は cask が使えないので、こちらは shell が持つ
-    if [ "$OS" = "Linux" ]; then
-        if has_command yay; then
-            e_header "Installing Alacritty via yay..."
-            yay -S --noconfirm alacritty
-        elif has_command apt-get; then
-            e_header "Installing Alacritty via apt..."
-            sudo apt-get install -y alacritty
-        fi
-    fi
 
     # 残りは packages.toml の宣言から sennit が入れる。
     # 何をどのマネージャで入れるかは packages.toml が唯一のソース。

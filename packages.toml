@@ -43,9 +43,11 @@ zoxide     = {}
 # macOS のみ
 # ---------------------------------------------------------------------------
 [packages.curl]
-# darwin: brew / linux: apt・yay(install_system_dependencies)
+apt = "curl"
+yay = "curl"
 [packages.git]
-# darwin: brew / linux: apt・yay(install_system_dependencies)
+apt = "git"
+yay = "git"
 [packages.gnupg]
 # brew の formula 名は gnupg。gpg はその別名で brew list には出ない
 provides = ["gpg"]
@@ -53,15 +55,59 @@ os = ["darwin"]
 [packages.gawk]
 os = ["darwin"]
 [packages.libyaml]
-os = ["darwin"]
+apt = "libyaml-dev"
+yay = "libyaml"
 [packages.tmux]
-# darwin: brew / linux: apt・yay(install_system_dependencies)
+apt = "tmux"
+yay = "tmux"
 [packages.trash]
 os = ["darwin"]
 [packages.wget]
-# darwin: brew / linux: apt・yay(install_system_dependencies)
+apt = "wget"
+yay = "wget"
 [packages.zsh]
-# darwin: brew / linux: apt・yay(install_system_dependencies)
+apt = "zsh"
+yay = "zsh"
+
+# ---------------------------------------------------------------------------
+# Linux のビルド/実行に必要なもの。macOS では Xcode CLT などが賄う
+# ---------------------------------------------------------------------------
+[packages.build-essential]
+os = ["linux"]
+apt = "build-essential"
+yay = "base-devel"
+
+[packages.ca-certificates]
+os = ["linux"]
+apt = "ca-certificates"
+yay = "ca-certificates"
+
+[packages.file]
+os = ["linux"]
+apt = "file"
+yay = "file"
+
+[packages.gettext]
+os = ["linux"]
+apt = "gettext"
+yay = "gettext"
+
+[packages.procps]
+os = ["linux"]
+apt = "procps"
+yay = "procps-ng"
+
+[packages.unzip]
+# brew の cask(font-cica)が zip 展開に使う
+os = ["linux"]
+apt = "unzip"
+yay = "unzip"
+
+# Alacritty は macOS では cask、Linux ではディストリのパッケージ
+[packages.alacritty]
+manager = "brew-cask"
+apt = "alacritty"
+yay = "alacritty"
 
 # ---------------------------------------------------------------------------
 # フォント (cask)
@@ -80,10 +126,6 @@ kind = "font"
 # GUI アプリ (cask, macOS のみ)
 # ---------------------------------------------------------------------------
 [packages.1password]
-manager = "brew-cask"
-os = ["darwin"]
-[packages.alacritty]
-# darwin は cask。linux は cask が使えないので script/setup が yay・apt で入れる
 manager = "brew-cask"
 os = ["darwin"]
 [packages.antigravity]
@@ -148,6 +190,8 @@ optional = true
 
 [packages.translate-shell]
 provides = ["trans"]
+apt = "translate-shell"
+yay = "translate-shell"
 # aliases.zsh の ja-en / en-ja が使う
 
 # ---------------------------------------------------------------------------
