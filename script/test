@@ -103,36 +103,55 @@ rc="$(SETUP_LIB=1 bash -c '
 ' 2>/dev/null)"
 check "a wrapped step that succeeds is not recorded" "recorded=0" "$rc"
 
-# 記録された失敗は終了状態まで届くか
-set +e
-SETUP_LIB=1 OS=Darwin bash -c '
-    set -euo pipefail
-    source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1
-    for f in install_system_dependencies install_homebrew install_packages \
-             install_viteplus configure_shell configure_mise configure_gnome; do
-        eval "$f() { :; }"
-    done
-    install_docker() { false; }
-    configure_tpm() { :; }
-    has_command() { [ "$1" = sennit ]; }
-    sennit() { :; }
-    e_section() { :; }; e_header() { :; }; e_done() { :; }; e_error() { :; }
-    main
-' >/dev/null 2>&1
-rc=$?
-set -e
-check "a recorded failure reaches the exit status" "1" "$rc"
+# 必須でない工程が落ちたときに、(a) 配置まで進み (b) 終了状態は 1 になるか。
+#
+# 終了状態だけを見てはいけない。set -e で途中死しても 1 になるので、
+# 「最後にまとめて報告した」と「配置前に死んだ」を区別できない。配置が
+# 走ったかどうかを順序から見る。optional_step はそのために在る。
+failing_run="$(
+    set +e
+    SETUP_LIB=1 OS=Darwin bash -c '
+        set -euo pipefail
+        source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1
+        for f in install_system_dependencies install_homebrew install_packages \
+                 install_viteplus configure_shell configure_mise configure_gnome \
+                 configure_tpm; do
+            eval "$f() { echo \"CALLED:$f\"; }"
+        done
+        install_docker() { echo "CALLED:install_docker"; false; }
+        has_command() { [ "$1" = sennit ]; }
+        sennit() { echo "CALLED:apply"; }
+        e_section() { :; }; e_header() { :; }; e_done() { :; }; e_error() { :; }
+        main
+    ' 2>/dev/null
+    echo "RC:$?"
+)"
+failing_order="$(echo "$failing_run" | grep '^CALLED:' | sed 's/^CALLED://' | tr '\n' ' ')"
+failing_rc="$(echo "$failing_run" | sed -n 's/^RC://p')"
+
+case " $failing_order " in
+    *" apply "*) ok "an optional step failing still deploys the dotfiles" ;;
+    *) ng "an optional step failing still deploys the dotfiles" \
+        "apply never ran: [$failing_order]" ;;
+esac
+check "a recorded failure reaches the exit status" "1" "$failing_rc"
 
 # --- XDG -------------------------------------------------------------------
 # .zshenv と食い違うと、bash で書いたものを zsh が読めない。brew trust が
 # それで、インストールは通るのに次のシェルで tap が untrusted になる。
-for var in XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME; do
-    from_setup="$(SETUP_LIB=1 env -u "$var" bash -c '
-        source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1; echo "${'"$var"'}"' 2>/dev/null)"
-    from_zshenv="$(env -u "$var" zsh -c '
-        source "'"$SCRIPT_DIR"'/../.zshenv" >/dev/null 2>&1; echo "${'"$var"'}"' 2>/dev/null)"
-    check "$var agrees with .zshenv" "$from_zshenv" "$from_setup"
-done
+if ! command -v zsh >/dev/null; then
+    printf "  \033[33mskip\033[m  XDG agreement with .zshenv (zsh is not installed)\n"
+else
+    for var in XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME; do
+        # setup 側が落ちたら空が返る。比較は続ける —— 1 つ目で суite ごと
+        # 抜けると、残りの 3 つが一度も比べられない。
+        from_setup="$(SETUP_LIB=1 env -u "$var" bash -c '
+            source "'"$SCRIPT_DIR"'/setup" >/dev/null 2>&1; echo "${'"$var"'-}"' 2>/dev/null || true)"
+        from_zshenv="$(env -u "$var" zsh -c '
+            source "'"$SCRIPT_DIR"'/../.zshenv" >/dev/null 2>&1; echo "${'"$var"'-}"' 2>/dev/null || true)"
+        check "$var agrees with .zshenv" "$from_zshenv" "$from_setup"
+    done
+fi
 
 echo
 if [ "$FAILURES" -gt 0 ]; then
