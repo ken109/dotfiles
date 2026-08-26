@@ -36,7 +36,8 @@ typeset +x FPATH       # un-export so child shells recompute their own
 # Homebrew の prefix より前に出てしまい、Apple Silicon で /opt/homebrew より
 # 古い Intel 側や手置きのバイナリが優先される。brew 自身も入れ替わるので、
 # dotfiles update や sennit sync が別の prefix を触りに行く。
-# Ensure $HOME/.local/bin is in PATH after Homebrew, but before other tools
+# $HOME/.local/bin は Homebrew より前に置く。ここに入れた自前のものを
+# 優先させたいため。
 export PATH="$HOME/.local/bin:$PATH"
 
 # local bin env (uv などが配置)

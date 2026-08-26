@@ -7,6 +7,11 @@ set -euo pipefail
 
 USER="${USER:-$(whoami)}"
 
+# 必須でない工程の失敗をためておく。落ちた事実は捨てないが、その場で
+# 中断はしない。第三者のインストーラが落ちたせいで dotfiles が 1 つも
+# 配置されない、というのが最悪の結果なので。
+FAILED_STEPS=()
+
 # Load utilities
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/utils.sh"
@@ -98,8 +103,14 @@ install_packages() {
 install_viteplus() {
     e_section "Vite Plus"
     e_header "Installing vite.plus..."
-    curl -fsSL https://vite.plus | bash
-    e_done "vite.plus installed"
+    # 外部のインストーラなので落ちうる。落ちても配置は続け、最後にまとめて
+    # 失敗として返す。pipefail のおかげで curl の失敗がここまで届く。
+    if curl -fsSL https://vite.plus | bash; then
+        e_done "vite.plus installed"
+    else
+        e_error "vite.plus installer failed"
+        FAILED_STEPS+=("vite.plus")
+    fi
 }
 
 # --------------------------------------------------------------------------------------------------
@@ -151,8 +162,20 @@ configure_shell() {
 
     if [ ! -x "$zsh_path" ]; then
         e_warning "Homebrew zsh not found, falling back to system zsh"
-        if [ -x "/bin/zsh" ]; then zsh_path="/bin/zsh"; fi
-        if [ -x "/usr/bin/zsh" ]; then zsh_path="/usr/bin/zsh"; fi
+        # 実在するものだけを採る。無いパスのまま進むと、/etc/shells に
+        # 存在しないシェルを足して chsh し、ログインできない状態を作る。
+        zsh_path=""
+        for candidate in /bin/zsh /usr/bin/zsh; do
+            if [ -x "$candidate" ]; then
+                zsh_path="$candidate"
+                break
+            fi
+        done
+        if [ -z "$zsh_path" ]; then
+            e_error "no zsh found; leaving the login shell alone"
+            FAILED_STEPS+=("zsh")
+            return 0
+        fi
     fi
 
     # Add to /etc/shells if not present
@@ -288,6 +311,12 @@ main() {
 
     # GNOME setup must run after deploy so the extension symlink exists.
     configure_gnome
+
+    if [ ${#FAILED_STEPS[@]} -gt 0 ]; then
+        e_section "Complete with failures"
+        e_error "these steps failed: ${FAILED_STEPS[*]}"
+        exit 1
+    fi
 
     e_section "Complete"
     e_done "All setup tasks completed successfully!"

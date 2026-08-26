@@ -94,8 +94,9 @@ jobs:
           h=$(mktemp -d)
           n=$(./sennit --home "$h" apply | tail -1)
           echo "$n"
-          # 2 回目は差分ゼロ(冪等)
-          ./sennit --home "$h" apply | grep -q "already up to date"
+          # 2 回目は差分ゼロ(冪等)。秘密を読むテンプレートは --secrets を
+          # 渡していないので生成されず、その分は「置いていない」と出る。
+          ./sennit --home "$h" apply | grep -qE "already up to date|link\(s\) in place"
           # テンプレートは配置されない
           test "$(find "$h" -name '*.tmpl' | wc -l)" -eq 0
           echo "links: $(find "$h" -type l | wc -l)"

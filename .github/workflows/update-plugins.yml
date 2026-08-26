@@ -32,9 +32,14 @@ jobs:
           XDG_DATA_HOME: ${{ runner.temp }}/share
           XDG_STATE_HOME: ${{ runner.temp }}/state
           XDG_CACHE_HOME: ${{ runner.temp }}/cache
+        # 既定のシェルには pipefail が無く、tail の終了状態が段の結果になる。
+        # nvim が落ちても緑のまま、lazy-lock.json が黙って古いままになる。
+        shell: bash -euo pipefail {0}
         run: |
           # lazy.nvim は初回起動でプラグインを clone し lazy-lock.json を書き換える
           nvim --headless "+Lazy! update" +qa 2>&1 | tail -30
+          # 更新が走ったならロックファイルは在るはず
+          test -f .config/nvim/lazy-lock.json
 
       - name: Show what changed
         run: git --no-pager diff --stat

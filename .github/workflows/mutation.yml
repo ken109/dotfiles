@@ -7,8 +7,12 @@ name: Mutation test
 # 何も壊れないが、unzip を外すと font cask の展開が落ちる — この違いは
 # 実際に外して動かすまで分からない。
 #
-# 全 58 件を回すとコンテナビルド 58 回になるので、PR で変更された宣言だけを
-# 対象にする。全件は手動実行。
+# 全件を回すとコンテナビルドが宣言の数だけ走るので、PR で追加・変更された
+# 宣言だけを対象にする。全件は手動実行。
+#
+# なお、ブートストラップが先に入れてしまうもの(build-essential / curl / file /
+# git / procps と Dockerfile が入れるもの)は、外してもビルドが通る。それは
+# 「要らない」ではなく「この方法では測れない」なので、判定でそう言う。
 on:
   pull_request:
     paths: ["packages.toml"]
@@ -30,6 +34,9 @@ jobs:
 
       - id: pick
         name: Decide which declarations to test
+        # 既定のシェルには pipefail が無い。git diff が落ちても後段が 0 を
+        # 返し、「対象なし」に化ける。
+        shell: bash -euo pipefail {0}
         run: |
           if [ -n "${{ inputs.packages }}" ]; then
             names="${{ inputs.packages }}"
@@ -58,9 +65,12 @@ jobs:
   # 「元から壊れているから」なのか区別できない。判定の土台であると同時に、
   # PR で packages.toml を壊したときに実際に落ちる唯一の関門でもある
   # (install-test は PR では走らない)。
+  #
+  # plan の結果に依存させない。plan が拾うのは「追加された宣言」だけなので、
+  # 宣言を消した PR やセクションの中身を書き換えた PR は matrix が空になる。
+  # そこで baseline まで飛ばすと、packages.toml を壊す最も普通のやり方が
+  # 素通りする。トリガ(paths: packages.toml)が引けたら必ず 1 度は通す。
   baseline:
-    needs: plan
-    if: needs.plan.outputs.packages != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -116,8 +126,16 @@ jobs:
 
       - name: Judge
         run: |
+          # ブートストラップが先に入れるものは、宣言を外してもビルドが通る。
+          # 構造上そうなるだけなので「要らない」と読ませない。
+          case " build-essential curl file git procps sudo make zsh " in
+            *" ${{ matrix.package }} "*) bootstrapped=yes ;;
+            *) bootstrapped=no ;;
+          esac
           if [ "${{ steps.install.outcome }}" = "failure" ]; then
             echo "::notice::${{ matrix.package }} is required — the install breaks without it"
+          elif [ "$bootstrapped" = "yes" ]; then
+            echo "::notice::${{ matrix.package }} — inconclusive; the bootstrap installs it anyway, so removing the declaration cannot break this build"
           else
             echo "::warning::${{ matrix.package }} may be unnecessary — the install still succeeds without it"
           fi
