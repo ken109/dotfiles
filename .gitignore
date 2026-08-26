@@ -14,3 +14,4 @@
 /.config/alacritty/alacritty.toml
 /.config/lazygit/config.yml
 /.config/zsh/rc/theme.zsh
+/.npmrc

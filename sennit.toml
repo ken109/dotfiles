@@ -9,7 +9,7 @@
 # 書き込んだファイルまでリポジトリに現れてしまうため。
 
 [link]
-common = [".config", ".zshenv"]
+common = [".config", ".zshenv", ".npmrc"]
 darwin = [".hammerspoon"]
 linux = [".local"]
 
@@ -26,3 +26,5 @@ ignore = ["*.tmpl"]
 ".config/alacritty/alacritty.toml" = ".config/alacritty/alacritty.toml.tmpl"
 ".config/lazygit/config.yml" = ".config/lazygit/config.yml.tmpl"
 ".config/zsh/rc/theme.zsh" = ".config/zsh/rc/theme.zsh.tmpl"
+# 秘密を含むので apply では飛ばされる。sennit apply --secrets で生成する
+".npmrc" = ".npmrc.tmpl"

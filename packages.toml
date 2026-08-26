@@ -119,6 +119,11 @@ kind = "font"
 [packages.1password]
 manager = "brew-cask"
 os = ["darwin"]
+
+[packages.1password-cli]
+manager = "brew-cask"
+provides = ["op"]
+# テンプレートの {{ op://... }} が使う。宣言が無いまま手で入っていた
 [packages.antigravity]
 manager = "brew-cask"
 os = ["darwin"]
