@@ -20,3 +20,7 @@ pre-commit:
       run: |
         command -v zsh >/dev/null || exit 0
         for f in {staged_files}; do zsh -n "$f" || exit 1; done
+    setup-behaviour:
+      glob: "script/setup"
+      # 構文ではなく挙動を見る。順序と失敗の伝わり方はリンタに見えない
+      run: ./script/test

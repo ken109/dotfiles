@@ -34,6 +34,14 @@ jobs:
       - name: shellcheck
         run: shellcheck -x -S warning script/*
 
+      # リンタが見るのは構文だけ。失敗を握り潰す、順序を取り違える、
+      # bash と zsh でパスが食い違う —— 実際に踏んだ回帰はどれも構文としては
+      # 正しく、上の 2 つは 1 つも捕まえなかった。挙動の方を見る。
+      - name: setup behaviour
+        run: |
+          sudo apt-get update && sudo apt-get install -y zsh
+          ./script/test
+
       - name: zsh syntax
         run: |
           sudo apt-get update && sudo apt-get install -y zsh

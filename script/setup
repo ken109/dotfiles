@@ -393,4 +393,10 @@ main() {
     e_done "All setup tasks completed successfully!"
 }
 
-main
+# テストから関数だけを読み込めるようにする。SETUP_LIB=1 で source すると
+# main を走らせない。これが無いと、順序や失敗の伝わり方を確かめる手段が
+# 「実際にマシンをセットアップしてみる」しか無く、実際そこで 2 回続けて
+# 回帰を入れた。
+if [ "${SETUP_LIB:-0}" != "1" ]; then
+    main
+fi
