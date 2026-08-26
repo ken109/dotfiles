@@ -17,6 +17,10 @@ export_function() {
 }
 
 clear_direnv_aliases() {
-    local alias_dir=$PWD/${ALIASES_DIR}
-    rm -rf $alias_dir/*
+    local alias_dir="$PWD/${ALIASES_DIR}"
+    # 引用符が要る。パスに空白が入ると `rm -rf /path/to/my app/...` と
+    # 割れて、手前の "my" を別の引数として消しにいく。-f がそのエラーを
+    # 隠すので気づけない。direnv は bash で評価するので、zsh 側の
+    # `alias rm='trash'` は効かない。
+    rm -rf "${alias_dir:?}"/*
 }

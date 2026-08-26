@@ -43,7 +43,9 @@ run_setup() {
             eval "$f() { echo \"CALLED:$f\"; }"
         done
         has_command() { [ "$1" = sennit ]; }
-        sennit() { echo "CALLED:apply"; }
+        # 引数まで記録する。捨てると `sennit sync` に書き換えても
+        # 「配置された」と読めてしまう。sync は 0 で終わり 1 つも張らない。
+        sennit() { echo "CALLED:sennit $*"; }
         e_section() { :; }
         e_header() { :; }
         e_done() { :; }
@@ -56,27 +58,28 @@ run_setup() {
 echo "script/setup"
 
 # --- 順序 ------------------------------------------------------------------
-order="$(run_setup Darwin | grep '^CALLED:' | sed 's/^CALLED://' | tr '\n' ' ')"
+# 1 行 1 呼び出しで持つ。空白で繋ぐと `sennit apply` が 2 語に割れ、
+# 位置の比較がスタブの書き方に依存してしまう。
+order="$(run_setup Darwin | grep '^CALLED:' | sed 's/^CALLED://')"
 
-case " $order " in
-    *" apply "*) ;;
-    *) ng "the dotfiles are deployed" "apply never ran: [$order]" ;;
-esac
+if ! grep -qx 'sennit apply' <<<"$order"; then
+    ng "the dotfiles are deployed" "sennit apply never ran: [$(tr '\n' ' ' <<<"$order")]"
+fi
 
 # tpm は配置のあと。プラグイン一覧も置き場も tmux.conf から読むので、
 # 先に走らせると設定が無く abort する。
-apply_at="$(echo "$order" | tr ' ' '\n' | grep -n '^apply$' | cut -d: -f1)"
-tpm_at="$(echo "$order" | tr ' ' '\n' | grep -n '^configure_tpm$' | cut -d: -f1)"
-gnome_at="$(echo "$order" | tr ' ' '\n' | grep -n '^configure_gnome$' | cut -d: -f1)"
+apply_at="$(grep -nx 'sennit apply' <<<"$order" | cut -d: -f1)"
+tpm_at="$(grep -nx 'configure_tpm' <<<"$order" | cut -d: -f1)"
+gnome_at="$(grep -nx 'configure_gnome' <<<"$order" | cut -d: -f1)"
 if [ -n "$apply_at" ] && [ -n "$tpm_at" ] && [ "$tpm_at" -gt "$apply_at" ]; then
     ok "tpm runs after the dotfiles are deployed"
 else
-    ng "tpm runs after the dotfiles are deployed" "order was [$order]"
+    ng "tpm runs after the dotfiles are deployed" "order was [$(tr '\n' ' ' <<<"$order")]"
 fi
 if [ -n "$apply_at" ] && [ -n "$gnome_at" ] && [ "$gnome_at" -gt "$apply_at" ]; then
     ok "gnome runs after the dotfiles are deployed"
 else
-    ng "gnome runs after the dotfiles are deployed" "order was [$order]"
+    ng "gnome runs after the dotfiles are deployed" "order was [$(tr '\n' ' ' <<<"$order")]"
 fi
 
 # --- optional_step ---------------------------------------------------------
@@ -120,20 +123,23 @@ failing_run="$(
         done
         install_docker() { echo "CALLED:install_docker"; false; }
         has_command() { [ "$1" = sennit ]; }
-        sennit() { echo "CALLED:apply"; }
+        # 引数まで記録する。捨てると `sennit sync` に書き換えても
+        # 「配置された」と読めてしまう。sync は 0 で終わり 1 つも張らない。
+        sennit() { echo "CALLED:sennit $*"; }
         e_section() { :; }; e_header() { :; }; e_done() { :; }; e_error() { :; }
         main
     ' 2>/dev/null
     echo "RC:$?"
 )"
-failing_order="$(echo "$failing_run" | grep '^CALLED:' | sed 's/^CALLED://' | tr '\n' ' ')"
+failing_order="$(echo "$failing_run" | grep '^CALLED:' | sed 's/^CALLED://')"
 failing_rc="$(echo "$failing_run" | sed -n 's/^RC://p')"
 
-case " $failing_order " in
-    *" apply "*) ok "an optional step failing still deploys the dotfiles" ;;
-    *) ng "an optional step failing still deploys the dotfiles" \
-        "apply never ran: [$failing_order]" ;;
-esac
+if grep -qx 'sennit apply' <<<"$failing_order"; then
+    ok "an optional step failing still deploys the dotfiles"
+else
+    ng "an optional step failing still deploys the dotfiles" \
+        "sennit apply never ran: [$(tr '\n' ' ' <<<"$failing_order")]"
+fi
 check "a recorded failure reaches the exit status" "1" "$failing_rc"
 
 # --- XDG -------------------------------------------------------------------
