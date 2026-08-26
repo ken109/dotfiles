@@ -20,7 +20,7 @@ direnv     = {}
 eza        = {}
 fd         = {}
 fzf        = {}
-gdu        = {}
+gdu        = { provides = ["gdu", "gdu-go"] }   # linuxbrew では gdu-go として入る
 gh         = {}
 ghq        = {}
 git-delta  = { provides = ["delta"] }
@@ -72,6 +72,7 @@ yay = "zsh"
 # Linux のビルド/実行に必要なもの。macOS では Xcode CLT などが賄う
 # ---------------------------------------------------------------------------
 [packages.build-essential]
+kind = "library"   # メタパッケージ。build-essential という実行ファイルは無い
 os = ["linux"]
 apt = "build-essential"
 yay = "base-devel"
@@ -93,6 +94,7 @@ apt = "gettext"
 yay = "gettext"
 
 [packages.procps]
+provides = ["ps", "free", "pgrep"]   # procps という名前のコマンドは無い
 os = ["linux"]
 apt = "procps"
 yay = "procps-ng"

@@ -112,7 +112,9 @@ jobs:
 
       # 実際に入った状態で、宣言した名前がすべて解決するか確かめる。
       # formula 名の間違いや、インストールが黙って失敗した状態を捕まえる。
+      # brew shellenv を明示的に適用する。この設定では PATH を通すのが
+      # rc/env.zsh で、対話シェルでしか読まれない。非対話で起動すると
+      # linuxbrew が PATH に入らず、宣言が全部 missing に見えてしまう。
       - name: Verify declarations resolve inside the image
         run: |
-          docker run --rm dotfiles-test \
-            /home/linuxbrew/.linuxbrew/bin/sennit --root /home/testuser/.dotfiles verify
+          docker run --rm dotfiles-test bash -c 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"; cd ~/.dotfiles && sennit verify'
