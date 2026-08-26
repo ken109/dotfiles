@@ -52,8 +52,24 @@ jobs:
           print(json.dumps(sys.argv[1].split() if sys.argv[1] else []))" "$names")
           echo "packages=$json" >> "$GITHUB_OUTPUT"
 
-  mutate:
+  # 変異させない状態で 1 度だけ通す。
+  #
+  # これが無いと、宣言を外したビルドが落ちた理由が「その宣言が要るから」なのか
+  # 「元から壊れているから」なのか区別できない。判定の土台であると同時に、
+  # PR で packages.toml を壊したときに実際に落ちる唯一の関門でもある
+  # (install-test は PR では走らない)。
+  baseline:
     needs: plan
+    if: needs.plan.outputs.packages != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install as declared
+        run: docker build -t baseline .
+
+  mutate:
+    needs: [plan, baseline]
     if: needs.plan.outputs.packages != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -68,16 +84,25 @@ jobs:
       - name: Remove ${{ matrix.package }} from packages.toml
         run: |
           python3 - "${{ matrix.package }}" <<'PY'
-          import re, sys, io
+          import re, sys, io, tomllib
           name = sys.argv[1]
           src = io.open("packages.toml", encoding="utf-8").read()
-          section = re.compile(r"(?:^|\n)\[packages\.%s\]\n(?:(?!\n\[|\n#).*\n)*" % re.escape(name))
+          before = set(tomllib.loads(src)["packages"])
+          # 本文は `[` でも `#` でも始まらない行。ここを `\n[` の先読みで書くと、
+          # 空行を挟まずに続く次の宣言まで飲み込む。実際 curl を外したつもりで
+          # 8 件、antigravity で 12 件が一緒に消えていて、判定はまるごと別の
+          # 集合についてのものになっていた。
+          section = re.compile(r"(?:^|\n)\[packages\.%s\]\n(?:(?![\[#]).*\n)*" % re.escape(name))
           inline = re.compile(r"\n%s\s*=[^\n]*\n" % re.escape(name))
           out = section.sub("\n", src, count=1)
           if out == src:
               out = inline.sub("\n", src, count=1)
           if out == src:
               sys.exit(f"{name}: no declaration found")
+          # 1 件だけ消えたことを実際に確かめる。正規表現を信用しない。
+          removed = before - set(tomllib.loads(out)["packages"])
+          if removed != {name}:
+              sys.exit(f"{name}: the mutation removed {sorted(removed)}; expected only {name}")
           io.open("packages.toml", "w", encoding="utf-8").write(out)
           PY
           git --no-pager diff --stat packages.toml
