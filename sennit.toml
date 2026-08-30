@@ -35,6 +35,8 @@ ignore = ["*.tmpl"]
 # 通していないマシンでは .npmrc は検査対象に現れない。
 [modes]
 ".npmrc" = "600"
+# herdr の tab_bar_right から実行されるので実行ビットが要る。
+".config/herdr/claude-usage.sh" = "755"
 
 # 配置したあとに走らせる処理。監視対象が変わったときだけ実行される。
 [hooks.bat-themes]

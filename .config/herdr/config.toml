@@ -147,6 +147,13 @@ next_workspace = "alt+down"
 # directory = "~/.herdr/worktrees"
 
 [ui]
+# タブバー右端のステータス。command は herdr サーバー側で解決されるので、
+# claude のセッション数によらずポーリングは 1 本で済む。
+tab_bar_right = [
+    { type = "command", command = "~/.config/herdr/claude-usage.sh", interval_seconds = 120, timeout_seconds = 5 },
+]
+tab_bar_right_separator = " · "
+
 # Sidebar width (auto-scaled based on workspace names, this sets the default)
 # sidebar_width = 26
 
