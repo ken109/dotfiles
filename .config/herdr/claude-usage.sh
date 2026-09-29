@@ -22,8 +22,13 @@ fallback() {
     exit 0
 }
 
-token=$(security find-generic-password -s 'Claude Code-credentials' -w 2>/dev/null |
-    jq -r '.claudeAiOauth.accessToken // empty') || fallback
+# 認証情報の置き場は OS で違う。macOS は Keychain、Linux / WSL は ~/.claude/.credentials.json。
+if command -v security >/dev/null 2>&1; then
+    creds=$(security find-generic-password -s 'Claude Code-credentials' -w 2>/dev/null) || fallback
+else
+    creds=$(cat "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/.credentials.json" 2>/dev/null) || fallback
+fi
+token=$(printf '%s' "$creds" | jq -r '.claudeAiOauth.accessToken // empty') || fallback
 [ -n "$token" ] || fallback
 
 # 新しいアカウントは five_hour / seven_day が消えて limits[] に移っているので両方見る。
