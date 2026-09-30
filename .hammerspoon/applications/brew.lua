@@ -27,6 +27,12 @@ local function runBrewUpgrade()
         print(message)
     end, { "upgrade", "-y" })
 
+    -- parallels のように sudo が要る flight step を持つ cask は tty の無い
+    -- 定時実行では必ず失敗する。自前で自動更新する cask なので brew には触らせない。
+    local env = task:environment()
+    env["HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS"] = "1"
+    task:setEnvironment(env)
+
     task:start()
 end
 
