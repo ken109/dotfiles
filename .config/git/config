@@ -37,12 +37,12 @@
 	required = true
 [credential "https://lfs.ken109.dev"]
 	helper = 
-	helper = !sh '/Users/ken109/.config/r2-lfs/credential'
+	helper = !sh "$HOME/.config/r2-lfs/credential"
 	useHttpPath = true
 [r2-lfs]
 	server = https://lfs.ken109.dev
 [lfs "customtransfer.r2-lfs-multipart"]
-	path = /Users/ken109/.config/r2-lfs/transfer-agent
-	args = 
+	path = r2-lfs
+	args = transfer-agent
 	concurrent = true
 	direction = upload
