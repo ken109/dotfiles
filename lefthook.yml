@@ -5,12 +5,16 @@ pre-commit:
   commands:
     shfmt:
       glob: "script/*"
+      # launchd の plist はシェルスクリプトではない
+      exclude: "*.plist"
       run: |
         command -v shfmt >/dev/null || exit 0
         shfmt -i 4 -ci -w {staged_files}
         git add {staged_files}
     shellcheck:
       glob: "script/*"
+      # launchd の plist はシェルスクリプトではない
+      exclude: "*.plist"
       # -x で source 先も追跡する(SC1091 回避)
       run: |
         command -v shellcheck >/dev/null || exit 0

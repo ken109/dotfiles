@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  ~/Library/LaunchAgents に置いて登録する。__HOME__ は置き場のホームに置き換える:
+    mkdir -p ~/.local/state
+    sed "s|__HOME__|$HOME|g" script/launchd/com.ken109.dotfiles-autosync.plist \
+      > ~/Library/LaunchAgents/com.ken109.dotfiles-autosync.plist
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.ken109.dotfiles-autosync.plist
+  Linux は .config/systemd/user/dotfiles-autosync.timer を使う。
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ken109.dotfiles-autosync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__HOME__/.dotfiles/script/autosync</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>900</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>__HOME__/.local/state/dotfiles-autosync.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/.local/state/dotfiles-autosync.log</string>
+</dict>
+</plist>
