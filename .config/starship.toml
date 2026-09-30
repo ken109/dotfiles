@@ -6,9 +6,29 @@ format = """
 [│](bold white)
 [└](bold white)$character"""
 
+[buf]
+format = 'buf:[$version]($style) '
+symbol = ''
+
+[bun]
+format = 'bun:[$version]($style) '
+symbol = ''
+
+[c]
+format = 'c:[$version(-$name)]($style) '
+symbol = ''
+
 [character]
 success_symbol = '[>](green)'
 error_symbol = '[>](red)'
+
+[dart]
+format = 'dart:[$version]($style) '
+symbol = ''
+
+[deno]
+format = 'deno:[$version]($style) '
+symbol = ''
 
 [directory]
 truncation_length = 0
@@ -16,6 +36,13 @@ truncation_length = 0
 [docker_context]
 format = 'docker:[$context]($style) '
 detect_folders = ['docker']
+
+[elixir]
+format = 'elixir:[$version \(OTP $otp_version\)]($style) '
+symbol = ''
+
+[gcloud]
+disabled = true
 
 [git_branch]
 always_show_remote = false
@@ -49,25 +76,46 @@ style = 'bold white'
 format = 'go:[$version]($style) '
 symbol = ''
 
-[gcloud]
-disabled = true
+[java]
+format = 'java:[$version]($style) '
+symbol = ''
 
-[nodejs]
-format = 'node:[$version]($style) '
+[kotlin]
+format = 'kotlin:[$version]($style) '
 symbol = ''
 
 [line_break]
 disabled = true
 
+[lua]
+format = 'lua:[$version]($style) '
+symbol = ''
+
 [nix_shell]
 format = 'nix-shell:[$state( \($name\))]($style) '
+
+[nodejs]
+format = 'node:[$version]($style) '
+symbol = ''
+
+[php]
+format = 'php:[$version]($style) '
+symbol = ''
 
 [python]
 format = 'python:[$version]($style) '
 symbol = ''
 
+[ruby]
+format = 'ruby:[$version]($style) '
+symbol = ''
+
 [rust]
 format = 'rust:[$version]($style) '
+symbol = ''
+
+[swift]
+format = 'swift:[$version]($style) '
 symbol = ''
 
 [time]
@@ -76,3 +124,7 @@ format = '[┤ $time ├]($style)'
 time_format = '%T'
 utc_time_offset = '+9'
 style = 'bold white'
+
+[zig]
+format = 'zig:[$version]($style) '
+symbol = ''
