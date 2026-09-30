@@ -29,6 +29,11 @@ ignore = ["*.tmpl"]
 # 秘密を含むので apply では飛ばされる。sennit apply --secrets で生成する
 ".npmrc" = ".npmrc.tmpl"
 
+# 秘密の取り出し方。{} は `://` の後ろだけに置き換わる（sennit 0.18.1）のに、
+# 組み込みの既定は `op read --no-newline {}` で `op://` が落ちてしまうので、明示する。
+[providers.op]
+command = "op read --no-newline op://{}"
+
 # ファイルのモード。トークンを含むものが 0644 で置かれても何も壊れないので、
 # 宣言しておいて apply に揃えさせ、verify に検査させる。
 # ただし verify が見るのは実在するファイルだけなので、--secrets をまだ
