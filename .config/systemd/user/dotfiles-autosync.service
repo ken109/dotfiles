@@ -1,0 +1,6 @@
+[Unit]
+Description=Pull dotfiles pushed from other machines and apply them
+
+[Service]
+Type=oneshot
+ExecStart=%h/.dotfiles/script/autosync

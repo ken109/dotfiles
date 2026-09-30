@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# 他の端末で push された dotfiles を取り込んで、配置し直す。
+# systemd timer（Linux）と launchd（macOS）から定期的に呼ばれる。
+#
+# 取り込むのは fast-forward できるときだけ。ここで commit も push もしない。
+# 手元に未 push の commit や、origin と分かれた履歴があるときは何も変えずに
+# 理由を書いて終わる。編集中の変更は、取り込む差分と重ならなければそのまま残る。
+
+set -euo pipefail
+
+DOTPATH="${DOTPATH:-$HOME/.dotfiles}"
+
+# systemd と launchd の PATH には brew の道具（sennit）が無い
+export PATH="/opt/homebrew/bin:/usr/local/bin:/home/linuxbrew/.linuxbrew/bin:$HOME/.linuxbrew/bin:$PATH"
+
+log() { printf '%s %s\n' "$(date '+%F %T')" "$*"; }
+
+cd "$DOTPATH"
+
+branch="$(git symbolic-ref --short -q HEAD || true)"
+if [ "$branch" != "main" ]; then
+    log "skip: on '${branch:-detached HEAD}', not main"
+    exit 0
+fi
+
+# 落ちていても次の周回で取り直せばよい。オフラインは失敗として扱わない
+if ! git fetch --quiet origin main; then
+    log "skip: fetch failed"
+    exit 0
+fi
+
+if git merge-base --is-ancestor origin/main HEAD; then
+    exit 0
+fi
+
+if ! git merge-base --is-ancestor HEAD origin/main; then
+    log "skip: local main and origin/main have diverged"
+    exit 0
+fi
+
+before="$(git rev-parse --short HEAD)"
+if ! git merge --ff-only --quiet origin/main; then
+    log "skip: local changes overlap with the incoming ones"
+    exit 0
+fi
+log "pulled $before..$(git rev-parse --short HEAD)"
+
+# 新しいファイルは配置し直さないと symlink が張られない
+if command -v sennit >/dev/null; then
+    sennit apply
+    log "applied"
+else
+    log "sennit not found; pulled but did not apply"
+fi
