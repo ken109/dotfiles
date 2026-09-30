@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# git の clean filter。Zed が settings.json に書き足す `ssh_connections` を、
+# コミットされる側から除く。手元のファイルには残る。
+#
+# `ssh_connections` は Remote SSH で開いたプロジェクトの履歴で、端末ごとに違う。
+# Zed は設定の include も別ファイルへの保存も持たない（zed-industries/zed#20038）ので、
+# ファイルの中身を端末ごとに分けることはできない。git に渡す側で落とす。
+#
+# 標準入力を読み、標準出力に書く。Zed は既存のファイルのインデントに合わせて
+# 書くので、キーの行から括弧が閉じる行までを、括弧の深さを数えて消す。
+# 文字列の中の括弧は数えない。JSONC（コメント・末尾カンマ）はそのまま通す。
+
+exec awk '
+function count(s, c,   n, i) {
+    n = 0
+    for (i = 1; i <= length(s); i++) if (substr(s, i, 1) == c) n++
+    return n
+}
+function delta(s) {
+    gsub(/"([^"\\]|\\.)*"/, "", s)
+    return count(s, "[") + count(s, "{") - count(s, "]") - count(s, "}")
+}
+skip {
+    depth += delta($0)
+    if (depth <= 0) skip = 0
+    next
+}
+/^[ \t]*"ssh_connections"[ \t]*:/ {
+    depth = delta($0)
+    if (depth > 0) skip = 1
+    next
+}
+{ print }
+'

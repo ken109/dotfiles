@@ -49,6 +49,12 @@ run = "command -v bat >/dev/null && bat cache --build >/dev/null || true"
 when-changed = ["lefthook.yml"]
 run = "command -v lefthook >/dev/null && lefthook install >/dev/null || true"
 
+[hooks.git-filters]
+# .gitattributes の filter=zed-local の実体。filter の定義は .git/config にあり clone では
+# 配られないので、apply で各端末に入れる。未定義の filter を git は黙って無視する。
+when-changed = ["script/zed-strip-local", ".gitattributes"]
+run = 'git -C "${DOTPATH:-$HOME/.dotfiles}" config filter.zed-local.clean ./script/zed-strip-local'
+
 [hooks.zsh-compdump]
 # 補完の dump を作り直させる。
 #

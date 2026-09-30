@@ -180,6 +180,67 @@ else
     ng "setup sets pipefail" "curl | bash would report a failed download as success"
 fi
 
+# --- zed-strip-local -------------------------------------------------------
+# Zed が書き足す ssh_connections を、コミットされる側から除く clean filter。
+# 消しすぎると設定を失い、消し残すと端末ごとの履歴が配られる。
+strip="$SCRIPT_DIR/zed-strip-local"
+
+got="$(
+    "$strip" <<'EOF'
+// header comment
+{
+  "ssh_connections": [
+    {
+      "host": "a[1]",
+      "projects": [{ "paths": ["/x/}"] }]
+    }
+  ],
+  "theme": "One Dark",
+}
+EOF
+)"
+check "zed-strip-local removes a multi-line block and keeps the rest" \
+    '// header comment
+{
+  "theme": "One Dark",
+}' "$got"
+
+got="$(
+    "$strip" <<'EOF'
+{
+  "theme": "One Dark",
+  "ssh_connections": [
+    { "host": "a" }
+  ],
+  "vim_mode": true
+}
+EOF
+)"
+check "zed-strip-local removes a block in the middle" \
+    '{
+  "theme": "One Dark",
+  "vim_mode": true
+}' "$got"
+
+got="$(
+    "$strip" <<'EOF'
+{
+  "ssh_connections": [],
+  "theme": "One Dark"
+}
+EOF
+)"
+check "zed-strip-local removes a one-line block" \
+    '{
+  "theme": "One Dark"
+}' "$got"
+
+input='{
+  // "ssh_connections" in a comment is not a key at line start
+  "theme": "One Dark"
+}'
+check "zed-strip-local leaves a file without the key as it is" "$input" "$("$strip" <<<"$input")"
+
 echo
 if [ "$FAILURES" -gt 0 ]; then
     printf " \033[31m%s check(s) failed\033[m\n" "$FAILURES"

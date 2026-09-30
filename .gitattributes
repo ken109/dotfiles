@@ -1,0 +1,3 @@
+# Zed が書き足す ssh_connections（Remote SSH の履歴）は端末ごとに違うので、コミットから除く。
+# filter の定義は .git/config にあって clone では配られない。sennit.toml の hooks.git-filters が整える。
+.config/zed/settings.json filter=zed-local
