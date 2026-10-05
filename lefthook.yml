@@ -1,8 +1,13 @@
-# commit 時にシェルスクリプトを整形・検査する。
-# shfmt / shellcheck は script/setup が入れる。未インストールなら黙って飛ばす。
+# commit 時にシェルスクリプトを整形・検査し、秘密が入っていないか見る。
+# shfmt / shellcheck は script/setup が、gitleaks は mise が入れる。未インストールなら黙って飛ばす。
+# このレポは public なので、gitleaks だけは飛ばしたときに警告を出す。
 pre-commit:
   parallel: true
   commands:
+    gitleaks:
+      run: |
+        command -v gitleaks >/dev/null || { echo "gitleaks が無いので秘密の検査を飛ばした" >&2; exit 0; }
+        gitleaks git --staged --redact --no-banner
     shfmt:
       glob: "script/*"
       # launchd の plist はシェルスクリプトではない
