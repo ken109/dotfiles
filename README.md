@@ -108,6 +108,8 @@ sennit verify    # is everything declared actually here?
 
 Files ending in `.tmpl` are generated from `theme.toml`; their output is not committed.
 
+Claude Code's configuration (`CLAUDE.md`, agents, hooks, skills) is not here: it lives in a private repository, `life`.
+
 ## 📜 License
 
 MIT © [Kensuke Kubo](https://github.com/ken109)
