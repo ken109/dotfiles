@@ -34,6 +34,7 @@ neovim     = { provides = ["nvim"] }
 nushell    = { provides = ["nu"] }
 ripgrep    = { provides = ["rg"] }
 sennit     = {}   # ken109/tap
+r2-lfs     = {}   # ken109/tap
 sheldon    = {}
 shellcheck = {}
 shfmt      = {}
