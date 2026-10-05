@@ -1,0 +1,5 @@
+# 履歴はこのマシンのローカル DB だけに置く。同期（register / login）は使わない。
+auto_sync = false
+
+# atuin が初回に生成した設定から引き継ぐ。Enter で即実行、Tab で入力欄に出す。
+enter_accept = true
